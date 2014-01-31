@@ -23,7 +23,6 @@ public class TestTabSeparatedItems extends TestCase {
     /**
      * Test simple creation.
      */
-    @SuppressWarnings("unused")
     public void testCanCreate() {
         new HelperClass();
     }

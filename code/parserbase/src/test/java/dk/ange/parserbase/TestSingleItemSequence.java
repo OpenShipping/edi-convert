@@ -15,7 +15,6 @@ public class TestSingleItemSequence extends TestCase {
     /**
      * Test the simples possible creation sequence.
      */
-    @SuppressWarnings("unused")
     public void testCanCreate() {
         new SingleItemSequence<String, String, String>(null, null);
     }

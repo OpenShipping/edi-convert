@@ -16,7 +16,6 @@ public class TestOneOrOther extends TestCase {
     /**
      * Test the simples possible creation sequence.
      */
-    @SuppressWarnings("unused")
     public void testCanCreate() {
         new OneOrOther<LexerType, String, Integer>(new LinkedList<Sequence<LexerType, String, Integer>>());
     }

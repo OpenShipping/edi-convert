@@ -21,7 +21,6 @@ public class TestOneOrMore extends TestCase {
     /**
      * Ensure we can make a simple item
      */
-    @SuppressWarnings("unused")
     public void testCanCreate() {
         new OneOrMore<String, String, String>(null);
     }

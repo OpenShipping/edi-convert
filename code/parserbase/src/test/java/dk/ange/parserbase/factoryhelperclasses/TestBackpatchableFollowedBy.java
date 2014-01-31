@@ -55,7 +55,6 @@ public class TestBackpatchableFollowedBy extends TestCase {
     /**
      * Test simple creation.
      */
-    @SuppressWarnings("unused")
     public void testCanCreate() {
         new Helper(null);
     }

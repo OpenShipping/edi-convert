@@ -23,7 +23,6 @@ public class TestCompoundSequence extends TestCase {
     /**
      * Document that compound sequence will reject an empty sequence.
      */
-    @SuppressWarnings("unused")
     public void testRejectsEmptySequence() {
         try {
             new CompoundSequence<LexerType, String, Integer>(new LinkedList<Sequence<LexerType, String, Integer>>());
