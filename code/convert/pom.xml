@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+  xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -174,13 +174,13 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>1.5.8</version> <!-- Version 1.5 is important, 1.6 will break when running the app -->
+      <version>1.5.8</version> <!--$NO-MVN-MAN-VER$ Version 1.5 is important, 1.6 will break when running the app -->
       <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
-      <version>1.5.8</version>
+      <version>1.5.8</version> <!--$NO-MVN-MAN-VER$ -->
       <scope>runtime</scope>
     </dependency>
     <dependency>
@@ -220,5 +220,39 @@
       </plugin>
 
     </plugins>
+    <pluginManagement>
+      <plugins>
+
+        <!-- Work around Eclipse problem with grails-maven-plugin, see http://wiki.eclipse.org/M2E_plugin_execution_not_covered -->
+        <plugin>
+          <groupId>org.eclipse.m2e</groupId>
+          <artifactId>lifecycle-mapping</artifactId>
+          <version>1.0.0</version>
+          <configuration>
+            <lifecycleMappingMetadata>
+              <pluginExecutions>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>org.grails</groupId>
+                    <artifactId>grails-maven-plugin</artifactId>
+                    <versionRange>${grails.version}</versionRange>
+                    <goals>
+                      <goal>config-directories</goal>
+                      <goal>init</goal>
+                      <goal>maven-compile</goal>
+                      <goal>validate</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore />
+                  </action>
+                </pluginExecution>
+              </pluginExecutions>
+            </lifecycleMappingMetadata>
+          </configuration>
+        </plugin>
+
+      </plugins>
+    </pluginManagement>
   </build>
 </project>

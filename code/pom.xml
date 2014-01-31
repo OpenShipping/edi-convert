@@ -17,9 +17,7 @@
     <module>parserbase</module>
     <module>ange-edifact</module>
     <module>excel-to-edifact</module>
-<!--
     <module>convert</module>
--->
   </modules>
 
   <!-- Properties -->
