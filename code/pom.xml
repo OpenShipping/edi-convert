@@ -13,11 +13,11 @@
   <description>The core dependencies for the Convert Applitation (Ange Stow Utilities)</description>
 
   <modules>
-    <module>edifact</module>
-    <module>parserbase</module>
-    <module>tcc-convert</module>
     <module>vessel-parser</module>
-    <module>conver</module>
+<!--
+    <module>tcc-convert</module>
+    <module>convert</module>
+-->
   </modules>
 
   <!-- Properties -->
@@ -25,7 +25,8 @@
 
     <!-- Fix: [WARNING] Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent! -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>${project.build.sourceEncoding}</project.reporting.outputEncoding>
+
+    <dk.ange.stowage.version>0.2.0-SNAPSHOT</dk.ange.stowage.version>
 
     <slf4j.version>1.6.6</slf4j.version>
     <poi.version>3.9</poi.version>
@@ -44,6 +45,12 @@
   <!-- Managed dependencies -->
   <dependencyManagement>
     <dependencies>
+
+      <dependency>
+        <groupId>dk.ange.stowage</groupId>
+        <artifactId>stowbase</artifactId>
+        <version>${dk.ange.stowage.version}</version>
+      </dependency>
 
       <dependency>
         <groupId>joda-time</groupId>

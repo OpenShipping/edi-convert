@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Simple logging config for when running the tests -->
+
+<configuration>
+
+  <!-- Console appender -->
+  <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+    <layout class="ch.qos.logback.classic.PatternLayout"><Pattern>%d{HH:mm:ss.SSS} [%t] %p %c \(%F:%L\) %M\(\) - %m%n</Pattern></layout>
+  </appender>
+
+  <!-- Logger -->
+  <root level="WARN">
+    <appender-ref ref="stdout"/>
+  </root>
+
+</configuration>
+

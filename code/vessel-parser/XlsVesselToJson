@@ -1,0 +1,27 @@
+#!/bin/bash
+
+set -e
+
+## Find java binary to use
+if [ -n "$JAVA_HOME" ]; then
+    JAVA="$JAVA_HOME/bin/java"
+else
+    JAVA=java
+fi
+
+## Get basedir
+basedir=$(dirname $0)
+
+## Build classpath
+CP="$basedir:$basedir/vessel-parser.jar"
+for cp in "$basedir/lib/"*/*.jar
+do
+    CP="${CP}:$cp"
+done
+
+## Run
+exec $JAVA \
+    -cp "$CP" \
+    dk.ange.stowbase.parse.XlsVesselToJson \
+    "$@"
+

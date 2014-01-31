@@ -1,0 +1,34 @@
+This is the documentation of the XLS vessel profile format
+
+This documentation might be moved into an XLS template that we expose in the web converter
+
+
+Sheets list:
+
+Vessel
+Bays
+Tier20
+Tier40
+Slots45
+Reef20 (old name: ReeferSlots20)
+Reef40 (old name: ReeferSlots40)
+Wgt20 (old name: StackWeight20)
+Wgt40 (old name: StackWeight40)
+Height20 (old name: StackHeight20)
+Height40 (old name: StackHeight40)
+Pos20 (old name: Position20)
+Pos40 (old name: Position40)
+
+DG (old name: IMO)
+Lids
+
+Tanks
+VarTanks
+ConstWgts (old name: Constantweight)
+Stability
+Hydrostatics
+MetaCenter (old name: MetaCentre)
+
+HullWgtDistr (old name: Hullweight)
+Bonjean
+StressLimits
