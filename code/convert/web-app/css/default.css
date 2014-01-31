@@ -1,0 +1,106 @@
+@charset "utf-8";
+/* CSS Document */
+
+html	{
+	margin:  0px;
+        padding: 0px
+}
+
+body	{
+	font-family: Calibri, Arial, Verdana;
+	color:   #0f325a;
+	margin:  1em;
+        padding: 0px
+}
+
+#head {
+	padding: 1em;
+        margin: 1em;
+	border: solid 1px;
+        background-image: url('/convert/images/ange_logo.png');
+        background-repeat: no-repeat;
+        background-position: right center;
+}
+
+#main {
+	padding: 1em;
+        margin: 1em;
+	border: solid 1px;
+}
+
+#controls {
+	padding: 1em;
+        margin: 1em;
+	border: solid 1px;
+}
+
+#foot {
+	padding: 1.2em;
+        margin: 1.2em;
+	border: solid 1px;
+        font-size: 80%;
+        text-align:center;
+        background-image: url('/convert/images/ange_logo.png');
+        background-repeat: no-repeat;
+        background-position: right center;
+}
+
+a       { 
+	color:   #0f325a;
+}
+
+a:hover {
+        color: blue;
+	text-decoration: none;
+}
+
+
+table   {
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid grey;
+}
+
+tr      {
+        padding: 5px;
+        border: 1px solid grey;
+}
+
+th      {
+        background-color: lightgray;
+        padding: 5px;
+        border: 1px solid grey;
+}
+
+td      {
+        padding: 5px;
+        border: 1px solid grey;
+}
+
+pre {
+        border: 1px solid grey;
+        background-color: lightgray;
+}
+
+pre.error {
+        background-color: orange;
+}
+
+p.ok {
+        background-color: lightgreen;
+        border: 1px solid grey;
+}
+
+table.form tr,table.form th, table.form td  { 
+      border: 0px;
+}
+
+//table.form td input {
+//      //width: 50%;
+//      background-color: lightgray;
+//      border: 2px solid grey;
+//}
+
+//table.form td input:hover {
+//      background-color: White;
+//}

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd ~/baystow/closed-source/convert
+nohup grails prod run-app >> ~/log/run-grails-convert 2>&1 &
+

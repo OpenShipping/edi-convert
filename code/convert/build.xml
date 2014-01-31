@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<project default="war" name="convert">
+
+  <!-- Common build instructions -->
+  <property name="common.basedir" value="${basedir}/.."/>
+  <import file="${common.basedir}/build-tools/ant/common.xml"/>
+
+  <!-- Define "grails" task -->
+  <property name="grails" value="true"/> <!-- By default run grails commands -->
+  <macrodef name="grails">
+    <attribute name="arg"/>
+    <sequential>
+      <if>
+        <istrue value="${grails}"/>
+        <then>
+          <exec dir="${common.basedir}/convert" executable="grails" failonerror="true"><arg value="@{arg}"/></exec>
+        </then>
+      </if>
+    </sequential>
+  </macrodef>
+
+  <!-- Clean -->
+  <target name="clean">
+    <grails arg="clean"/>
+  </target>
+
+  <!-- War -->
+  <target name="war">
+    <grails arg="war"/>
+  </target>
+
+  <!-- Run app -->
+  <target name="run-app">
+    <grails arg="run-app"/>
+  </target>
+
+</project>
