@@ -1,0 +1,15 @@
+
+Copy over the projects and build using Maven:
+
+ * vessel-parser
+   - New name?
+ 
+ * tcc-convert
+   - New name?
+ 
+ * convert
+
+Perhaps we need the projects?
+ - edifact
+ - parserbase
+

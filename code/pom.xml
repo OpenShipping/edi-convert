@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>dk.ange.convert</groupId>
+  <artifactId>parent</artifactId>
+  <version>0.1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <name>Ange :: Convert</name>
+  <description>The core dependencies for the Convert Applitation (Ange Stow Utilities)</description>
+
+  <modules>
+    <module>edifact</module>
+    <module>parserbase</module>
+    <module>tcc-convert</module>
+    <module>vessel-parser</module>
+    <module>conver</module>
+  </modules>
+
+  <!-- Properties -->
+  <properties>
+
+    <!-- Fix: [WARNING] Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent! -->
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>${project.build.sourceEncoding}</project.reporting.outputEncoding>
+
+    <slf4j.version>1.6.6</slf4j.version>
+    <poi.version>3.9</poi.version>
+    <jackson.version>2.3.0</jackson.version>
+    <joda-time.version>2.0</joda-time.version>
+    <junit.version>4.11</junit.version>
+    <logback.version>1.0.13</logback.version>
+
+    <!-- Maven Plugins -->
+    <maven-source-plugin.version>2.2.1</maven-source-plugin.version>
+    <maven-bundle-plugin.version>2.3.7</maven-bundle-plugin.version>
+    <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
+
+  </properties>
+
+  <!-- Managed dependencies -->
+  <dependencyManagement>
+    <dependencies>
+
+      <dependency>
+        <groupId>joda-time</groupId>
+        <artifactId>joda-time</artifactId>
+        <version>${joda-time.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${slf4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-simple</artifactId>
+        <version>${slf4j.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>commons-io</groupId>
+        <artifactId>commons-io</artifactId>
+        <version>2.4</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.poi</groupId>
+        <artifactId>poi</artifactId>
+        <version>${poi.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.poi</groupId>
+        <artifactId>poi-ooxml</artifactId>
+        <version>${poi.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${junit.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+        <version>${logback.version}</version>
+      </dependency>
+
+    </dependencies>
+  </dependencyManagement>
+
+  <build>
+    <plugins>
+
+      <!-- Package source files in separate jar -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>${maven-source-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <phase>package</phase>
+            <goals>
+              <goal>jar-no-fork</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+    </plugins>
+    <pluginManagement>
+      <plugins>
+
+        <!-- Config to use Java 7 compiler -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>${maven-compiler-plugin.version}</version>
+          <configuration>
+            <source>1.7</source>
+            <target>1.7</target>
+          </configuration>
+        </plugin>
+
+        <!-- Run web app in Jetty -->
+        <plugin>
+          <groupId>org.eclipse.jetty</groupId>
+          <artifactId>jetty-maven-plugin</artifactId>
+          <version>9.1.1.v20140108</version>
+        </plugin>
+
+      </plugins>
+    </pluginManagement>
+  </build>
+
+  <profiles>
+
+    <!-- Create graphs over dependencies, see http://mvnplugins.fusesource.org/maven/1.4/maven-graph-plugin/ -->
+    <!-- Usage: mvn -P graph -->
+    <profile>
+      <id>graph</id>
+      <pluginRepositories>
+        <pluginRepository>
+          <id>mvnplugins.fusesource.org</id>
+          <url>http://mvnplugins.fusesource.org/repo/release</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+        </pluginRepository>
+      </pluginRepositories>
+      <build>
+        <defaultGoal>graph:reactor</defaultGoal>
+        <plugins>
+          <plugin>
+            <groupId>org.fusesource.mvnplugins</groupId>
+            <artifactId>maven-graph-plugin</artifactId>
+            <version>1.4</version>
+            <configuration>
+              <hideTransitive>true</hideTransitive>
+              <hideScopes>test</hideScopes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+  </profiles>
+
+</project>
