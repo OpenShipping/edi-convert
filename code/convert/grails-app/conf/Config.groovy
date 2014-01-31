@@ -81,7 +81,12 @@ log4j = {
            'net.sf.ehcache.hibernate'
 
     warn   'org.mortbay.log'
+
+    // Log stack traces to console, prevents creation of stacktrace.log file
+    error stdout: "StackTrace"
+    appenders {
+        'null' name: "stacktrace"
+    }
+
 }
 
-
-     

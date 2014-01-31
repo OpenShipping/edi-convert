@@ -1,5 +1,7 @@
 #!/bin/bash
 
-cd ~/baystow/closed-source/convert
-nohup grails prod run-app >> ~/log/run-grails-convert 2>&1 &
+# -Dstringchararrayaccessor.disabled=true
+#    this fixes http://jira.grails.org/browse/GRAILS-9382
+#    it would have been better placed in pom.xml, but that didn't work for me
+exec mvn -Dgrails.env=prod -Dstringchararrayaccessor.disabled=true grails:run-app
 
