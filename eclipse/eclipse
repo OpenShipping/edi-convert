@@ -1,0 +1,36 @@
+#!/bin/bash
+
+set -e
+
+# Check that X is available
+if [ -z "$DISPLAY" ]
+then
+  echo 'ERROR: X11 is not available ($DISPLAY is not set), will not start Eclipse.' >&2
+  exit 100
+fi
+
+# Find basedir
+dir=$(dirname $(readlink -f $0))
+cd "$dir/.."
+
+showlocation="convert"
+username=$(perl -e'print ((split(/,/,(getpwuid($<))[6]))[0])')
+
+# Config eclipse (only if there is config dir already)
+if [ -e .metadata ]
+then
+  ./eclipse/eclipse-config/apply-config
+fi
+
+# Start Eclipse
+(
+  date=$(date)
+  echo vvv $date vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+
+  eclipse -showlocation "$showlocation" -data . \
+    "$@" \
+    -vmargs "-Duser.name=$username"
+
+  echo ^^^ $date ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+) >>eclipse/eclipse.log 2>&1 </dev/null &
+
