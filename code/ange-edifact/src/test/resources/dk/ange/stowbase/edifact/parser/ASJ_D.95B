@@ -1,0 +1,10 @@
+
+(13:06:15) Anders Johansen: Kan du evt. lave mig en reduceret udgave af 
+BAPLIE formatbeskrivelsen der kun har én ydre segmentgruppe med ét mandatory 
+segment i? Sådan til testformål...
+
+4.3.1  Segment table
+
+Pos    Tag Name                                      S   R
+
+0010   UNH Message header                            M   1     
