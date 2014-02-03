@@ -1,11 +1,17 @@
 package dk.ange.stowbase.parse.vessel;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.io.InputStream;
+import java.util.List;
 
+import org.junit.Assert;
 import org.junit.Test;
+import org.stowbase.client.import_.Bundle;
+import org.stowbase.client.import_.BundleStowbaseObject;
+import org.stowbase.client.import_.StowbaseReader;
 
 import dk.ange.stowbase.parse.vessel.ParseVessel.Result;
 
@@ -31,6 +37,27 @@ public class TestParserVessel {
                 result.messages.getException());
         assertNotNull(result.json);
         assertNotNull(result.messages.getStatus());
+
+        final Bundle bundle = StowbaseReader.readStowbaseData(result.json);
+        assertNotNull(bundle);
+        Assert.assertEquals(203, bundle.size());
+
+        final BundleStowbaseObject vesselProfile = bundle.single("vesselProfile");
+        assertNotNull(vesselProfile);
+
+        final List<BundleStowbaseObject> tanks = vesselProfile.get("tanks").getAsObjects();
+        assertNotNull(tanks);
+        assertEquals(4, tanks.size()); // Four tanks validated in sheet
+
+        // First tank should be "Tank 1 S"
+        final BundleStowbaseObject tank1 = tanks.get(0);
+        assertEquals("Tank 1 S", tank1.get("description").getAsString());
+        final BundleStowbaseObject tcgFunction = tank1.get("tcgFunction").getAsSingleObject();
+        assertNotNull(tcgFunction);
+        assertEquals("function2d", tcgFunction.getGroup());
+        final String samplePoints1 = tcgFunction.get("samplePoints1").getAsString();
+        assertNotNull(samplePoints1);
+        // assertEquals(8, samplePoints1.split(";").length);
     }
 
 }
