@@ -1,10 +1,11 @@
 package dk.ange.tcc.convert;
 
-import java.io.FileOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.stowbase.client.export.WriterExporter;
 
@@ -15,7 +16,7 @@ public class TestConvert {
 
     /**
      * Test convert()
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -27,7 +28,7 @@ public class TestConvert {
     private String doConvert(final String resourceName) throws IOException {
         final StringWriter stringWriter = new StringWriter();
         final WriterExporter exporter = new WriterExporter(stringWriter);
-        final FileOutputStream coprarStream = new FileOutputStream(resourceName+".edi");
+        final ByteArrayOutputStream coprarStream = new ByteArrayOutputStream();
         final CoprarExporter coprar = new CoprarExporter("9137894", "Ange Test Vessel", coprarStream);
         final ExcelConvert convert = new ExcelConvert(exporter.stowbaseObjectFactory(), coprar, "9137894");
         final InputStream is = TestConvert.class.getResourceAsStream(resourceName);
@@ -35,25 +36,27 @@ public class TestConvert {
         is.close();
         exporter.flush(resourceName + ".json");
         coprarStream.close();
+        Assert.assertEquals(0, coprarStream.size()); // Why is this empty?
         return stringWriter.toString();
     }
 
     /**
      * Test {@link ExcelConvert2}
-     * 
+     *
      * @throws Exception
      */
     @Test
     public void convert2() throws Exception {
         final StringWriter stringWriter = new StringWriter();
         final WriterExporter exporter = new WriterExporter(stringWriter);
-        final FileOutputStream coprarStream = new FileOutputStream("convert2.edi");
+        final ByteArrayOutputStream coprarStream = new ByteArrayOutputStream();
         final CoprarExporter coprar = new CoprarExporter("9137894", "Ange test vessel", coprarStream);
         final ExcelConvert2 convert = new ExcelConvert2(exporter.stowbaseObjectFactory(), coprar, "9137894");
         final InputStream is = TestConvert.class.getResourceAsStream("loadlist2.xls");
         convert.convert(is);
         is.close();
         exporter.flush("convert2.json");
+        Assert.assertEquals(0, coprarStream.size()); // Why is this empty?
     }
 
 }
