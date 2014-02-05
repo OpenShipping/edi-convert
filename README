@@ -7,3 +7,22 @@ we have deployed on:
  * https://stowage.ange.dk/convert/
  * http://stowage.uasc.net/convert/
 
+
+Run the convert Grails application
+----------------------------------
+    cd code
+    mvn install
+    cd convert
+    ./run-grails-convert
+
+Install command line converter
+------------------------------
+    cd code
+    mvn install
+    cd ~/bin
+    ln -sTf $(readlink -f code/vessel-parser/XlsVesselToJson) ~/bin/XlsVesselToJson
+    
+Use command line converter
+--------------------------
+    XlsVesselToJson .../vessel.xls
+
