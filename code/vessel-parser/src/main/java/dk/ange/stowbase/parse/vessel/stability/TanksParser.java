@@ -29,13 +29,13 @@ public final class TanksParser extends SheetsParser {
 
     private static final String SHEET_NAME = "Tanks";
 
-    private VartanksParser vartankparser;
+    private VarTanksParser varTanksParser;
 
-    private Collection<varTank> vartanks;
+    private Collection<VarTank> varTanks;
 
     /**
      * Construct and parse
-     * 
+     *
      * @param stowbaseObjectFactory
      * @param messages
      * @param workbook
@@ -51,9 +51,9 @@ public final class TanksParser extends SheetsParser {
         if (sheet == null) {
             return;
         }
-        vartanks = new ArrayList<varTank>();
+        varTanks = new ArrayList<>();
         try {
-            vartankparser = new VartanksParser(stowbaseObjectFactory, messages, workbook);
+            varTanksParser = new VarTanksParser(stowbaseObjectFactory, messages, workbook);
             parseSheet(sheet);
         } catch (final ParseException e) {
             messages.addSheetWarning(SHEET_NAME, e.getMessage());
@@ -62,28 +62,27 @@ public final class TanksParser extends SheetsParser {
 
     private void parseSheet(final Sheet sheet) {
         final Iterator<Row> rowIterator = sheet.rowIterator();
-
+        // Check the headers
         final Row firstRow = rowIterator.next();
         final Map<Header, Integer> keyMap = new HashMap<Header, Integer>();
         for (final Cell cell : firstRow) {
             keyMap.put(header(cellString(cell)), cell.getColumnIndex());
         }
-
         final int descriptionColumn = Header.headerColumnMadatory(keyMap, "Description");
         final int capacityVolColumn = Header.headerColumnMadatory(keyMap, "Capacity in m3");
         final int capacityMassColumn = Header.headerColumnMadatory(keyMap, "Capacity in ton");
         final int densityColumn = Header.headerColumnMadatory(keyMap, "Density in ton/m3");
         final int foreEndColumn = Header.headerColumnOptional(keyMap, "Fore End in m");
         final int aftEndColumn = Header.headerColumnOptional(keyMap, "Aft End in m");
-        // These headers are also mandatory, but putting in values are optional. if one value is present they must all
-        // be present,
-        // and if none are there the tank must be a vartank and thus presented in the vartanks sheet.
+        // These headers are also mandatory, but putting in values are optional. If one value is present they must all
+        // be present, and if none are there the tank must be a vartank and thus presented in the vartanks sheet.
         final int lcgColumn = Header.headerColumnMadatory(keyMap, "LCG in m");
         final int vcgColumn = Header.headerColumnMadatory(keyMap, "VCG in m");
         final int tcgColumn = Header.headerColumnMadatory(keyMap, "TCG in m");
         final int fsmColumn = Header.headerColumnMadatory(keyMap, "Max FSM in m4");
+        // Optional column (should this be changed to mandatory?)
         final int groupColumn = Header.headerColumnOptional(keyMap, "Tank Group");
-
+        // Read all data lines
         for (final Row row : new IterableIterator<Row>(rowIterator)) {
             final String description = cellString(row.getCell(descriptionColumn));
             if (description == null || description.length() == 0 || description.startsWith("#")) {
@@ -101,21 +100,17 @@ public final class TanksParser extends SheetsParser {
     private void parseRow(final Row row, final String description, final int capacityVolColumn,
             final int capacityMassColumn, final int densityColumn, final int foreEndColumn, final int aftEndColumn,
             final int lcgColumn, final int vcgColumn, final int tcgColumn, final int fsmColumn, final int groupColumn) {
-        boolean vartank = true;
-        final Cell lcgcell = row.getCell(lcgColumn);
-        final String lcgstring = cellString(lcgcell);
-        final Cell vcgcell = row.getCell(vcgColumn);
-        final String vcgstring = cellString(vcgcell);
-        final Cell tcgcell = row.getCell(tcgColumn);
-        final String tcgstring = cellString(tcgcell);
-        final Cell fsmcell = row.getCell(fsmColumn);
-        final String fsmstring = cellString(fsmcell);
-        if ((lcgcell == null || lcgstring.length() == 0) && (vcgcell == null || vcgstring.length() == 0)
-                && (tcgcell == null || tcgstring.length() == 0) && (fsmcell == null || fsmstring.length() == 0)) {
-            vartank = true;
-        } else {
-            vartank = false;
-        }
+        final Cell lcgCell = row.getCell(lcgColumn);
+        final String lcgString = cellString(lcgCell);
+        final Cell vcgCell = row.getCell(vcgColumn);
+        final String vcgString = cellString(vcgCell);
+        final Cell tcgCell = row.getCell(tcgColumn);
+        final String tcgString = cellString(tcgCell);
+        final Cell fsmCell = row.getCell(fsmColumn);
+        final String fsmString = cellString(fsmCell);
+        final boolean vartank = (lcgCell == null || lcgString.length() == 0)
+                && (vcgCell == null || vcgString.length() == 0) && (tcgCell == null || tcgString.length() == 0)
+                && (fsmCell == null || fsmString.length() == 0);
 
         boolean haveMC = true;
         final Cell MCcell = row.getCell(capacityMassColumn);
@@ -173,10 +168,10 @@ public final class TanksParser extends SheetsParser {
             tank.tcg = readNumber(row, tcgColumn, 1);
             tank.fsm = readNumber(row, fsmColumn, 1);
             tank.group = tankgroup;
-            vartanks.add(convertTankToVartank(tank));
+            varTanks.add(convertTankToVartank(tank));
 
         } else {
-            final varTank variabletank = vartankparser.getVartank(description);
+            final VarTank variabletank = varTanksParser.getVartank(description);
             if (variabletank != null) {
                 variabletank.volCapacity = VC;
                 variabletank.massCapacity = MC;
@@ -184,7 +179,7 @@ public final class TanksParser extends SheetsParser {
                 variabletank.foreEnd = FoEn;
                 variabletank.aftEnd = AftEn;
                 variabletank.group = tankgroup;
-                vartanks.add(variabletank);
+                varTanks.add(variabletank);
             } else {
                 throw new ParseException("Could not find vartank description for Tank: " + description
                         + " Check that it exists in the varTanks sheet");
@@ -192,8 +187,8 @@ public final class TanksParser extends SheetsParser {
         }
     }
 
-    private varTank convertTankToVartank(final Tank tank) {
-        final varTank vartank = new varTank(stowbaseObjectFactory);
+    private VarTank convertTankToVartank(final Tank tank) {
+        final VarTank vartank = new VarTank(stowbaseObjectFactory);
         vartank.description = tank.description;
         vartank.volCapacity = tank.volCapacity;
         vartank.massCapacity = tank.massCapacity;
@@ -225,15 +220,15 @@ public final class TanksParser extends SheetsParser {
 
     /**
      * Add the parser result to the vessel profile
-     * 
+     *
      * @param vesselProfile
      */
     public void addDataToVesselProfile(final VesselProfile vesselProfile) {
-        if (vartanks == null) {
+        if (varTanks == null) {
             return;
         }
         final References tankReferences = new References();
-        for (final varTank vartank : vartanks) {
+        for (final VarTank vartank : varTanks) {
             tankReferences.add(vartank.toStowbaseObject().getReference());
         }
         vesselProfile.put("tanks", tankReferences);

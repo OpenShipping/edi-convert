@@ -11,9 +11,12 @@ import org.stowbase.client.StowbaseObjectFactory;
 import org.stowbase.client.objects.LinearInterpolation2d;
 
 /**
- * @author Martin Westring Sørensen Container class to hold information about a variable tank
+ * Container class to hold information about a variable tank
  */
-public class varTank {
+public class VarTank {
+
+    private final StowbaseObjectFactory stowbaseObjectFactory;
+
     String description;
 
     double massCapacity;
@@ -34,19 +37,19 @@ public class varTank {
 
     Map<Double, Double> fsmfunction;
 
+    // Used in TanksParser
+    String group;
+
     /**
      * Create a variable tank object
-     * 
+     *
      * @param sbObjectFactory
      */
-    public varTank(final StowbaseObjectFactory sbObjectFactory) {
+    public VarTank(final StowbaseObjectFactory sbObjectFactory) {
         stowbaseObjectFactory = sbObjectFactory;
     }
 
-    final StowbaseObjectFactory stowbaseObjectFactory;
-
-    String group;
-
+    // Used in TanksParser
     StowbaseObject toStowbaseObject() {
         final StowbaseObject vartank = stowbaseObjectFactory.create("tank");
         vartank.put("description", description);
@@ -58,30 +61,28 @@ public class varTank {
         if (group != null) {
             vartank.put("group", group);
         }
-        vartank.put("lcgFunction", vartankCurve("lcg", lcgfunction));
-        vartank.put("vcgFunction", vartankCurve("vcg", vcgfunction));
-        vartank.put("tcgFunction", vartankCurve("tcg", tcgfunction));
-        vartank.put("fsmFunction", vartankCurve("fsm", fsmfunction));
-
+        vartank.put("lcgFunction", varTankCurve("lcg", lcgfunction));
+        vartank.put("vcgFunction", varTankCurve("vcg", vcgfunction));
+        vartank.put("tcgFunction", varTankCurve("tcg", tcgfunction));
+        vartank.put("fsmFunction", varTankCurve("fsm", fsmfunction));
         return vartank;
     }
 
-    private Reference vartankCurve(final String functiontype, final Map<Double, Double> data) {
-        final LinearInterpolation2d Curve = LinearInterpolation2d.create(stowbaseObjectFactory);
-        Curve.setInput1("volume");
-        Curve.setInput2("dummy");
-        Curve.setOutput(functiontype);
-        final List<Double> volumes = new ArrayList<Double>();
-        final List<Double> datavalues = new ArrayList<Double>();
+    private Reference varTankCurve(final String functiontype, final Map<Double, Double> data) {
+        final LinearInterpolation2d curve = LinearInterpolation2d.create(stowbaseObjectFactory);
+        curve.setInput1("volume");
+        curve.setInput2("dummy");
+        curve.setOutput(functiontype);
+        final List<Double> volumes = new ArrayList<>();
+        final List<Double> dataValues = new ArrayList<>();
         volumes.addAll(data.keySet());
         for (final Double volume : volumes) {
-            datavalues.add(data.get(volume));
+            dataValues.add(data.get(volume));
         }
-        Curve.setSamplePoints1(volumes);
-        Curve.setSamplePoints2(Arrays.asList(new Double[] { 0.0 }));
-        Curve.setSampleData(datavalues);
-
-        return Curve.getReference();
+        curve.setSamplePoints1(volumes);
+        curve.setSamplePoints2(Arrays.asList(0.0));
+        curve.setSampleData(dataValues);
+        return curve.getReference();
     }
 
 }

@@ -22,29 +22,20 @@ import dk.ange.stowbase.parse.utils.SheetsParser;
 /**
  * Parse the "VarTanks" sheet.
  */
-public final class VartanksParser extends SheetsParser {
-
-    // private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(VartanksParser.class);
+public final class VarTanksParser extends SheetsParser {
 
     private static final String SHEET_NAME = "VarTanks";
 
-    private Collection<varTank> vartanks;
+    private Collection<VarTank> varTanks;
 
     /**
-     * returns the parsed variable tanks
-     * 
      * @param description
-     * @return Collection<varTank>
+     * @return the variable tank with the given description, or null if none is found
      */
-
-    public varTank getVartank(final String description) {
-        if (vartanks.isEmpty()) {
-            return null;
-        } else {
-            for (final varTank tank : vartanks) {
-                if (tank.description == description) {
-                    return tank;
-                }
+    public VarTank getVartank(final String description) {
+        for (final VarTank tank : varTanks) {
+            if (tank.description == description) {
+                return tank;
             }
         }
         return null;
@@ -52,12 +43,12 @@ public final class VartanksParser extends SheetsParser {
 
     /**
      * Construct and parse
-     * 
+     *
      * @param stowbaseObjectFactory
      * @param messages
      * @param workbook
      */
-    public VartanksParser(final StowbaseObjectFactory stowbaseObjectFactory, final Messages messages,
+    public VarTanksParser(final StowbaseObjectFactory stowbaseObjectFactory, final Messages messages,
             final Workbook workbook) {
         super(stowbaseObjectFactory, messages, workbook);
         parse();
@@ -68,7 +59,7 @@ public final class VartanksParser extends SheetsParser {
         if (sheet == null) {
             return;
         }
-        vartanks = new ArrayList<varTank>();
+        varTanks = new ArrayList<VarTank>();
         try {
             parseSheet(sheet);
         } catch (final ParseException e) {
@@ -130,7 +121,7 @@ public final class VartanksParser extends SheetsParser {
 
     private void createTank(final String description, final List<Double> volumes, final List<Double> lcgs,
             final List<Double> vcgs, final List<Double> tcgs, final List<Double> fsms) {
-        final varTank vartank = new varTank(stowbaseObjectFactory);
+        final VarTank vartank = new VarTank(stowbaseObjectFactory);
         vartank.description = description;
         // We add the lcgs first
         if (volumes.size() == lcgs.size()) {
@@ -176,7 +167,7 @@ public final class VartanksParser extends SheetsParser {
             throw new ParseException("Could not match volumes to fsms for tank: " + description + " volumes.size():"
                     + volumes.size() + "!=volumes.size():" + fsms.size());
         }
-        vartanks.add(vartank);
+        varTanks.add(vartank);
     }
 
 }
