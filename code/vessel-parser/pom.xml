@@ -41,7 +41,7 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
       <scope>runtime</scope>
-      <optional/>
+      <optional>true</optional>
     </dependency>
 
     <dependency>
