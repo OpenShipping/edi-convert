@@ -3,5 +3,5 @@
 # -Dstringchararrayaccessor.disabled=true
 #    this fixes http://jira.grails.org/browse/GRAILS-9382
 #    it would have been better placed in pom.xml, but that didn't work for me
-exec mvn -Dgrails.env=prod -Dstringchararrayaccessor.disabled=true grails:run-app
+exec mvn -Dgrails.env=production -Dstringchararrayaccessor.disabled=true -Dserver.port=3535 -Dserver.host=localhost grails:run-app
 

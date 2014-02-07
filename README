@@ -4,8 +4,12 @@ Project for the convert application that used to be in
 
 This application is running the Excel to EDIFACT and vessel profile converters
 we have deployed on:
+
  * https://stowage.ange.dk/convert/
+    ssh stowbase@stowage.ange.dk
+
  * http://stowage.uasc.net/convert/
+    ssh stowage@stowage.uasc.net
 
 
 Run the convert Grails application
