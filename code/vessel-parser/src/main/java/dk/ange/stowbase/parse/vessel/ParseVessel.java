@@ -20,8 +20,8 @@ import dk.ange.stowbase.parse.vessel.stability.HydrostaticsParser;
 import dk.ange.stowbase.parse.vessel.stability.MetaCenterParser;
 import dk.ange.stowbase.parse.vessel.stability.StabilityParser;
 import dk.ange.stowbase.parse.vessel.stability.StressLimitsParser;
-import dk.ange.stowbase.parse.vessel.stability.TanksParser;
 import dk.ange.stowbase.parse.vessel.stacks.StacksParser;
+import dk.ange.stowbase.parse.vessel.tanks.TanksParser;
 
 /**
  * Parse a vessel

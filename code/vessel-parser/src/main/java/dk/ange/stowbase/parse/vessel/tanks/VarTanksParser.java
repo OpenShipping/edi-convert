@@ -1,4 +1,4 @@
-package dk.ange.stowbase.parse.vessel.stability;
+package dk.ange.stowbase.parse.vessel.tanks;
 
 import java.util.ArrayList;
 import java.util.Collection;
