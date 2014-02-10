@@ -4,7 +4,7 @@ import java.util.Map;
 
 /**
  * A wrapper around string that makes it compare less strict. It ignores space and case.
- * 
+ *
  * <p>
  * <code>
  * import static dk.ange.stowbase.parse.utils.Header.header;
@@ -18,7 +18,7 @@ public final class Header {
 
     /**
      * Simple constructor
-     * 
+     *
      * @param header
      */
     private Header(final String header) {
@@ -28,7 +28,7 @@ public final class Header {
 
     /**
      * Factory
-     * 
+     *
      * @param string
      * @return header
      */
@@ -79,13 +79,13 @@ public final class Header {
     }
 
     /**
-     * Check that the header is in the map and return the value. If not throw {@link ParseException}.
-     * 
+     * Check that a mandatory header is in the map and return the value. If not throw {@link ParseException}.
+     *
      * @param keyMap
      * @param headerString
      * @return Column number
      */
-    public static int headerColumnMadatory(final Map<Header, Integer> keyMap, final String headerString) {
+    public static int headerColumnMandatory(final Map<Header, Integer> keyMap, final String headerString) {
         final Header header = header(headerString);
         if (!keyMap.containsKey(header)) {
             throw new ParseException("Could not find header '" + header + "' among " + keyMap.keySet());
@@ -95,7 +95,7 @@ public final class Header {
 
     /**
      * Check that the header is in the map and return the value. If not return -1
-     * 
+     *
      * @param keyMap
      * @param headerString
      * @return Column number

@@ -74,7 +74,7 @@ public class StressLimitsParser extends SheetsParser {
         for (final Cell cell : firstRow) {
             keyMap.put(header(cellString(cell)), cell.getColumnIndex());
         }
-        final int lengthColumn = Header.headerColumnMadatory(keyMap, "station (m)");
+        final int lengthColumn = Header.headerColumnMandatory(keyMap, "station (m)");
         final int bendingPosColumn = (keyMap.containsKey(header("Bending Torque positive (GNm)")) ? keyMap
                 .get(header("Bending Torque positive (GNm)")) : -1);
         final int bendingNegColumn = keyMap.containsKey(header("Bending Torque negative (GNm)")) ? keyMap

@@ -70,10 +70,10 @@ public class HydrostaticsParser extends SheetsParser {
         for (final Cell cell : firstRow) {
             keyMap.put(header(cellString(cell)), cell.getColumnIndex());
         }
-        final int draftColumn = Header.headerColumnMadatory(keyMap, "Draft in m");
-        final int displacementColumn = Header.headerColumnMadatory(keyMap, "Displacement in ton");
-        final int lcbColumn = Header.headerColumnMadatory(keyMap, "LCB in m");
-        final int mctColumn = Header.headerColumnMadatory(keyMap, "MCT in ton m / cm");
+        final int draftColumn = Header.headerColumnMandatory(keyMap, "Draft in m");
+        final int displacementColumn = Header.headerColumnMandatory(keyMap, "Displacement in ton");
+        final int lcbColumn = Header.headerColumnMandatory(keyMap, "LCB in m");
+        final int mctColumn = Header.headerColumnMandatory(keyMap, "MCT in ton m / cm");
 
         for (final Row row : new IterableIterator<Row>(rowIterator)) {
             try {

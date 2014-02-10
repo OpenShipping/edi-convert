@@ -67,18 +67,18 @@ public final class TanksParser extends SingleSheetParser {
         for (final Cell cell : firstRow) {
             keyMap.put(header(cellString(cell)), cell.getColumnIndex());
         }
-        final int descriptionColumn = Header.headerColumnMadatory(keyMap, "Description");
-        final int capacityVolColumn = Header.headerColumnMadatory(keyMap, "Capacity in m3");
-        final int capacityMassColumn = Header.headerColumnMadatory(keyMap, "Capacity in ton");
-        final int densityColumn = Header.headerColumnMadatory(keyMap, "Density in ton/m3");
+        final int descriptionColumn = Header.headerColumnMandatory(keyMap, "Description");
+        final int capacityVolColumn = Header.headerColumnMandatory(keyMap, "Capacity in m3");
+        final int capacityMassColumn = Header.headerColumnMandatory(keyMap, "Capacity in ton");
+        final int densityColumn = Header.headerColumnMandatory(keyMap, "Density in ton/m3");
         final int foreEndColumn = Header.headerColumnOptional(keyMap, "Fore End in m");
         final int aftEndColumn = Header.headerColumnOptional(keyMap, "Aft End in m");
         // These headers are also mandatory, but putting in values are optional. If one value is present they must all
         // be present, and if none are there the tank must be a vartank and thus presented in the vartanks sheet.
-        final int lcgColumn = Header.headerColumnMadatory(keyMap, "LCG in m");
-        final int vcgColumn = Header.headerColumnMadatory(keyMap, "VCG in m");
-        final int tcgColumn = Header.headerColumnMadatory(keyMap, "TCG in m");
-        final int fsmColumn = Header.headerColumnMadatory(keyMap, "Max FSM in m4");
+        final int lcgColumn = Header.headerColumnMandatory(keyMap, "LCG in m");
+        final int vcgColumn = Header.headerColumnMandatory(keyMap, "VCG in m");
+        final int tcgColumn = Header.headerColumnMandatory(keyMap, "TCG in m");
+        final int fsmColumn = Header.headerColumnMandatory(keyMap, "Max FSM in m4");
         // Optional column (should this be changed to mandatory?)
         final int groupColumn = Header.headerColumnOptional(keyMap, "Tank Group");
         // Read all data lines
