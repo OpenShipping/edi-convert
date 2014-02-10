@@ -2,6 +2,7 @@ package dk.ange.stowbase.parse.vessel.tanks;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,7 @@ import org.stowbase.client.objects.LinearInterpolation2d;
 import org.stowbase.client.objects.Tank;
 
 import com.google.common.collect.Iterators;
+import com.google.common.collect.Ordering;
 import com.google.common.collect.PeekingIterator;
 
 import dk.ange.stowbase.parse.utils.Header;
@@ -93,15 +95,15 @@ public final class VarTanksParser extends SingleSheetParser {
             }
             rowIterator.next();
             if (key.equals(Header.header("Volume in m3"))) {
-                volumes = readNewNumbers(row, volumes);
+                volumes = readNewVolumes(row, volumes);
             } else if (key.equals(Header.header("LCG in m"))) {
                 lcgs = readNewNumbers(row, volumes, lcgs);
             } else if (key.equals(Header.header("VCG in m"))) {
-                vcgs = readNewNumbers(row, vcgs);
+                vcgs = readNewNumbers(row, volumes, vcgs);
             } else if (key.equals(Header.header("TCG in m"))) {
-                tcgs = readNewNumbers(row, tcgs);
+                tcgs = readNewNumbers(row, volumes, tcgs);
             } else if (key.equals(Header.header("Max FSM in m4"))) {
-                fsms = readNewNumbers(row, fsms);
+                fsms = readNewNumbers(row, volumes, fsms);
             } else {
                 addSheetWarning("Did not expect header '" + key + "' in cell " + pos(cell));
             }
@@ -124,6 +126,26 @@ public final class VarTanksParser extends SingleSheetParser {
             return oldNumbers;
         }
         return newNumbers;
+    }
+
+    private List<Double> readNewVolumes(final Row row, final List<Double> oldNumbers) {
+        final List<Double> volumes = readNewNumbers(row, oldNumbers);
+        if (volumes.size() < 2) {
+            addSheetWarning("Less than two entries in volumes in row " + (row.getRowNum() + 1)
+                    + ", this row will be ignored");
+            return null;
+        }
+        if (!Ordering.natural().isOrdered(volumes)) {
+            addSheetWarning("Volumes in row " + (row.getRowNum() + 1) + " are not sorted"
+                    + ", this row will be ignored" + volumes);
+            return null;
+        }
+        final double volume0 = volumes.get(0);
+        if (volume0 != 0.0) {
+            addSheetWarning("First volume in row " + (row.getRowNum() + 1) + " is not 0.0 but " + volume0
+                    + ", that is a bad idea"); // TODO ignore this row?
+        }
+        return volumes;
     }
 
     private List<Double> readNewNumbers(final Row row, final List<Double> oldNumbers) {
@@ -165,32 +187,72 @@ public final class VarTanksParser extends SingleSheetParser {
         }
 
         {
-            final LinearInterpolation2d function = xlsVarTank.lcgs == null ? constFunction(capacityInM3, lcg)
-                    : function(xlsVarTank.volumes, xlsVarTank.lcgs);
+            final LinearInterpolation2d function;
+            if (xlsVarTank.lcgs == null) {
+                function = constFunction(capacityInM3, lcg);
+            } else {
+                function = function(xlsVarTank.volumes, xlsVarTank.lcgs);
+                final double last = last(xlsVarTank.lcgs);
+                if (!Double.isNaN(lcg) && lcg != last) {
+                    addSheetWarning("In VarTanks data for '" + xlsVarTank.description + "' the last value for LCG is "
+                            + last + " while the data in the Tanks sheet is " + lcg);
+                }
+            }
             function.setOutput("lcg");
             tank.setLcgFunction(function);
         }
 
         {
-            final LinearInterpolation2d function = xlsVarTank.vcgs == null ? constFunction(capacityInM3, vcg)
-                    : function(xlsVarTank.volumes, xlsVarTank.vcgs);
+            final LinearInterpolation2d function;
+            if (xlsVarTank.vcgs == null) {
+                function = constFunction(capacityInM3, vcg);
+            } else {
+                function = function(xlsVarTank.volumes, xlsVarTank.vcgs);
+                final double last = last(xlsVarTank.vcgs);
+                if (!Double.isNaN(vcg) && vcg != last) {
+                    addSheetWarning("In VarTanks data for '" + xlsVarTank.description + "' the last value for VCG is "
+                            + last + " while the data in the Tanks sheet is " + vcg);
+                }
+            }
             function.setOutput("vcg");
             tank.setVcgFunction(function);
         }
 
         {
-            final LinearInterpolation2d function = xlsVarTank.tcgs == null ? constFunction(capacityInM3, tcg)
-                    : function(xlsVarTank.volumes, xlsVarTank.tcgs);
+            final LinearInterpolation2d function;
+            if (xlsVarTank.tcgs == null) {
+                function = constFunction(capacityInM3, tcg);
+            } else {
+                function = function(xlsVarTank.volumes, xlsVarTank.tcgs);
+                final double last = last(xlsVarTank.tcgs);
+                if (!Double.isNaN(tcg) && tcg != last) {
+                    addSheetWarning("In VarTanks data for '" + xlsVarTank.description + "' the last value for TCG is "
+                            + last + " while the data in the Tanks sheet is " + tcg);
+                }
+            }
             function.setOutput("tcg");
             tank.setTcgFunction(function);
         }
 
         {
-            final LinearInterpolation2d function = xlsVarTank.fsms == null ? hatFunction(capacityInM3, fsm) : function(
-                    xlsVarTank.volumes, xlsVarTank.fsms);
+            final LinearInterpolation2d function;
+            if (xlsVarTank.fsms == null) {
+                function = hatFunction(capacityInM3, fsm);
+            } else {
+                function = function(xlsVarTank.volumes, xlsVarTank.fsms);
+                final double max = Collections.max(xlsVarTank.fsms);
+                if (!Double.isNaN(fsm) && fsm != max) {
+                    addSheetWarning("In VarTanks data for '" + xlsVarTank.description
+                            + "' the highest value for FSM is " + max + " while the data in the Tanks sheet is " + fsm);
+                }
+            }
             function.setOutput("fsm");
             tank.setFsmFunction(function);
         }
+    }
+
+    private static <T> T last(final List<T> list) {
+        return list.get(list.size() - 1);
     }
 
     private LinearInterpolation2d function(final List<Double> volumes, final List<Double> values) {

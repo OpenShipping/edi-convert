@@ -3,6 +3,7 @@ package dk.ange.stowbase.parse.vessel;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.InputStream;
 import java.util.List;
@@ -36,6 +37,7 @@ public class TestParserVessel {
         assertNull("Should not get a stack trace:\n" + result.messages.getDeveloperStatus(),
                 result.messages.getException());
         assertNotNull(result.json);
+        assertTrue(result.messages.getStatus().startsWith("OK"));
         assertNotNull(result.messages.getStatus());
 
         final Bundle bundle = StowbaseReader.readStowbaseData(result.json);
