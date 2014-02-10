@@ -10,7 +10,6 @@ import java.util.Map;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.stowbase.client.References;
 import org.stowbase.client.StowbaseObjectFactory;
@@ -20,14 +19,12 @@ import dk.ange.stowbase.parse.utils.Header;
 import dk.ange.stowbase.parse.utils.IterableIterator;
 import dk.ange.stowbase.parse.utils.Messages;
 import dk.ange.stowbase.parse.utils.ParseException;
-import dk.ange.stowbase.parse.utils.SheetsParser;
+import dk.ange.stowbase.parse.utils.SingleSheetParser;
 
 /**
  * Parse the "Tanks" sheet.
  */
-public final class TanksParser extends SheetsParser {
-
-    private static final String SHEET_NAME = "Tanks";
+public final class TanksParser extends SingleSheetParser {
 
     private final VarTanksParser varTanksParser;
 
@@ -47,19 +44,22 @@ public final class TanksParser extends SheetsParser {
         parse();
     }
 
+    @Override
+    public String getSheetName() {
+        return "Tanks";
+    }
+
     private void parse() {
-        final Sheet sheet = getSheetOptional(SHEET_NAME);
-        if (sheet == null) {
-            return;
-        }
-        try {
-            parseSheet(sheet);
-        } catch (final ParseException e) {
-            messages.addSheetWarning(SHEET_NAME, e.getMessage());
+        if (sheetFound()) {
+            try {
+                parseSheet();
+            } catch (final ParseException e) {
+                addSheetWarning(e.getMessage());
+            }
         }
     }
 
-    private void parseSheet(final Sheet sheet) {
+    private void parseSheet() {
         final Iterator<Row> rowIterator = sheet.rowIterator();
         // Check the headers
         final Row firstRow = rowIterator.next();
@@ -91,7 +91,7 @@ public final class TanksParser extends SheetsParser {
                 parseRow(row, description, capacityVolColumn, capacityMassColumn, densityColumn, foreEndColumn,
                         aftEndColumn, lcgColumn, vcgColumn, tcgColumn, fsmColumn, groupColumn);
             } catch (final Exception e) {
-                messages.addSheetWarning(SHEET_NAME, "Error when parsing a tank line: " + e.getMessage());
+                addSheetWarning("Error when parsing a tank line: " + e.getMessage());
             }
         }
     }
@@ -223,14 +223,13 @@ public final class TanksParser extends SheetsParser {
      * @param vesselProfile
      */
     public void addDataToVesselProfile(final VesselProfile vesselProfile) {
-        if (varTanks == null) {
-            return;
+        if (sheetFound()) {
+            final References tankReferences = new References();
+            for (final VarTank vartank : varTanks) {
+                tankReferences.add(vartank.toStowbaseObject().getReference());
+            }
+            vesselProfile.put("tanks", tankReferences);
         }
-        final References tankReferences = new References();
-        for (final VarTank vartank : varTanks) {
-            tankReferences.add(vartank.toStowbaseObject().getReference());
-        }
-        vesselProfile.put("tanks", tankReferences);
     }
 
     private void validateTankGroup(final String group, final String description) throws ParseException {

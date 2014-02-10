@@ -1,6 +1,6 @@
 #!/bin/bash
 #set -x
-pom="$(dirname $0)/pom.xml"
+pom="$(dirname $(readlink -f $0))/pom.xml"
 args=(${@// /\\ })
 exec mvn --batch-mode --quiet \
     --file "$pom" \

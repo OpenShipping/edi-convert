@@ -9,7 +9,6 @@ import java.util.Map;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.stowbase.client.StowbaseObjectFactory;
 
@@ -17,18 +16,14 @@ import dk.ange.stowbase.parse.utils.Header;
 import dk.ange.stowbase.parse.utils.IterableIterator;
 import dk.ange.stowbase.parse.utils.Messages;
 import dk.ange.stowbase.parse.utils.ParseException;
-import dk.ange.stowbase.parse.utils.SheetsParser;
+import dk.ange.stowbase.parse.utils.SingleSheetParser;
 
 /**
  * Parse the "VarTanks" sheet.
  */
-public final class VarTanksParser extends SheetsParser {
+public final class VarTanksParser extends SingleSheetParser {
 
-    private static final String SHEET_NAME = "VarTanks";
-
-    private final Collection<VarTank> varTanks = new ArrayList<VarTank>();
-
-    private boolean sheetFound = false;
+    private final Collection<VarTank> varTanks = new ArrayList<>();
 
     /**
      * Construct and parse
@@ -43,39 +38,22 @@ public final class VarTanksParser extends SheetsParser {
         parse();
     }
 
-    /**
-     * @return true if the sheet was found in the workbook
-     */
-    public boolean sheetFound() {
-        return sheetFound;
-    }
-
-    /**
-     * @param description
-     * @return the variable tank with the given description, or null if none is found
-     */
-    public VarTank getVartank(final String description) {
-        for (final VarTank tank : varTanks) {
-            if (tank.description == description) {
-                return tank;
-            }
-        }
-        return null;
+    @Override
+    public String getSheetName() {
+        return "VarTanks";
     }
 
     private void parse() {
-        final Sheet sheet = getSheetOptional(SHEET_NAME);
-        sheetFound = sheet != null;
-        if (sheetFound) {
+        if (sheetFound()) {
             try {
-                parseSheet(sheet);
+                parseSheet();
             } catch (final ParseException e) {
-                messages.addSheetWarning(SHEET_NAME, e.getMessage());
+                addSheetWarning(e.getMessage());
             }
         }
     }
 
-    private void parseSheet(final Sheet sheet) {
+    private void parseSheet() {
         final Iterator<Row> rowIterator = sheet.rowIterator();
         for (final Row row : new IterableIterator<Row>(rowIterator)) {
             final Header key = Header.header(cellString(row.getCell(0)));
@@ -87,7 +65,7 @@ public final class VarTanksParser extends SheetsParser {
                 try {
                     parsetank(tankname, rowIterator);
                 } catch (final Exception e) {
-                    messages.addSheetWarning(SHEET_NAME, "Error when parsing a vartank: " + e.getMessage());
+                    addSheetWarning("Error when parsing a vartank: " + e.getMessage());
                 }
             }
         }
@@ -176,6 +154,19 @@ public final class VarTanksParser extends SheetsParser {
                     + volumes.size() + "!=volumes.size():" + fsms.size());
         }
         varTanks.add(vartank);
+    }
+
+    /**
+     * @param description
+     * @return the variable tank with the given description, or null if none is found
+     */
+    public VarTank getVartank(final String description) {
+        for (final VarTank tank : varTanks) {
+            if (tank.description == description) {
+                return tank;
+            }
+        }
+        return null;
     }
 
 }
