@@ -22,7 +22,7 @@ public class TestParserVessel {
 
     /**
      * Test convert()
-     *
+     * 
      * @throws Exception
      */
     @Test
@@ -69,7 +69,7 @@ public class TestParserVessel {
             final String samplePoints1 = tcgFunction.get("samplePoints1").getAsString();
             assertNotNull(samplePoints1);
             // Test that the tanks reader chooses numbers from vartanks when data is written also in tanks
-            // FIXME assertEquals(8, samplePoints1.split(";").length);
+            assertEquals(8, samplePoints1.split(";").length);
         }
     }
 

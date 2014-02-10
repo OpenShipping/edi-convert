@@ -26,7 +26,7 @@
     <!-- Fix: [WARNING] Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent! -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <dk.ange.stowage.version>0.3.0</dk.ange.stowage.version>
+    <dk.ange.stowage.version>0.4.0</dk.ange.stowage.version>
 
     <slf4j.version>1.6.6</slf4j.version>
     <poi.version>3.9</poi.version>
@@ -34,6 +34,7 @@
     <joda-time.version>2.0</joda-time.version>
     <junit.version>4.11</junit.version>
     <logback.version>1.0.13</logback.version>
+    <guava.version>15.0</guava.version>
 
     <!-- Maven Plugins -->
     <maven-source-plugin.version>2.2.1</maven-source-plugin.version>
@@ -121,6 +122,12 @@
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-classic</artifactId>
         <version>${logback.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>${guava.version}</version>
       </dependency>
 
     </dependencies>

@@ -172,8 +172,30 @@ public abstract class SheetsParser {
      *             if the number could not be parsed
      */
     protected static double readNumber(final Row row, final int column, final double factor) {
+        final double d = readOptionalNumber(row, column, factor);
+        if (Double.isNaN(d)) {
+            final Cell cell = row.getCell(column);
+            throw new ParseException("Number missing in cell " + pos(cell));
+        }
+        return d;
+    }
+
+    /**
+     * Read an optional number, if the cell is blank return NaN
+     *
+     * @param row
+     * @param column
+     * @param factor
+     * @return the number or NaN
+     * @throws ParseException
+     *             if the number could not be parsed
+     */
+    protected static double readOptionalNumber(final Row row, final int column, final double factor) {
         final Cell cell = row.getCell(column);
         final String string = cellString(cell);
+        if (string == null || string.isEmpty()) {
+            return Double.NaN;
+        }
         final double d;
         try {
             d = Double.parseDouble(string);

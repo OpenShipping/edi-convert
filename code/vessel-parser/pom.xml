@@ -26,10 +26,9 @@
       <artifactId>poi</artifactId>
     </dependency>
 
-    <dependency> <!-- Should later be replaced with Guava -->
-      <groupId>com.google.collections</groupId>
-      <artifactId>google-collections</artifactId>
-      <version>1.0</version>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
     </dependency>
 
     <dependency>
