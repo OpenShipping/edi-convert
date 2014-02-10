@@ -89,7 +89,8 @@ public final class TanksParser extends SingleSheetParser {
                 parseRow(row, description, capacityVolColumn, capacityMassColumn, densityColumn, foreEndColumn,
                         aftEndColumn, lcgColumn, vcgColumn, tcgColumn, fsmColumn, groupColumn);
             } catch (final Exception e) {
-                addSheetWarning("Error when parsing a tank line: " + e.getMessage());
+                final String message = e.getMessage();
+                addSheetWarning("Error when parsing a tank line: " + (message != null ? message : e));
             }
         }
     }
@@ -103,7 +104,7 @@ public final class TanksParser extends SingleSheetParser {
         validateTankGroup(tank.group, description);
         tank.density = readNumber(row, densityColumn, 1000);
         tank.massCapacity = readNumber(row, capacityMassColumn, 1000);
-        final double volCapacity = readNumber(row, capacityVolColumn, 1);
+        final double volCapacity = readOptionalNumber(row, capacityVolColumn, 1);
         if (Math.abs(volCapacity - tank.capacityInM3()) > 0.1) { // allowed difference in m^3
             final String pos = pos(row.getCell(capacityVolColumn));
             addSheetWarning(String.format("The volume capacity written in %s is %.2f while the one derived from"
