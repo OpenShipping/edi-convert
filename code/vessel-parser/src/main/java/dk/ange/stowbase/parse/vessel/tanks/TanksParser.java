@@ -105,7 +105,7 @@ public final class TanksParser extends SingleSheetParser {
         tank.density = readNumber(row, densityColumn, 1000);
         tank.massCapacity = readNumber(row, capacityMassColumn, 1000);
         final double volCapacity = readOptionalNumber(row, capacityVolColumn, 1);
-        if (Math.abs(volCapacity - tank.capacityInM3()) > 0.1) { // allowed difference in m^3
+        if (Math.abs(volCapacity - tank.capacityInM3()) > 0.5) { // allowed difference in m^3
             final String pos = pos(row.getCell(capacityVolColumn));
             addSheetWarning(String.format("The volume capacity written in %s is %.2f while the one derived from"
                     + " mass capacity and density is %.2f", pos, volCapacity, tank.capacityInM3()));

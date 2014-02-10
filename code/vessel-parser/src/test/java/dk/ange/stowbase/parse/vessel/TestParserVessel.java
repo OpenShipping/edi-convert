@@ -23,7 +23,7 @@ public class TestParserVessel {
 
     /**
      * Test convert()
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -38,6 +38,14 @@ public class TestParserVessel {
                 result.messages.getException());
         assertNotNull(result.json);
         assertTrue(result.messages.getStatus().startsWith("OK"));
+        assertEquals("" //
+                + "OK\n" //
+                + "Parsed the following sheets: [Vessel, Bays, Tier20, Tier40, Reef20, Reef40, Height20, "
+                + "Height40, Pos20, Pos40, DG, Tanks, VarTanks, ConstWgts, Stability, Hydrostatics, "
+                + "MetaCenter, HullWgtDistr, Bonjean, StressLimits]\n" //
+                + "Tanks: The volume capacity written in Tanks!B4 is 490.00 while the one derived from "
+                + "mass capacity and density is 487.80\n", //
+                result.messages.getStatus());
         assertNotNull(result.messages.getStatus());
 
         final Bundle bundle = StowbaseReader.readStowbaseData(result.json);
