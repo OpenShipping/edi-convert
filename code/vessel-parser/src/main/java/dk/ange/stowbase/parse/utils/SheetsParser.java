@@ -185,12 +185,16 @@ public abstract class SheetsParser {
      *
      * @param row
      * @param column
+     *            column number, can be -1 if the column is missing, then this function return NaN
      * @param factor
      * @return the number or NaN
      * @throws ParseException
      *             if the number could not be parsed
      */
     protected static double readOptionalNumber(final Row row, final int column, final double factor) {
+        if (column == -1) {
+            return Double.NaN;
+        }
         final Cell cell = row.getCell(column);
         final String string = cellString(cell);
         if (string == null || string.isEmpty()) {

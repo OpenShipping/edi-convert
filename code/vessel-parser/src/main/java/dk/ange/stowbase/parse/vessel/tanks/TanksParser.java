@@ -70,7 +70,7 @@ public final class TanksParser extends SingleSheetParser {
         }
         final int descriptionColumn = Header.headerColumnMandatory(keyMap, "Description");
         final int groupColumn = Header.headerColumnMandatory(keyMap, "Tank Group");
-        final int capacityVolColumn = Header.headerColumnMandatory(keyMap, "Capacity in m3");
+        final int capacityVolColumn = Header.headerColumnOptional(keyMap, "Capacity in m3");
         final int capacityMassColumn = Header.headerColumnMandatory(keyMap, "Capacity in ton");
         final int densityColumn = Header.headerColumnMandatory(keyMap, "Density in ton/m3");
         final int foreEndColumn = Header.headerColumnMandatory(keyMap, "Fore End in m");
@@ -102,7 +102,13 @@ public final class TanksParser extends SingleSheetParser {
         tank.group = cellString(row.getCell(groupColumn));
         validateTankGroup(tank.group, description);
         tank.density = readNumber(row, densityColumn, 1000);
-        extractCapacity(row, description, capacityVolColumn, capacityMassColumn, tank);
+        tank.massCapacity = readNumber(row, capacityMassColumn, 1000);
+        final double volCapacity = readNumber(row, capacityVolColumn, 1);
+        if (Math.abs(volCapacity - tank.capacityInM3()) > 0.1) { // allowed difference in m^3
+            final String pos = pos(row.getCell(capacityVolColumn));
+            addSheetWarning(String.format("The volume capacity written in %s is %.2f while the one derived from"
+                    + " mass capacity and density is %.2f", pos, volCapacity, tank.capacityInM3()));
+        }
         tank.foreEnd = readNumber(row, foreEndColumn, 1);
         tank.aftEnd = readNumber(row, aftEndColumn, 1);
         tank.lcg = readOptionalNumber(row, lcgColumn, 1);
@@ -110,38 +116,6 @@ public final class TanksParser extends SingleSheetParser {
         tank.tcg = readOptionalNumber(row, tcgColumn, 1);
         tank.fsm = readOptionalNumber(row, fsmColumn, 1);
         tanks.add(tank);
-    }
-
-    // FIXME Capacity in two (possibly inconsistent) fields should be handled better
-    /**
-     * tank.density must be set before this method is called
-     */
-    private static void extractCapacity(final Row row, final String description, final int capacityVolColumn,
-            final int capacityMassColumn, final XlsTank tank) {
-        boolean haveMC = true;
-        final Cell MCcell = row.getCell(capacityMassColumn);
-        final String MCstring = cellString(MCcell);
-        boolean haveVC = true;
-        final Cell VCcell = row.getCell(capacityVolColumn);
-        final String VCstring = cellString(VCcell);
-        if (MCcell == null || MCstring.length() == 0) {
-            haveMC = false;
-        }
-        if (VCcell == null || VCstring.length() == 0) {
-            haveVC = false;
-        }
-        if (!haveVC && !haveMC) {
-            throw new ParseException("Tank: '" + description + "' could not be parsed, need capcacity. ");
-        } else if (haveVC && !haveMC) {
-            tank.volCapacity = readNumber(row, capacityVolColumn, 1);
-            tank.massCapacity = tank.volCapacity * tank.density;
-        } else if (haveMC && !haveVC) {
-            tank.massCapacity = readNumber(row, capacityMassColumn, 1000);
-            tank.volCapacity = tank.massCapacity / tank.density;
-        } else {
-            tank.massCapacity = readNumber(row, capacityMassColumn, 1000);
-            tank.volCapacity = readNumber(row, capacityVolColumn, 1);
-        }
     }
 
     private static void validateTankGroup(final String group, final String description) throws ParseException {
@@ -163,12 +137,11 @@ public final class TanksParser extends SingleSheetParser {
                 tank.setDescription(xlsTank.description);
                 tank.setGroup(xlsTank.group);
                 tank.setCapacityInKg(xlsTank.massCapacity);
-                tank.setCapacityInM3(xlsTank.volCapacity);
                 tank.setDensityInKgPrM3(xlsTank.density);
                 tank.setAftEndInM(xlsTank.aftEnd);
                 tank.setForeEndInM(xlsTank.foreEnd);
                 varTanksParser.addDataToTank(tank, xlsTank.description, xlsTank.lcg, xlsTank.vcg, xlsTank.tcg,
-                        xlsTank.fsm, xlsTank.volCapacity);
+                        xlsTank.fsm, xlsTank.capacityInM3());
                 tankReferences.add(tank.getReference());
             }
             vesselProfile.put("tanks", tankReferences);
@@ -186,8 +159,6 @@ public final class TanksParser extends SingleSheetParser {
 
         double massCapacity;
 
-        double volCapacity;
-
         double density;
 
         double aftEnd;
@@ -201,6 +172,10 @@ public final class TanksParser extends SingleSheetParser {
         double tcg;
 
         double fsm;
+
+        double capacityInM3() {
+            return massCapacity / density;
+        }
     }
 
 }
