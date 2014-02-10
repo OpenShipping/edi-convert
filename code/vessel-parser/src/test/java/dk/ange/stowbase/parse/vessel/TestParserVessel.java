@@ -49,15 +49,28 @@ public class TestParserVessel {
         assertNotNull(tanks);
         assertEquals(4, tanks.size()); // Four tanks validated in sheet
 
-        // First tank should be "Tank 1 S"
-        final BundleStowbaseObject tank1 = tanks.get(0);
-        assertEquals("Tank 1 S", tank1.get("description").getAsString());
-        final BundleStowbaseObject tcgFunction = tank1.get("tcgFunction").getAsSingleObject();
-        assertNotNull(tcgFunction);
-        assertEquals("function2d", tcgFunction.getGroup());
-        final String samplePoints1 = tcgFunction.get("samplePoints1").getAsString();
-        assertNotNull(samplePoints1);
-        // assertEquals(8, samplePoints1.split(";").length);
+        { // First tank should be "Tank 1 S"
+            final BundleStowbaseObject tank1 = tanks.get(0);
+            assertEquals("Tank 1 S", tank1.get("description").getAsString());
+            final BundleStowbaseObject tcgFunction = tank1.get("tcgFunction").getAsSingleObject();
+            assertNotNull(tcgFunction);
+            assertEquals("function2d", tcgFunction.getGroup());
+            final String samplePoints1 = tcgFunction.get("samplePoints1").getAsString();
+            assertNotNull(samplePoints1);
+            assertEquals(8, samplePoints1.split(";").length);
+        }
+
+        { // Second tank should be "Tank 1 P"
+            final BundleStowbaseObject tank2 = tanks.get(1);
+            assertEquals("Tank 1 P", tank2.get("description").getAsString());
+            final BundleStowbaseObject tcgFunction = tank2.get("tcgFunction").getAsSingleObject();
+            assertNotNull(tcgFunction);
+            assertEquals("function2d", tcgFunction.getGroup());
+            final String samplePoints1 = tcgFunction.get("samplePoints1").getAsString();
+            assertNotNull(samplePoints1);
+            // Test that the tanks reader chooses numbers from vartanks when data is written also in tanks
+            assertEquals(8, samplePoints1.split(";").length);
+        }
     }
 
 }

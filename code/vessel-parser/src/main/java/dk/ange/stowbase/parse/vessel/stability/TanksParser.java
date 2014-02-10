@@ -29,9 +29,9 @@ public final class TanksParser extends SheetsParser {
 
     private static final String SHEET_NAME = "Tanks";
 
-    private VarTanksParser varTanksParser;
+    private final VarTanksParser varTanksParser;
 
-    private Collection<VarTank> varTanks;
+    private final Collection<VarTank> varTanks = new ArrayList<>();
 
     /**
      * Construct and parse
@@ -43,6 +43,7 @@ public final class TanksParser extends SheetsParser {
     public TanksParser(final StowbaseObjectFactory stowbaseObjectFactory, final Messages messages,
             final Workbook workbook) {
         super(stowbaseObjectFactory, messages, workbook);
+        varTanksParser = new VarTanksParser(stowbaseObjectFactory, messages, workbook);
         parse();
     }
 
@@ -51,9 +52,7 @@ public final class TanksParser extends SheetsParser {
         if (sheet == null) {
             return;
         }
-        varTanks = new ArrayList<>();
         try {
-            varTanksParser = new VarTanksParser(stowbaseObjectFactory, messages, workbook);
             parseSheet(sheet);
         } catch (final ParseException e) {
             messages.addSheetWarning(SHEET_NAME, e.getMessage());

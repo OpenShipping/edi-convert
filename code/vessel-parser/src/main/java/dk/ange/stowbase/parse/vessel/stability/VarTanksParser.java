@@ -26,20 +26,9 @@ public final class VarTanksParser extends SheetsParser {
 
     private static final String SHEET_NAME = "VarTanks";
 
-    private Collection<VarTank> varTanks;
+    private final Collection<VarTank> varTanks = new ArrayList<VarTank>();
 
-    /**
-     * @param description
-     * @return the variable tank with the given description, or null if none is found
-     */
-    public VarTank getVartank(final String description) {
-        for (final VarTank tank : varTanks) {
-            if (tank.description == description) {
-                return tank;
-            }
-        }
-        return null;
-    }
+    private boolean sheetFound = false;
 
     /**
      * Construct and parse
@@ -54,16 +43,35 @@ public final class VarTanksParser extends SheetsParser {
         parse();
     }
 
+    /**
+     * @return true if the sheet was found in the workbook
+     */
+    public boolean sheetFound() {
+        return sheetFound;
+    }
+
+    /**
+     * @param description
+     * @return the variable tank with the given description, or null if none is found
+     */
+    public VarTank getVartank(final String description) {
+        for (final VarTank tank : varTanks) {
+            if (tank.description == description) {
+                return tank;
+            }
+        }
+        return null;
+    }
+
     private void parse() {
         final Sheet sheet = getSheetOptional(SHEET_NAME);
-        if (sheet == null) {
-            return;
-        }
-        varTanks = new ArrayList<VarTank>();
-        try {
-            parseSheet(sheet);
-        } catch (final ParseException e) {
-            messages.addSheetWarning(SHEET_NAME, e.getMessage());
+        sheetFound = sheet != null;
+        if (sheetFound) {
+            try {
+                parseSheet(sheet);
+            } catch (final ParseException e) {
+                messages.addSheetWarning(SHEET_NAME, e.getMessage());
+            }
         }
     }
 
