@@ -1,9 +1,11 @@
 package dk.ange.stowbase.parse.vessel;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.regex.Pattern;
+import java.util.zip.GZIPOutputStream;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -123,6 +125,22 @@ public final class ParseVessel {
 
         log.debug("Finished writing the vessel profile");
         writerExporter.flush("vessel.json");
+    }
+
+    /**
+     * @param content
+     * @return The content gzip compressed
+     */
+    public static byte[] compress(final byte[] content) {
+        final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        try {
+            final GZIPOutputStream gzipOutputStream = new GZIPOutputStream(byteArrayOutputStream);
+            gzipOutputStream.write(content);
+            gzipOutputStream.close();
+        } catch (final IOException e) {
+            throw new RuntimeException(e);
+        }
+        return byteArrayOutputStream.toByteArray();
     }
 
 }

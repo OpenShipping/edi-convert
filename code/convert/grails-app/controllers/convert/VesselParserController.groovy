@@ -8,7 +8,7 @@ class VesselParserController {
 
     def convert = {
         def file = request.getFile("file")
-        session.fileName = file.getOriginalFilename() + ".json"
+        session.fileName = (file.getOriginalFilename() =~ /\.xls/).replaceFirst("") + ".json.gz"
         def result = ParseVessel.parse(file.inputStream)
         session.result = result
         if (result.json == null) {
@@ -19,7 +19,8 @@ class VesselParserController {
     def failed = {}
 
     def download = {
-        new Attachment(response, "text/json", session.fileName).send(session.result.json)
+        new Attachment(response, "application/x-old-vessel", session.fileName).send(
+            ParseVessel.compress(session.result.json.getBytes("UTF-8")))
     }
 
 }
