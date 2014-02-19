@@ -81,6 +81,10 @@ public class TestParserVessel {
             // Test that the tanks reader chooses numbers from vartanks when data is written also in tanks
             assertEquals(8, samplePoints1.split(";").length);
         }
+
+        BundleStowbaseObject stability = vesselProfile.get("stability").getAsSingleObject();
+        assertNotNull(stability.get("classificationSociety"));
+        assertEquals("DNV", stability.get("classificationSociety").getAsString());
     }
 
 }

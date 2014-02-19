@@ -2,7 +2,9 @@ package dk.ange.stowbase.parse.vessel.stability;
 
 import static dk.ange.stowbase.parse.utils.Header.header;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.poi.ss.usermodel.Sheet;
@@ -26,7 +28,7 @@ public class StabilityParser extends SheetsParser {
 
     /**
      * Construct and parse
-     * 
+     *
      * @param stowbaseObjectFactory
      * @param messages
      * @param workbook
@@ -48,7 +50,7 @@ public class StabilityParser extends SheetsParser {
 
     /**
      * Add the parser result to the vessel profile
-     * 
+     *
      * @param vesselProfile
      */
     public void addDataToVesselProfile(final VesselProfile vesselProfile) {
@@ -63,8 +65,22 @@ public class StabilityParser extends SheetsParser {
         putNummericValue("Vessel LPP in m", 1, stability, "vesselLppInM");
         putNummericValue("Observer LCG in m", 1, stability, "observerLcgInM");
         putNummericValue("Observer VCG in m", 1, stability, "observerVcgInM");
+
+        readClassificationSociety(stability);
+
         for (final Header key : map.keySet()) {
             messages.addSheetWarning(SHEET_NAME, "Unused key '" + key + "'");
+        }
+    }
+
+    private void readClassificationSociety(final StowbaseObject stability) {
+        final String society = putStringValue("Classification society", stability, "classificationSociety");
+        if (society != null) {
+            final List<String> knownSocieties = Arrays.asList("GL", "LR", "DNV");
+            if (!knownSocieties.contains(society)) {
+                messages.addSheetWarning(SHEET_NAME, "Unknown society '" + society + "', the parser knows: "
+                        + knownSocieties);
+            }
         }
     }
 
@@ -88,6 +104,22 @@ public class StabilityParser extends SheetsParser {
             stowbaseObject.put(stowbaseKey, factor * d);
             map.remove(keyHeader);
         }
+    }
+
+    /**
+     * If map has key get it and put result into stowbaseObject using stowbaseKey. Will also clear the value from the
+     * map.
+     *
+     * @return the value (or null)
+     */
+    private String putStringValue(final String keyString, final StowbaseObject stowbaseObject, final String stowbaseKey) {
+        final Header keyHeader = header(keyString);
+        final String value = map.get(keyHeader);
+        if (value != null) {
+            stowbaseObject.put(stowbaseKey, value);
+            map.remove(keyHeader);
+        }
+        return value;
     }
 
 }
