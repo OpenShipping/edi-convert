@@ -142,8 +142,8 @@ public final class VarTanksParser extends SingleSheetParser {
         }
         final double volume0 = volumes.get(0);
         if (volume0 != 0.0) {
-            addSheetWarning("First volume in row " + (row.getRowNum() + 1) + " is not 0.0 but " + volume0
-                    + ", that is a bad idea"); // TODO ignore this row?
+            addSheetWarning("First tank volume in row " + (row.getRowNum() + 1) + " is not 0.0 but " + volume0
+                    + ", a tank volumen of 0.0 m^3 and with FSM 0.0 m^4 is expected to avoid wrong FSM values for small fill %");
         }
         return volumes;
     }
