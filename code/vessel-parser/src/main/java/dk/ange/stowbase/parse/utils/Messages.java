@@ -3,7 +3,6 @@ package dk.ange.stowbase.parse.utils;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 
 import org.apache.poi.ss.usermodel.Sheet;
@@ -32,8 +31,10 @@ public class Messages {
     /**
      * @param sheets
      */
-    public void addParsedSheets(final String... sheets) {
-        parsedSheets.addAll(Arrays.asList(sheets));
+    public void addParsedSheets(final Sheet... sheets) {
+        for (Sheet sheet : sheets) {
+            parsedSheets.add(sheet.getSheetName());
+        }
     }
 
     /**

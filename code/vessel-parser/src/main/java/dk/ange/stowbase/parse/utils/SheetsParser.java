@@ -56,7 +56,7 @@ public abstract class SheetsParser {
     protected Sheet getSheetOptional(final String name) {
         final Sheet sheet = workbook.getSheet(name);
         if (sheet != null) {
-            messages.addParsedSheets(name);
+            messages.addParsedSheets(sheet);
         }
         return sheet;
     }
@@ -78,13 +78,13 @@ public abstract class SheetsParser {
             if (oldSheet == null) {
                 return null;
             } else {
-                messages.addParsedSheets(oldName);
+                messages.addParsedSheets(oldSheet);
                 messages.addSheetWarning(oldName, "Sheet is given old name, rename to '" + name + "'");
                 return oldSheet;
             }
         } else {
             if (oldSheet == null) {
-                messages.addParsedSheets(name);
+                messages.addParsedSheets(sheet);
                 return sheet;
             } else {
                 throw new ParseException("Both " + name + " and " + oldName + " sheets exists");
