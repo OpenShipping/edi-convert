@@ -8,7 +8,8 @@ we have deployed on:
  * https://stowage.ange.dk/convert/
     ssh stowbase@stowage.ange.dk
 
- * http://stowage.uasc.net/convert/
+ * http://stowage.uasc.net/convert/ (global only)
+ * http://uasc.stowage.net/convert/ (UASC internal LAN and global)
     ssh stowage@stowage.uasc.net
 
 
