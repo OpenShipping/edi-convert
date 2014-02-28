@@ -78,7 +78,7 @@ public class StabilityParser extends SheetsParser {
         if (society != null) {
             final List<String> knownSocieties = Arrays.asList("GL", "LR", "DNV");
             if (!knownSocieties.contains(society)) {
-                messages.addSheetWarning(SHEET_NAME, "Unknown society '" + society + "', the parser knows: "
+                messages.addSheetWarning(SHEET_NAME, "Unknown society '" + society + "', allowed values are: "
                         + knownSocieties);
             }
         }
