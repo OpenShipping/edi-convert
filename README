@@ -13,20 +13,40 @@ we have deployed on:
     ssh stowage@stowage.uasc.net
 
 
-Run the convert Grails application
-----------------------------------
+Local install of convert Grails application
+-------------------------------------------
     cd code
     mvn install
     cd convert
     ./run-grails-convert
 
-Install command line converter
-------------------------------
+Local install of command line converter
+---------------------------------------
     cd code
     mvn install
     ln -sTf $(readlink -f vessel-parser/XlsVesselToJson) ~/bin/XlsVesselToJson
     
-Use command line converter
---------------------------
+Local use ofcommand line converter
+----------------------------------
     XlsVesselToJson .../vessel.xls
 
+Install to https://stowage.ange.dk/convert/
+-------------------------------------------
+    ssh stowbase@stowage.ange.dk
+    ./upgrade-grails-convert
+
+Continue install to http://uasc.stowage.net/convert/
+-----------------------------------------------------
+    ssh stowbase@stowage.ange.dk
+    push-to-stowage.uasc.net  (requires ssh key)
+    exit
+
+    ssh stowage@stowage.uasc.net
+    ./upgrade-grails-convert
+    exit
+
+Also upgrade vessel profiles at http://uasc.stowage.net/convert/
+----------------------------------------------------------------
+    ssh stowage@stowage.uasc.net
+    rsync -av ~/vessel-profiles/ /var/www/stowage.uasc.net/vessel-profiles/
+    exit
