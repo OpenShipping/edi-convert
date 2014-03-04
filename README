@@ -8,9 +8,9 @@ we have deployed on:
  * https://stowage.ange.dk/convert/
     ssh stowbase@stowage.ange.dk
 
- * http://stowage.uasc.net/convert/ (global only)
- * http://uasc.stowage.net/convert/ (UASC internal LAN and global)
-    ssh stowage@stowage.uasc.net
+ * http://uasc.stowage.net/convert/
+    ssh stowage@uasc.stowage.net
+    (Used to be stowage.uasc.net but UASC could not handle that)
 
 
 Local install of convert Grails application
@@ -26,8 +26,8 @@ Local install of command line converter
     mvn install
     ln -sTf $(readlink -f vessel-parser/XlsVesselToJson) ~/bin/XlsVesselToJson
     
-Local use ofcommand line converter
-----------------------------------
+Local use of command line converter
+-----------------------------------
     XlsVesselToJson .../vessel.xls
 
 Install to https://stowage.ange.dk/convert/
@@ -37,16 +37,11 @@ Install to https://stowage.ange.dk/convert/
 
 Continue install to http://uasc.stowage.net/convert/
 -----------------------------------------------------
-    ssh stowbase@stowage.ange.dk
-    push-to-stowage.uasc.net  (requires ssh key)
+    ssh -A stowbase@stowage.ange.dk
+    ./push-to-uasc.stowage.net  # (requires ssh key)
     exit
 
-    ssh stowage@stowage.uasc.net
+    ssh stowage@uasc.stowage.net
     ./upgrade-grails-convert
     exit
 
-Also upgrade vessel profiles at http://uasc.stowage.net/convert/
-----------------------------------------------------------------
-    ssh stowage@stowage.uasc.net
-    rsync -av ~/vessel-profiles/ /var/www/stowage.uasc.net/vessel-profiles/
-    exit
