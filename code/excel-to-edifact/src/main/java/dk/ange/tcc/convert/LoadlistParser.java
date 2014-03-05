@@ -96,7 +96,7 @@ public final class LoadlistParser extends SheetsParser {
      */
     public LoadlistParser(final StowbaseObjectFactory stowbaseObjectFactory, final Messages messages,
             final Workbook workbook, final String vesselImo, final Collection<String> calls, final EdiFactType ediFactType) {
-        this(stowbaseObjectFactory, messages, workbook, vesselImo, new HashSet<String>(calls), "", null, ediFactType);
+        this(stowbaseObjectFactory, messages, workbook, vesselImo, new HashSet<>(calls), "", null, ediFactType);
     }
 
     /**

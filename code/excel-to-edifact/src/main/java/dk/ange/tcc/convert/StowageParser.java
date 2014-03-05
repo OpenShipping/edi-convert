@@ -27,7 +27,7 @@ public final class StowageParser {
 
     /**
      * Simple helper function that converts the Excel file to Stowage (compressed JSON)
-     * 
+     *
      * @param excelStream
      * @return The parser result
      */
@@ -83,20 +83,13 @@ public final class StowageParser {
     private void parseSetupOutput(final Workbook workbook) {
         final StowbaseObjectFactory stowbaseObjectFactory;
         final WriterExporter jsonWriterExporter;
-        final GZIPOutputStream compressedOutputStream;
-        try {
-            compressedOutputStream = new GZIPOutputStream(jsonOutput);
+        try (final GZIPOutputStream compressedOutputStream = new GZIPOutputStream(jsonOutput)) {
             jsonWriterExporter = new WriterExporter(new OutputStreamWriter(compressedOutputStream, "UTF-8"));
             stowbaseObjectFactory = jsonWriterExporter.stowbaseObjectFactory();
-        } catch (final IOException e) {
-            throw new RuntimeException(e);
-        }
 
-        parseWorkbook(workbook, stowbaseObjectFactory);
+            parseWorkbook(workbook, stowbaseObjectFactory);
 
-        jsonWriterExporter.flush("stowage.sto");
-        try {
-            compressedOutputStream.close();
+            jsonWriterExporter.flush("stowage.sto");
         } catch (final IOException e) {
             throw new RuntimeException(e);
         }

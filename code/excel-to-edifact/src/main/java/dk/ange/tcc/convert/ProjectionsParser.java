@@ -50,7 +50,7 @@ public final class ProjectionsParser extends SheetsParser {
 
     /**
      * Create. For use in JSON conversion.
-     * 
+     *
      * @param stowbaseObjectFactory
      * @param messages
      * @param workbook
@@ -59,12 +59,12 @@ public final class ProjectionsParser extends SheetsParser {
      */
     public ProjectionsParser(final StowbaseObjectFactory stowbaseObjectFactory, final Messages messages,
             final Workbook workbook, final String vesselImo, final Collection<String> calls) {
-        this(stowbaseObjectFactory, messages, workbook, vesselImo, new HashSet<String>(calls), "", null);
+        this(stowbaseObjectFactory, messages, workbook, vesselImo, new HashSet<>(calls), "", null);
     }
 
     /**
      * Create. For use in COPRAR conversion.
-     * 
+     *
      * @param vesselImo
      * @param vesselName
      * @param coprarOutputstream
@@ -138,7 +138,7 @@ public final class ProjectionsParser extends SheetsParser {
 
     /**
      * Adds moves to stowage
-     * 
+     *
      * @param stowage
      */
     public void addDataToStowage(final StowbaseObject stowage) {

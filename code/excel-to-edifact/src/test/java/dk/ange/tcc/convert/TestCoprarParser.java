@@ -17,16 +17,17 @@ public class TestCoprarParser {
 
     /**
      * Test convert()
-     * 
+     *
      * @throws Exception
      */
     @Test
     public void testParseTemplate() throws Exception {
         doParse("coprar-template.xls");
     }
+
     /**
      * Test convert()
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -35,11 +36,12 @@ public class TestCoprarParser {
     }
 
     private void doParse(final String resourceName) throws IOException {
-        final InputStream inputStream = TestCoprarParser.class.getResourceAsStream(resourceName);
         final String vesselImo = "9301471";
         final String vesselName = "CSAV Valencia";
-        final Result result = CoprarParser.parse(inputStream, vesselImo, vesselName);
-        inputStream.close();
+        final Result result;
+        try (final InputStream inputStream = TestCoprarParser.class.getResourceAsStream(resourceName)) {
+            result = CoprarParser.parse(inputStream, vesselImo, vesselName);
+        }
         assertNotNull("Be able to display stack trace", result.messages.getDeveloperStatus());
         if (result.messages.getException() != null) {
             result.messages.getException().printStackTrace();

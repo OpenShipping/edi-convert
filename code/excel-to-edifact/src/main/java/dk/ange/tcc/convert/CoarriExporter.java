@@ -42,7 +42,7 @@ public class CoarriExporter implements EdiFactExporter {
 
     private final String vesselFlag = "";
 
-    private final List<Segment> segments = new ArrayList<Segment>();
+    private final List<Segment> segments = new ArrayList<>();
 
     private String voyageId;
 
@@ -69,7 +69,7 @@ public class CoarriExporter implements EdiFactExporter {
      * @see dk.ange.tcc.convert.EdiFactExporter#addContainer(java.lang.String, java.lang.String, int, java.lang.Integer, java.lang.Integer, java.lang.Integer, boolean, boolean, java.lang.String, java.lang.String, java.util.List, java.lang.Double, java.lang.String, java.util.List, java.lang.String)
      */
     public void addContainer(final String containerId, final String isocode, final int weight,
-            final Integer overWidthRight, final Integer overWidthLeft, final Integer overHeight, 
+            final Integer overWidthRight, final Integer overWidthLeft, final Integer overHeight,
             final boolean liveReefer, final boolean isEmpty, final String bookingNumber,
             final String loadPort, final String dischargePort,
             final List<DangerousGoods> dangerousGoodsList, final Double reeferTemperature, final String temperatureUnit,
@@ -163,9 +163,9 @@ public class CoarriExporter implements EdiFactExporter {
     {
         ++containerCount;
 
-        // comments show position in Coarri 2.0 standard 
+        // comments show position in Coarri 2.0 standard
 
-        // R 0200 Segment Group 6:  EQD-RFF-TMD-DTM-SG7-MEA-DIM-SG8-SEL-FTX-SG9-EQA-HAN-SG11-SG12-NAD 
+        // R 0200 Segment Group 6:  EQD-RFF-TMD-DTM-SG7-MEA-DIM-SG8-SEL-FTX-SG9-EQA-HAN-SG11-SG12-NAD
 
         // M 0210 EQD Equipment details M 1
         segmentEQD(containerId, isocode, isEmpty);
@@ -235,10 +235,10 @@ public class CoarriExporter implements EdiFactExporter {
         builder.setTag("EQD");
         builder.set(0, "CN");                // EQUIPMENT QUALIFIER ‘CN’ Container, ‘BB’ Breakbulk, ‘SW’ Swapbody
         builder.set(1, containerId);         // EQUIPMENT IDENTIFICATION
-        builder.set(2, isocode, "102", "5"); // EQUIPMENT SIZE AND TYPE 
+        builder.set(2, isocode, "102", "5"); // EQUIPMENT SIZE AND TYPE
         builder.set(3, "");                  // EQUIPMENT SUPPLIER
         builder.set(4, "");                  // EQUIPMENT STATUS ‘1' Continental, ‘2' Export, ‘3' Import, ‘6' Transhipment
-        builder.set(5, isEmpty ? "4" : "5"); // FULL/EMPTY INDICATOR 
+        builder.set(5, isEmpty ? "4" : "5"); // FULL/EMPTY INDICATOR
         segments.add(builder.build());
     }
 
@@ -400,9 +400,9 @@ public class CoarriExporter implements EdiFactExporter {
                 segments.add(builder.build());
             }
         }
-    
+
         // O 0390 FTX Free Text C 9
-    
+
         // END O 0370 segment Group 9: DGS-FTX-SG9 C 99
     }
 
@@ -465,7 +465,7 @@ public class CoarriExporter implements EdiFactExporter {
     }
 
     private void insertHeader() {
-        final ArrayList<Segment> header = new ArrayList<Segment>();
+        final ArrayList<Segment> header = new ArrayList<>();
         final SegmentBuilder builder = new SegmentBuilder();
 
         builder.setTag("UNB");

@@ -41,7 +41,7 @@ public class CoprarExporter implements EdiFactExporter {
 
     private final String vesselFlag = "";
 
-    private final List<Segment> segments = new ArrayList<Segment>();
+    private final List<Segment> segments = new ArrayList<>();
 
     private String voyageId;
 
@@ -67,7 +67,7 @@ public class CoprarExporter implements EdiFactExporter {
      * @see dk.ange.tcc.convert.EdiFactExporter#addContainer(java.lang.String, java.lang.String, int, java.lang.Integer, java.lang.Integer, java.lang.Integer, boolean, boolean, java.lang.String, java.lang.String, java.util.List, java.lang.Double, java.lang.String, java.util.List, java.lang.String)
      */
     public void addContainer(final String containerId, final String isocode, final int weight,
-            final Integer overWidthRight, final Integer overWidthLeft, final Integer overHeight, 
+            final Integer overWidthRight, final Integer overWidthLeft, final Integer overHeight,
             final boolean liveReefer, final boolean isEmpty, final String bookingNumber,
             final String loadPort /* unused */, final String dischargePort,
             final List<DangerousGoods> dangerousGoodsList, final Double reeferTemperature, final String temperatureUnit,
@@ -77,40 +77,40 @@ public class CoprarExporter implements EdiFactExporter {
 
         final SegmentBuilder builder = new SegmentBuilder();
         // comments show position in Coprar 2.0 standard, in parenthesis position in Coprar 1.2 standard
-        
+
         // M 0210 Segment Group 6: EQD-RFF-EQN-TMD- DTM-LOC-MEA-DIM-SG7-SEL-FTX-SG8-EQA-HAN-SG10-NAD M
         // (0110 Segment Group 3)
-        
+
         // M 0220 EQD Equipment details M 1
         // (0150 EQD)
         builder.setTag("EQD");
         builder.set(0, "CN");                // EQUIPMENT QUALIFIER ‘CN’ Container, ‘BB’ Breakbulk, ‘SW’ Swapbody
         builder.set(1, containerId);         // EQUIPMENT IDENTIFICATION
-        builder.set(2, isocode, "102", "5"); // EQUIPMENT SIZE AND TYPE 
+        builder.set(2, isocode, "102", "5"); // EQUIPMENT SIZE AND TYPE
         builder.set(3, "");                  // EQUIPMENT SUPPLIER
         builder.set(4, "");                  // EQUIPMENT STATUS ‘1' Continental, ‘2' Export, ‘3' Import, ‘6' Transhipment
-        builder.set(5, isEmpty ? "4" : "5"); // FULL/EMPTY INDICATOR 
+        builder.set(5, isEmpty ? "4" : "5"); // FULL/EMPTY INDICATOR
         segments.add(builder.build());
 
         // O 0230 RFF Reference C 9
         // (0160 REF)
         builder.setTag("RFF");
-        if(bookingNumber != null && bookingNumber.length() > 0) {    
+        if(bookingNumber != null && bookingNumber.length() > 0) {
             builder.set(0, "BN", bookingNumber);
         } else {
             builder.set(0, "BN", "1");
         }
         segments.add(builder.build());
-            
+
         // O 240 EQN NUmber of Units C 1
         // (0170 EQN)
-        
+
         // O 250 TMD Transport Movement Details C 9
         // (0180 TMD)
-        
+
         // O 260 DTM Date Time Period C 9
         // (0190 DTM)
-        
+
         // R 0270 LOC Place/Location C 9
         // (0200 LOC)
         builder.setTag("LOC");
@@ -159,17 +159,17 @@ public class CoprarExporter implements EdiFactExporter {
             builder.set(1, "CMT", "", "", Integer.toString(overHeight)); // height sub-position 3
             segments.add(builder.build());
         }
-        
+
         // O 0300 Segment Group 7: TMP-RNG C
         // (no group here)
         group7TmpRng(liveReefer, reeferTemperature, temperatureUnit);
-        
+
         // O 0330 SEL Seal Number C 9
         // (0250 SEL)
-        
+
         // O 0340 FTX Free Text C 9
         // (0260 FTX)
-        // Example from Powerstow coprar 1.2: FTX+HAN+++BDK' 
+        // Example from Powerstow coprar 1.2: FTX+HAN+++BDK'
         // Example from MAC3 :  FTX+HAN+++UNDER' FTX+HAN+++DECK'
         // codes: (AFH) BDK DTY GAF ODK SP1 SP2 SP3 SP4
         if ((version == Version.D95B) && (specialStowList != null)){ // COPRAR 1.2
@@ -186,33 +186,33 @@ public class CoprarExporter implements EdiFactExporter {
         // O 0360 segment Group 8: DGS-FTX-SG9 C
         // (no group here)
         group8DgsFtxSG9(dangerousGoodsList);
-                
+
         // O 0430 EQA Attached Equipment C 9
         // (0280 EQA)
-        
+
         // O 0440 HAN Handling Instructions C 9
         // (does not exist, 0340 FTX Free Text is used for handling instructions)
-        
+
         // O 0450 Segment Group 10: TDT-DTM-RFF-SG11 C 1
         // (0290 Segment Group 4)
-        
+
         // M 0460 TDT Details of Transport M 1
         // (0300 TDT)
-        
+
         // (0310 REF)
         // (0320 LOC)
-        
+
         // O 0470 DTM Date Time Period C 9
         // (0330 DTM)
-        
+
         // 0 0480 RFF Reference C 9
-        
-        // O 0490 Segment Group 11: LOC 
+
+        // O 0490 Segment Group 11: LOC
         // M 0500 LOC Location M 1
         // END O 0490 Segment Group 11: LOC
-        
+
         // END O 0450 Segment Group 10: TDT-DTM-RFF-SG11 C 1
-        
+
         // O 0520 NAD Name and Address C 9
         // (0340 NAD)
         if (containerCarrierCode != null && containerCarrierCode.length() > 0) {
@@ -226,12 +226,12 @@ public class CoprarExporter implements EdiFactExporter {
             // "ZZZ" = Mutually agreed
             segments.add(builder.build());
         }
-        
-        
+
+
         // END 0210 Segment Group 6: EQD-RFF-EQN-TMD- DTM-LOC-MEA-DIM-SG7-SEL-FTX-SG8-EQA-HAN-SG10-NAD M
     }
 
-    
+
     // O 0300 Segment Group 7: TMP-RNG C
     // (no group here)
     private void group7TmpRng(final boolean liveReefer, final Double reeferTemperature, final String temperatureUnit){
@@ -253,13 +253,13 @@ public class CoprarExporter implements EdiFactExporter {
             builder.set(1, temperature, unit);
             segments.add(builder.build());
         }
-    
+
         // O 0320 RNG Range Details C 1
         // (0240 RNG)
-    
+
         // END O 0300 Segment Group 7: TMP-RNG C
     }
-    
+
     // O 0360 segment Group 8: DGS-FTX-SG9 C
     // (no group here)
     private void group8DgsFtxSG9(final List<DangerousGoods> dangerousGoodsList) {
@@ -279,17 +279,17 @@ public class CoprarExporter implements EdiFactExporter {
                 segments.add(builder.build());
             }
         }
-    
+
         // O 0380 FTX Free Text C 9
-    
+
         // O 0400 segment Group 9: CTA-COM
         // M 410 CTA Contact Information M 1
         // O 420 COM Communication Contact
         // END O 0400 segment Group 9: CTA-COM
-    
-        // END O 0360 segment Group 8: DGS-FTX-SG9 C 
+
+        // END O 0360 segment Group 8: DGS-FTX-SG9 C
     }
-    
+
     private void insertFooter() {
         final SegmentBuilder builder = new SegmentBuilder();
 
@@ -333,7 +333,7 @@ public class CoprarExporter implements EdiFactExporter {
     }
 
     private void insertHeader() {
-        final ArrayList<Segment> header = new ArrayList<Segment>();
+        final ArrayList<Segment> header = new ArrayList<>();
         final SegmentBuilder builder = new SegmentBuilder();
 
         builder.setTag("UNB");
@@ -383,7 +383,7 @@ public class CoprarExporter implements EdiFactExporter {
             builder.set(0, "XXX", "1");
             header.add(builder.build());
         }
-        
+
         builder.setTag("TDT");
         builder.set(0, "20");
         builder.set(1, voyageId);

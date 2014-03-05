@@ -20,11 +20,11 @@ public final class ScheduleParser extends SheetsParser {
 
     private static final String SHEET_NAME = "Schedule";
 
-    private final List<String> calls = new ArrayList<String>();
+    private final List<String> calls = new ArrayList<>();
 
     /**
      * Create and parse.
-     * 
+     *
      * @param stowbaseObjectFactory
      * @param messages
      * @param workbook
@@ -55,7 +55,7 @@ public final class ScheduleParser extends SheetsParser {
 
     /**
      * Adds moves to stowage
-     * 
+     *
      * @param stowage
      */
     public void addDataToStowage(@SuppressWarnings("unused") final StowbaseObject stowage) {

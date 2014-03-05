@@ -28,15 +28,15 @@ public class TestConvert {
     private String doConvert(final String resourceName) throws IOException {
         final StringWriter stringWriter = new StringWriter();
         final WriterExporter exporter = new WriterExporter(stringWriter);
-        final ByteArrayOutputStream coprarStream = new ByteArrayOutputStream();
-        final CoprarExporter coprar = new CoprarExporter("9137894", "Ange Test Vessel", coprarStream);
-        final ExcelConvert convert = new ExcelConvert(exporter.stowbaseObjectFactory(), coprar, "9137894");
-        final InputStream is = TestConvert.class.getResourceAsStream(resourceName);
-        convert.convert(is);
-        is.close();
-        exporter.flush(resourceName + ".json");
-        coprarStream.close();
-        Assert.assertEquals(0, coprarStream.size()); // Why is this empty?
+        try (final ByteArrayOutputStream coprarStream = new ByteArrayOutputStream()) {
+            final CoprarExporter coprar = new CoprarExporter("9137894", "Ange Test Vessel", coprarStream);
+            final ExcelConvert convert = new ExcelConvert(exporter.stowbaseObjectFactory(), coprar, "9137894");
+            try (final InputStream is = TestConvert.class.getResourceAsStream(resourceName)) {
+                convert.convert(is);
+            }
+            exporter.flush(resourceName + ".json");
+            Assert.assertEquals(0, coprarStream.size()); // Why is this empty?
+        }
         return stringWriter.toString();
     }
 
@@ -52,9 +52,9 @@ public class TestConvert {
         final ByteArrayOutputStream coprarStream = new ByteArrayOutputStream();
         final CoprarExporter coprar = new CoprarExporter("9137894", "Ange test vessel", coprarStream);
         final ExcelConvert2 convert = new ExcelConvert2(exporter.stowbaseObjectFactory(), coprar, "9137894");
-        final InputStream is = TestConvert.class.getResourceAsStream("loadlist2.xls");
-        convert.convert(is);
-        is.close();
+        try (final InputStream is = TestConvert.class.getResourceAsStream("loadlist2.xls")) {
+            convert.convert(is);
+        }
         exporter.flush("convert2.json");
         Assert.assertEquals(0, coprarStream.size()); // Why is this empty?
     }

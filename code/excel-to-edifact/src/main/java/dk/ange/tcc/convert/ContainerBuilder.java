@@ -33,17 +33,17 @@ public final class ContainerBuilder {
     private String isoCode;
 
     private int weight; // kg
-    
+
     private Integer overWidthRight; // cm optional
-    
+
     private Integer overWidthLeft; // cm optional
-    
+
     private Integer overHeight; // cm optional
 
     private boolean isLiveReefer;
-    
+
     private Double reeferTemperature;
-    
+
     private String temperatureUnit;
 
     private boolean isEmpty;
@@ -53,11 +53,11 @@ public final class ContainerBuilder {
     private String dischargePort;
 
     private List<String> specialStowList;
-    
+
     private String bookingNumber;
-    
+
     private String slotPosition;
-    
+
     private String containerCarrierCode;
 
     private List<DangerousGoods> dangerousGoodsList;
@@ -73,7 +73,7 @@ public final class ContainerBuilder {
 
     /**
      * Parse container out of Excel row.
-     * 
+     *
      * @param row
      * @param messages
      * @param sheetName
@@ -84,7 +84,7 @@ public final class ContainerBuilder {
 
     /**
      * Parse container out of Excel row
-     * 
+     *
      * @param row
      * @param messages
      * @param sheetName
@@ -189,7 +189,7 @@ public final class ContainerBuilder {
                         + "' or field 5 ISO_CODE '" + rawIsoCode + "' did not generate a valid ISO code");
             }
         }
-        
+
         // G 6 WEIGHT_KG
         {
             final String rawWeight = cellString(row.getCell(6)); // G  6 WEIGHT_KG
@@ -204,14 +204,14 @@ public final class ContainerBuilder {
                 messages.addSheetWarning(sheetName, "row " + (row.getRowNum()+1) + ": field 6 WEIGHT_KG '" + rawWeight + "' expected integer (in kg)");
             }
         }
-        
+
         // H 7 EMPTY
         {
             final Cell cell = row.getCell(7); // 7 EMPTY
             if (cell == null) {
                 this.isEmpty = false; // default N
             } else {
-                final String emptyStatus = cellString(cell); 
+                final String emptyStatus = cellString(cell);
                 if (emptyStatus == null || emptyStatus.equals("N") || emptyStatus.equals("")) {
                     this.isEmpty = false;
                 } else if (emptyStatus.equals("Y")) {
@@ -221,7 +221,7 @@ public final class ContainerBuilder {
                 }
             }
         }
-        
+
         // I 8 REEF_LIVE
         {
             this.isLiveReefer = false;
@@ -229,9 +229,9 @@ public final class ContainerBuilder {
                 final Cell cell = row.getCell(8); // 8 REEF_LIVE
                 if (cell == null) {
                     messages.addSheetWarning(sheetName, "row " + (row.getRowNum()+1) + ": field 8 REEF_LIVE (Y|N) expected");
-                    
+
                 }
-                final String aliveStatus = cellString(cell); 
+                final String aliveStatus = cellString(cell);
                 if (aliveStatus == null || aliveStatus.equals("N") || aliveStatus.equals("")) { // default N
                   // already false
                 } else if (aliveStatus.equals("Y")) {
@@ -241,7 +241,7 @@ public final class ContainerBuilder {
                 }
             }
         }
-        
+
 
         // J 9 REEF_TEMP
         {
@@ -271,17 +271,17 @@ public final class ContainerBuilder {
                         this.temperatureUnit = unit;
                     } else {
                         messages.addSheetWarning(sheetName, "row " + (row.getRowNum()+1) + ": field 10 TEMP_UNIT '" + unit + "' expected (CEL|FAH)");
-                    }       
+                    }
                 }
             }
         }
-     
+
         // L 11 IMO_DG
         {
             final Cell cell = row.getCell(11); // L 11 IMO_DG
             final String dangerousGoodsString = cellString(cell);
             if (dangerousGoodsString != null && dangerousGoodsString.length() != 0) {
-                final List<DangerousGoods> dangerousGoodsListNew = new ArrayList<DangerousGoods>();
+                final List<DangerousGoods> dangerousGoodsListNew = new ArrayList<>();
                 final String[] split = dangerousGoodsString.split("\\s+");
                 for (final String tuple : split) {
                     final String[] tupleSplit = tuple.split(",");
@@ -289,7 +289,7 @@ public final class ContainerBuilder {
                         // handling suffix 'L' for limited quantities, which is not used in imdgClass lookup
                         // not conforming to COPRAR 1.2, must be handled correctly by upgrade to COPRAR 2.0, see tickets #961 #962
                         String undgNumber = tupleSplit[0].replace("L","");
-                        dangerousGoodsListNew.add(new DangerousGoods(tupleSplit[0], 
+                        dangerousGoodsListNew.add(new DangerousGoods(tupleSplit[0],
                                 UndgNumberImdgCode.imdgClass(undgNumber)));
                     } else {
                         dangerousGoodsListNew.add(new DangerousGoods(tupleSplit[0], tupleSplit[1]));
@@ -300,50 +300,50 @@ public final class ContainerBuilder {
                 this.dangerousGoodsList = null;
             }
         }
-       
+
         // M 12 OOG_HEIGHT
         {
             this.overHeight = null;
             final Cell cell = row.getCell(12); // M 12 OOG_HEIGHT
             if (cell != null) {
-                final String value = cellString(cell); 
+                final String value = cellString(cell);
                 if (!value.equals("")) {
                     this.overHeight = Integer.parseInt(value);
                 }
             }
         }
-        
+
         // N 13 OOG_RIGHT
         {
             this.overWidthRight = null;
             final Cell cell = row.getCell(13); // N 13 OOG_RIGHT
             if (cell != null) {
-                final String value = cellString(cell); 
+                final String value = cellString(cell);
                 if (!value.equals("")) {
                     this.overWidthRight = Integer.parseInt(value);
                 }
             }
         }
-        
+
         // O 14 OOG_LEFT
         {
             this.overWidthLeft = null;
             final Cell cell = row.getCell(14); // O 14 OOG_LEFT
             if (cell != null) {
-                final String value = cellString(cell); 
+                final String value = cellString(cell);
                 if (!value.equals("")) {
                     this.overWidthLeft = Integer.parseInt(value);
                 }
             }
         }
-        
+
         // P 15 SPECIAL_STOW
         {
             final Cell cell = row.getCell(15); // P 15 SPECIAL_STOW
             if (cell != null) {
-                final String special = cellString(cell); 
+                final String special = cellString(cell);
                 if (!special.equals("")) {
-                    final List<String> specialList = new ArrayList<String>();
+                    final List<String> specialList = new ArrayList<>();
                     final String[] split = special.split("\\s+");
                     for (final String code : split) {
                         specialList.add(code);
@@ -352,14 +352,14 @@ public final class ContainerBuilder {
                 }
             }
         }
-        
+
         // Q 16 BOOKING_NO
         {
             final Cell cell = row.getCell(16); //  Q 16 BOOKING_NO
             this.bookingNumber = cellString(cell);
         }
-        
-        
+
+
         // R 17 SLOT_POSITION
         {
             final Cell cell = row.getCell(17); //  R 17 SLOT_POSITION
@@ -373,24 +373,24 @@ public final class ContainerBuilder {
             if (position != null && position.length() > 0 && position.length() != 7) {
                 messages.addSheetWarning(sheetName, "row " + (row.getRowNum()+1)
                         + ": field 17 R SLOT_POSITION format unknown, expected 'bbbrrtt', got '" + position + "'");
-            } 
+            }
             this.slotPosition = position;
         }
-        
+
         // S 18 CARRIER
         {
             final Cell cell = row.getCell(18); //  S 18 CARRIER
             this.containerCarrierCode = cellString(cell);
         }
-        
-        
+
+
         parseLoadMove(row, messages, sheetName, calls);      // C  2 POL
         parseDischargeMove(row, messages, sheetName, calls); // D  3 POD
-  
+
     }
 
     private void parseLoadMove(final Row row, final Messages messages, final String sheetName, final Set<String> calls) {
-        
+
         final Cell cell = row.getCell(2); // C  2 POL
         final String loadText = cell.getStringCellValue();
         if (calls == null || calls.contains(loadText)) {
@@ -414,7 +414,7 @@ public final class ContainerBuilder {
                     + "', will assume the container should stay onboard");
         }
     }
-    
+
     /**
      * @param containerId
      */
@@ -428,7 +428,7 @@ public final class ContainerBuilder {
     public int getContainerWeight() {
         return this.weight;
     }
-   
+
     /**
      * @param containerWeight
      */
@@ -438,7 +438,7 @@ public final class ContainerBuilder {
 
      /**
      * Insert the last parsed container into the stowbase and coprar
-     * 
+     *
      * @param stowbase
      *            stowbase writer to write container to, if it is null it will be skipped
      * @param moves
@@ -453,7 +453,7 @@ public final class ContainerBuilder {
             buildEdiFact(ediFactExporter);
         }
     }
-    
+
     private void buildJson(final StowbaseObjectFactory stowbase, final References moves) {
         if (vesselImo == null || containerId == null && isoCode == null) {
             return;

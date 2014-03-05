@@ -20,7 +20,7 @@ public class BaplieExporter implements EdiFactExporter {
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(BaplieExporter.class);
 
     private enum Version {
-        D95B // BAPLIE 2.1.1 2007-10 SMDG User Group for Shipping Lines and Container Terminal   
+        D95B // BAPLIE 2.1.1 2007-10 SMDG User Group for Shipping Lines and Container Terminal
     }
 
 
@@ -41,7 +41,7 @@ public class BaplieExporter implements EdiFactExporter {
 
     private final String vesselFlag = "";
 
-    private final List<Segment> segments = new ArrayList<Segment>();
+    private final List<Segment> segments = new ArrayList<>();
 
     private String voyageId;
 
@@ -65,13 +65,13 @@ public class BaplieExporter implements EdiFactExporter {
      * @see dk.ange.tcc.convert.EdiFactExporter#addContainer(java.lang.String, java.lang.String, int, java.lang.Integer, java.lang.Integer, java.lang.Integer, boolean, boolean, java.lang.String, java.lang.String, java.util.List, java.lang.Double, java.lang.String, java.util.List, java.lang.String)
      */
     public void addContainer(final String containerId, final String isocode, final int weight,
-            final Integer overWidthRight, final Integer overWidthLeft, final Integer overHeight, 
+            final Integer overWidthRight, final Integer overWidthLeft, final Integer overHeight,
             final boolean liveReefer, final boolean isEmpty, final String bookingNumber,
             final String loadPort, final String dischargePort,
             final List<DangerousGoods> dangerousGoodsList, final Double reeferTemperature, final String temperatureUnit,
             final List<String> specialStowList, final String slotPosition, final String containerCarrierCode) {
         final SegmentBuilder builder = new SegmentBuilder();
-        
+
         // Group grp2 (C9999) LOC - GID - GDS - FTX - MEA - DIM - TMP - RNG - LOC - RFF - grp3 - grp4
 
         // LOC (M1) PLACE/LOCATION IDENTIFICATION (grp2)
@@ -79,13 +79,13 @@ public class BaplieExporter implements EdiFactExporter {
         builder.set(0, "147"); // Stowage Cell
         builder.set(1, slotPosition, "", "5"); // ISO format
         segments.add(builder.build());
-        
+
         // GID (C1) GOODS ITEM DETAILS (grp2)
 
         // GDS (C9) NATURE OF CARGO (grp2)
 
         // FTX (C9) FREE TEXT (grp2)  - "HAN" = Handling Instructions
-        // Example from Powerstow Baplie 1.2: FTX+HAN+++BDK' 
+        // Example from Powerstow Baplie 1.2: FTX+HAN+++BDK'
         // Example from MAC3 :  FTX+HAN+++UNDER' FTX+HAN+++DECK'
         // codes: (AFH) BDK DTY GAF ODK SP1 SP2 SP3 SP4
         if (specialStowList != null){
@@ -98,7 +98,7 @@ public class BaplieExporter implements EdiFactExporter {
                 segments.add(builder.build());
             }
         }
-        
+
         // MEA (M9) MEASUREMENTS (grp2)
         builder.setTag("MEA");
         builder.set(0, "WT"); // gross weight)
@@ -134,7 +134,7 @@ public class BaplieExporter implements EdiFactExporter {
             builder.set(1, "CMT", "", "", Integer.toString(overHeight)); // height sub-position 3
             segments.add(builder.build());
         }
-                
+
         // TMP (C1) TEMPERATURE (grp2)
         // RNG (C1) RANGE DETAILS (grp2)
         group2TmpRng(liveReefer, reeferTemperature, temperatureUnit);
@@ -146,17 +146,17 @@ public class BaplieExporter implements EdiFactExporter {
             builder.set(1, loadPort, "139", "6");
         segments.add(builder.build());
         }
-   
+
         if(dischargePort != null && dischargePort.length() > 0) {
             builder.setTag("LOC");
             builder.set(0, "11");
             builder.set(1, dischargePort, "139", "6");
             segments.add(builder.build());
         }
-        
+
         // RFF (M9) REFERENCE (grp2)
         builder.setTag("RFF");
-        if(bookingNumber != null && bookingNumber.length() > 0) {    
+        if(bookingNumber != null && bookingNumber.length() > 0) {
             builder.set(0, "BN", bookingNumber);
         } else {
             builder.set(0, "BN", "1");
@@ -169,13 +169,13 @@ public class BaplieExporter implements EdiFactExporter {
         builder.setTag("EQD");
         builder.set(0, "CN");                // EQUIPMENT QUALIFIER ‘CN’ Container, ‘BB’ Breakbulk, ‘SW’ Swapbody
         builder.set(1, containerId);         // EQUIPMENT IDENTIFICATION
-        builder.set(2, isocode, "102", "5"); // EQUIPMENT SIZE AND TYPE 
+        builder.set(2, isocode, "102", "5"); // EQUIPMENT SIZE AND TYPE
         builder.set(3, "");                  // EQUIPMENT SUPPLIER
         builder.set(4, "");                  // EQUIPMENT STATUS ‘1' Continental, ‘2' Export, ‘3' Import, ‘6' Transhipment
-        builder.set(5, isEmpty ? "4" : "5"); // FULL/EMPTY INDICATOR 
+        builder.set(5, isEmpty ? "4" : "5"); // FULL/EMPTY INDICATOR
         segments.add(builder.build());
-      
-        
+
+
         // EQA (C9) EQUIPMENT ATTACHED (grp3)
 
         // NAD (C1) NAME AND ADDRESS (grp3)
@@ -189,7 +189,7 @@ public class BaplieExporter implements EdiFactExporter {
             segments.add(builder.build());
         }
 
-        
+
         // Group grp4 (C999) DGS - FTX
 
         // DGS (M1) DANGEROUS GOODS (grp4)
@@ -198,7 +198,7 @@ public class BaplieExporter implements EdiFactExporter {
 
     }
 
-    
+
 
     // TMP (C1) TEMPERATURE (grp2)
     // RNG (C1) RANGE DETAILS (grp2)
@@ -222,7 +222,7 @@ public class BaplieExporter implements EdiFactExporter {
         }
         // RNG (C1) RANGE DETAILS (grp2)
     }
-    
+
 
     // Group grp4 (C999) DGS - FTX
     // DGS (M1) DANGEROUS GOODS (grp4)
@@ -243,19 +243,19 @@ public class BaplieExporter implements EdiFactExporter {
                 segments.add(builder.build());
             }
         }
-        // FTX (C1) FREE TEXT (grp4)    
+        // FTX (C1) FREE TEXT (grp4)
     }
-    
+
     private void insertFooter() {
         final SegmentBuilder builder = new SegmentBuilder();
-        
+
         // UNT (M1) MESSAGE TRAILER
         builder.setTag("UNT");
         builder.set(0, Integer.toString(segments.size())); // Number of segments including UNT but excluding UNB/UNZ
         // just current size of segments list
         builder.set(1, baplieId);
         segments.add(builder.build());
-        
+
         // UNZ (M1) INTERCHANGE TRAILER
         builder.setTag("UNZ");
         builder.set(0, "1");
@@ -286,7 +286,7 @@ public class BaplieExporter implements EdiFactExporter {
     }
 
     private void insertHeader() {
-        final ArrayList<Segment> header = new ArrayList<Segment>();
+        final ArrayList<Segment> header = new ArrayList<>();
         final SegmentBuilder builder = new SegmentBuilder();
 
         // UNB (M1) INTERCHANGE HEADER
@@ -328,7 +328,7 @@ public class BaplieExporter implements EdiFactExporter {
         builder.setTag("DTM");
         builder.set(0, "137", datetime.format(calendar.getTime()), "201"); // Format of datetime
         header.add(builder.build());
-       
+
         // Group grp1 : TDT - LOC - DTM - RFF - FTX. (M1)
 
         // TDT (M1) DETAILS OF TRANSPORT (grp1)
@@ -342,7 +342,7 @@ public class BaplieExporter implements EdiFactExporter {
         builder.set(6);
         builder.set(7, vesselImo, "146", "11", vesselName, vesselFlag);
         header.add(builder.build());
-        
+
         // LOC (M9) PLACE/LOCATION IDENTIFICATION (grp1)
         // BAPLIE 2.1.1  two repetitions of LOC
         builder.setTag("LOC");
@@ -364,7 +364,7 @@ public class BaplieExporter implements EdiFactExporter {
         builder.setTag("DTM");
         builder.set(0, "178", datetime.format(calendar.getTime()), "201"); // TODO: get correct time of arrival at senders port
         header.add(builder.build());
-   
+
         // RFF (C1) REFERENCE (grp1)
 
         segments.addAll(0, header);

@@ -17,7 +17,7 @@ public class TestStowageParser {
 
     /**
      * Test convert()
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -27,12 +27,13 @@ public class TestStowageParser {
     }
 
     private void doParse(final String resourceName) throws IOException {
-        final InputStream inputStream = TestStowageParser.class.getResourceAsStream(resourceName);
-        final Result result = StowageParser.parse(inputStream);
-        inputStream.close();
+        final Result result;
+        try (final InputStream inputStream = TestStowageParser.class.getResourceAsStream(resourceName)) {
+            result = StowageParser.parse(inputStream);
+        }
         assertNotNull("Be able to display stack trace", result.messages.getDeveloperStatus());
-        assertNull("Should not get a stack trace:\n" + result.messages.getDeveloperStatus(), result.messages
-                .getException());
+        assertNull("Should not get a stack trace:\n" + result.messages.getDeveloperStatus(),
+                result.messages.getException());
         assertNotNull(result.jsonData);
         assertNotNull(result.messages.getStatus());
         // org.junit.Assert.assertEquals("For developing", result.messages.getStatus());
