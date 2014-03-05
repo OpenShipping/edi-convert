@@ -41,8 +41,6 @@ public class DgParser extends StackDataSheetsParser {
 
     private HashMap<String, List<String>> holdAcceptsImoClass;
 
-    private References holds;
-
     /**
      * @param stowbaseObjectFactory
      * @param messages
@@ -218,15 +216,8 @@ public class DgParser extends StackDataSheetsParser {
      * @param vesselProfile
      */
     public void addDataToVesselProfile(final VesselProfile vesselProfile) {
-        export();
-        if (holds != null) {
-            vesselProfile.put("holds", holds);
-        }
-    }
-
-    private void export() {
         if (bays2hold != null) {
-            holds = new References();
+            final References holds = new References();
             for (final String hold : bays2hold.keySet()) {
                 final StowbaseObject so = stowbaseObjectFactory.create("hold");
                 so.put("feubays", bays2hold.get(hold));
@@ -235,6 +226,7 @@ public class DgParser extends StackDataSheetsParser {
                 }
                 holds.add(so.getReference());
             }
+            vesselProfile.put("holds", holds);
         }
     }
 

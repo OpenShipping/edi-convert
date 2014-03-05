@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Assert;
@@ -55,7 +56,51 @@ public class TestParserVessel {
         final BundleStowbaseObject vesselProfile = bundle.single("vesselProfile");
         assertNotNull(vesselProfile);
 
-        final List<BundleStowbaseObject> tanks = vesselProfile.get("tanks").getAsObjects();
+        validateStacks(vesselProfile.get("vesselStacks").getAsObjects());
+
+        validateTanks(vesselProfile.get("tanks").getAsObjects());
+
+        final BundleStowbaseObject stability = vesselProfile.get("stability").getAsSingleObject();
+        assertNotNull(stability.get("classificationSociety"));
+        assertEquals("DNV", stability.get("classificationSociety").getAsString());
+
+        validateHolds(vesselProfile.get("holds").getAsObjects());
+    }
+
+    private void validateStacks(final List<BundleStowbaseObject> vesselStacks) {
+        {
+            final BundleStowbaseObject stack0200A = vesselStacks.get(0);
+            assertEquals("0", stack0200A.get("rowName").getAsString());
+            assertEquals("2", stack0200A.get("overlappingFeuBay").getAsString());
+
+            final BundleStowbaseObject stackSupport0200A = stack0200A.get("vesselStackSupports").getAsObjects().get(2);
+            assertEquals("2", stackSupport0200A.get("bayName").getAsString());
+            assertEquals(Arrays.asList("80", "82"), stackSupport0200A.get("dcTiersFromBelow").getAsStringList());
+            assertNull(stackSupport0200A.get("imoForbidden"));
+
+            final BundleStowbaseObject stackSupport0100A = stack0200A.get("vesselStackSupports").getAsObjects().get(0);
+            assertEquals("1", stackSupport0100A.get("bayName").getAsString());
+            assertEquals(Arrays.asList("80", "82"), stackSupport0100A.get("dcTiersFromBelow").getAsStringList());
+            assertNull(stackSupport0100A.get("imoForbidden"));
+        }
+        {
+            final BundleStowbaseObject stack0203A = vesselStacks.get(6);
+            assertEquals("2", stack0203A.get("overlappingFeuBay").getAsString());
+            assertEquals("3", stack0203A.get("rowName").getAsString());
+
+            final BundleStowbaseObject stackSupport0203A = stack0203A.get("vesselStackSupports").getAsObjects().get(2);
+            assertEquals("2", stackSupport0203A.get("bayName").getAsString());
+            assertEquals(Arrays.asList("80", "82"), stackSupport0203A.get("dcTiersFromBelow").getAsStringList());
+            assertEquals(true, stackSupport0203A.get("imoForbidden").getAsBoolean());
+
+            final BundleStowbaseObject stackSupport0103A = stack0203A.get("vesselStackSupports").getAsObjects().get(0);
+            assertEquals("1", stackSupport0103A.get("bayName").getAsString());
+            assertEquals(Arrays.asList("80", "82"), stackSupport0103A.get("dcTiersFromBelow").getAsStringList());
+            assertEquals(true, stackSupport0103A.get("imoForbidden").getAsBoolean());
+        }
+    }
+
+    private void validateTanks(final List<BundleStowbaseObject> tanks) {
         assertNotNull(tanks);
         assertEquals(4, tanks.size()); // Four tanks validated in sheet
 
@@ -81,10 +126,15 @@ public class TestParserVessel {
             // Test that the tanks reader chooses numbers from vartanks when data is written also in tanks
             assertEquals(8, samplePoints1.split(";").length);
         }
+    }
 
-        BundleStowbaseObject stability = vesselProfile.get("stability").getAsSingleObject();
-        assertNotNull(stability.get("classificationSociety"));
-        assertEquals("DNV", stability.get("classificationSociety").getAsString());
+    private void validateHolds(final List<BundleStowbaseObject> holds) {
+        assertEquals(3, holds.size());
+        final BundleStowbaseObject hold2 = holds.get(1);
+        assertEquals(Arrays.asList("14", "10"), hold2.get("feubays").getAsStringList());
+        final List<String> acceptsImo = hold2.get("acceptsImo").getAsStringList();
+        assertTrue(acceptsImo.contains("2.2"));
+        assertTrue(!acceptsImo.contains("2.3"));
     }
 
 }
