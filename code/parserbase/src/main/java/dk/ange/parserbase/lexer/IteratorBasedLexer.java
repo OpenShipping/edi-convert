@@ -7,7 +7,7 @@ import dk.ange.parserbase.LexedPair;
 
 /**
  * A lexer that is based on an iterator.
- * 
+ *
  * @param <T>
  * @param <D>
  */
@@ -21,7 +21,7 @@ public class IteratorBasedLexer<T, D> implements ItemProvider<T, D> {
 
     /**
      * Initialize this instance using an iterator.
-     * 
+     *
      * @param iter
      *            The iterator to base this lexer on.
      */

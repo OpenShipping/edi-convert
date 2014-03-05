@@ -14,7 +14,7 @@ public class ParseException extends RuntimeException {
 
     /**
      * Constructor like in {@link RuntimeException}
-     * 
+     *
      * @param message
      * @param cause
      */
@@ -24,7 +24,7 @@ public class ParseException extends RuntimeException {
 
     /**
      * Constructor like in {@link RuntimeException}
-     * 
+     *
      * @param message
      */
     public ParseException(final String message) {
@@ -33,7 +33,7 @@ public class ParseException extends RuntimeException {
 
     /**
      * Constructor like in {@link RuntimeException}
-     * 
+     *
      * @param cause
      */
     public ParseException(final Throwable cause) {

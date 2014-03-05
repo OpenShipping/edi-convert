@@ -7,7 +7,7 @@ package dk.ange.tcc.convert;
  */
 public final class UndgNumberImdgCode {
     /**
-     * @param undgNumber 
+     * @param undgNumber
      * @return IMDG class derived from UNDG code
      */
     public final static String imdgClass(final String undgNumber) {

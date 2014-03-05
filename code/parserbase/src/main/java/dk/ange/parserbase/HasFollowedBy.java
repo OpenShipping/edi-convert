@@ -2,9 +2,9 @@ package dk.ange.parserbase;
 
 /**
  * An interface for "sequences that are followed by other sequences".
- * 
+ *
  * Used for delayed creation of sequences with optional parts.
- * 
+ *
  * @param <T>
  *            The lexer type of the data items.
  * @param <D>
@@ -15,7 +15,7 @@ package dk.ange.parserbase;
 public interface HasFollowedBy<T, D, R> {
 
     /**
-     * 
+     *
      * @param followedBy
      *            The sequence this sequence is followed by.
      */

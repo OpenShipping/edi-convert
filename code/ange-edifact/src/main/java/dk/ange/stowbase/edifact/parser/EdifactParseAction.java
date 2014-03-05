@@ -7,9 +7,9 @@ import dk.ange.stowbase.edifact.Segment;
 /**
  * A class that interfaces the Edifact parser grammar to the ContentHandler interface. It basically signals the current
  * position to the user code via the ContentHandler instance.
- * 
+ *
  * @author Anders Sewerin Johansen
- * 
+ *
  */
 public class EdifactParseAction implements DataItemParser<Segment, ContentHandler> {
 
@@ -18,7 +18,7 @@ public class EdifactParseAction implements DataItemParser<Segment, ContentHandle
     private final String countedTagName;
 
     /**
-     * 
+     *
      * @param pathToParent
      *            The path to the segment group that this Segment is part of, eg. "LOC/" or "LOC/EQD". May be the empty
      *            string.

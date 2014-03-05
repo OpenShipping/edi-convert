@@ -7,7 +7,7 @@ public interface StackDataAction {
 
     /**
      * Save data in stackData based on its type
-     * 
+     *
      * @param stackData
      *            object to store data in
      * @param type

@@ -7,7 +7,7 @@ import dk.ange.stowbase.edifact.format.FormatReader;
 import dk.ange.stowbase.edifact.lexer.EdifactLexer;
 
 /**
- * 
+ *
  */
 public class BaplieTest {
 

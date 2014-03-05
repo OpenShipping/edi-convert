@@ -13,7 +13,7 @@ import dk.ange.stowbase.edifact.scanner.Token;
 
 /**
  * Immutable
- * 
+ *
  * @author Kim Hansen
  */
 public final class Composite {
@@ -71,7 +71,7 @@ public final class Composite {
 
     /**
      * Simple constructor that will transform all input to data elements in the composite
-     * 
+     *
      * @param dataElements
      */
     public Composite(final String... dataElements) {
@@ -121,7 +121,7 @@ public final class Composite {
 
     /**
      * Writes the Segment to the stream in the EDIFACT format.
-     * 
+     *
      * @param stream
      * @throws IOException
      *             if the stream throws an IOException.

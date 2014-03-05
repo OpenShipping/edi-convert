@@ -6,7 +6,7 @@ package dk.ange.parserbase;
 public class ParseError extends Exception {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = -2536082365892646339L;
 
@@ -51,7 +51,7 @@ public class ParseError extends Exception {
 
     /**
      * Access the position of this parse error in the input.
-     * 
+     *
      * @return The position of this parse error in the input.
      */
     public int getPosition() {

@@ -18,11 +18,11 @@ public abstract class Jsonify {
 
     /**
      * Outputs the parsed EDIFACT message as a JSON document.
-     * 
+     *
      * The JSON document will be a list segments. Each segment is a JSON object with two entries: - "tag", mapped to a
      * three-letter string, e.g. "LOC" - "elements", mapped to a list of lists. Each element of "elements" is either a
      * list of strings (which may contain only one item) or the list [null].
-     * 
+     *
      * @param segments
      *            Segments to JSONify
      * @param destination

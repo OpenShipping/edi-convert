@@ -17,7 +17,7 @@ public class TextFile implements Iterable<String> {
 
     /**
      * Create a new instance.
-     * 
+     *
      * @param i
      *            The input stream
      */

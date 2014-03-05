@@ -101,7 +101,7 @@ public final class EdifactScanner implements Iterator<Token> {
 
     /**
      * A service character need to be escaped in the output.
-     * 
+     *
      * @param b
      * @return Returns true if b is a service character.
      */

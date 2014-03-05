@@ -9,12 +9,12 @@ import java.util.List;
 public class SegmentGroupFormatBuilder extends AbstractSegmentFormatBuilder {
 
     /**
-     * 
+     *
      */
     public List<AbstractSegmentFormatBuilder> members;
 
     /**
-     * 
+     *
      */
     public int groupBoundaryColumn;
 

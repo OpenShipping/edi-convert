@@ -47,7 +47,7 @@ public class TransitionTable {
         // 21 (EQD), LOC -> 11
         /*
          * If nextState.isLastInGroup
-         * 
+         *
          * Double pop ?
          */
         // TODO skip Conditional groups in transitionTable

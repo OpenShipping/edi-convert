@@ -2,7 +2,7 @@ package dk.ange.parserbase;
 
 /**
  * An "atomic" sequence that associates one action with one lexer type item.
- * 
+ *
  * @param <T>
  *            The lexer type of the data items.
  * @param <D>
@@ -18,7 +18,7 @@ public class SingleItemSequence<T, D, R> implements Sequence<T, D, R> {
 
     /**
      * Create an atomic sequence.
-     * 
+     *
      * @param consumes
      *            The lexer type to accept.
      * @param consumer

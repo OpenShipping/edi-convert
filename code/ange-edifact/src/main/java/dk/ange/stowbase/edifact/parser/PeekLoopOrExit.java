@@ -10,11 +10,11 @@ import dk.ange.stowbase.edifact.Tag;
 /**
  * A class that peeks and interprets the next state based on the available input. It does not actually parse, as it does
  * not consume any input symbols.
- * 
+ *
  * TODO: Implement three states explicitly. Ought to be in state NOT_SET until parsed, and have a RESET method.
- * 
+ *
  * @author Anders Sewerin Johansen
- * 
+ *
  */
 public class PeekLoopOrExit implements Sequence<Tag, Segment, ContentHandler> {
 

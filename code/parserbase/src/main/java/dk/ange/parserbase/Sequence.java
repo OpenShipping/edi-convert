@@ -2,7 +2,7 @@ package dk.ange.parserbase;
 
 /**
  * The interface for a sequence of actions in a parser grammar.
- * 
+ *
  * @param <T>
  *            The lexer type of the items to parse.
  * @param <D>
@@ -14,7 +14,7 @@ public interface Sequence<T, D, R> {
 
     /**
      * Parse the input using the node(s) that this sequence corresponds to.
-     * 
+     *
      * @param itemProvider
      *            The object that can provide more input symbols on request.
      * @param initialState
@@ -28,7 +28,7 @@ public interface Sequence<T, D, R> {
 
     /**
      * The kinds of lexer type items ("first" in lex/yacc terms) this sequence can consume.
-     * 
+     *
      * @param type
      *            The lexer type that we are trying to consume.
      * @return True if this sequence will consume a lexer type 'type', false if not.

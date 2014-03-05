@@ -62,7 +62,7 @@ public class Messages {
 
     /**
      * The parser threw an exception
-     * 
+     *
      * @param e
      */
     public void setException(final Exception e) {

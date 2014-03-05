@@ -14,7 +14,7 @@ import dk.ange.stowbase.edifact.format.SegmentGroupFormat;
 import dk.ange.stowbase.edifact.lexer.SkipLastIterator;
 
 /**
- * 
+ *
  */
 public class EdifactReader {
 

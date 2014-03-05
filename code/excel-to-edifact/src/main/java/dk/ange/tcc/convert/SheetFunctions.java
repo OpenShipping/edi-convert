@@ -13,7 +13,7 @@ public final class SheetFunctions {
 
     /**
      * Convert a Cell to its String form
-     * 
+     *
      * @param cell
      * @return cell as a String
      */

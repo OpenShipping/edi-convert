@@ -9,9 +9,9 @@ import dk.ange.parserbase.Sequence;
 /**
  * Some sequences require knowledge of what follows them to function correctly. Specifically the ones that have an
  * "optional" part, as they need to know what to skip ahead to. This is the case for "Optional" and "ZeroOrMore".
- * 
+ *
  * This base class allows for this knowledge to be provided once the sequence has been provided, via delayed creation.
- * 
+ *
  * @param <T>
  *            The lexer type of the input to parse.
  * @param <D>
@@ -26,7 +26,7 @@ public abstract class BackpatchableFollowedBy<T, D, R> implements Sequence<T, D,
 
     /**
      * Create this instance.
-     * 
+     *
      * @param optionalPart
      *            The part of the sequence wich may or may not be executed.
      */
@@ -71,7 +71,7 @@ public abstract class BackpatchableFollowedBy<T, D, R> implements Sequence<T, D,
 
     /**
      * Implement as a factory method that creates the intended kind of sequence that is "followed by" something else.
-     * 
+     *
      * @param optionalPart1
      *            The part to be executed 0, 1 or more times, depending on what sequence is created.
      * @param followedBy

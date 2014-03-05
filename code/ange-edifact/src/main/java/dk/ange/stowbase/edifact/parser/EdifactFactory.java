@@ -24,13 +24,13 @@ import dk.ange.stowbase.edifact.format.SegmentGroupFormat;
 
 /**
  * A class capable of generating a parser for an EDIFACT document based on the provided format description.
- * 
+ *
  * TODO: Counters for max number of repetitions are not enforced. This is only relevant if we want to make a validator
  * really, as we prefer a forgiving parser to a strict one.
- * 
- * 
+ *
+ *
  * @author Anders Sewerin Johansen
- * 
+ *
  */
 public class EdifactFactory /* extends Factory<Tag, Segment, ContentHandler> */{
 
@@ -209,7 +209,7 @@ public class EdifactFactory /* extends Factory<Tag, Segment, ContentHandler> */{
 
     /**
      * Make a sequence that will parse an Edifact file that conforms to the format described by group.
-     * 
+     *
      * @param group
      *            A description of this particular kind of Edifact file.
      * @return A sequence that will parse an Edifact file that conforms to the format described by group.

@@ -14,7 +14,7 @@ public final class FormatReader {
 
     /**
      * Read the format from a stream
-     * 
+     *
      * @param stream
      * @return the format
      */

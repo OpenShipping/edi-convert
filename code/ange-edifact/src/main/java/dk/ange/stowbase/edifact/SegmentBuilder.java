@@ -29,7 +29,7 @@ public final class SegmentBuilder {
     /**
      * Use data to create a new composite and set it at position i, if the composite is not long enough it will be
      * extended with empty composites.
-     * 
+     *
      * @param i
      * @param data
      */
@@ -51,7 +51,7 @@ public final class SegmentBuilder {
 
     /**
      * Build and clear
-     * 
+     *
      * @return Build the Segment
      */
     public Segment build() {

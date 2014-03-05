@@ -20,7 +20,7 @@ public final class VesselParser extends SheetsParser {
 
     /**
      * Create and parse.
-     * 
+     *
      * @param stowbaseObjectFactory
      * @param messages
      * @param workbook
@@ -45,7 +45,7 @@ public final class VesselParser extends SheetsParser {
 
     /**
      * Adds moves to stowage
-     * 
+     *
      * @param stowage
      */
     public void addDataToStowage(final StowbaseObject stowage) {

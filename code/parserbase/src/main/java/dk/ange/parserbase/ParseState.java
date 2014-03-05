@@ -2,7 +2,7 @@ package dk.ange.parserbase;
 
 /**
  * A parse state, capable of creating a result, once parsing is over.
- * 
+ *
  * @param <T>
  *            The result of parsing the input.
  */
@@ -12,7 +12,7 @@ public class ParseState<T> {
 
     /**
      * Saves the (mutable) result object
-     * 
+     *
      * @param containedResult
      */
     public ParseState(final T containedResult) {
@@ -21,7 +21,7 @@ public class ParseState<T> {
 
     /**
      * Create a result, or throw an exception.
-     * 
+     *
      * @return The result of parsing the input.
      */
     public T getResult() {

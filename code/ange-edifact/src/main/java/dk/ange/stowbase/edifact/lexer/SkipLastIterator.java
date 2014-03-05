@@ -5,7 +5,7 @@ import java.util.NoSuchElementException;
 
 /**
  * An Iterator that skips the last element
- * 
+ *
  * @param <T>
  *            Type in Iterator
  */

@@ -9,7 +9,7 @@ import java.util.Iterator;
  * <code>
  * for (final Row row : new IterableIterator<Row>(sheet.rowIterator())) {
  * </code>
- * 
+ *
  * @param <T>
  *            Type to iterate over
  */
@@ -19,7 +19,7 @@ public class IterableIterator<T> implements Iterable<T> {
 
     /**
      * The constructor
-     * 
+     *
      * @param iterator
      */
     public IterableIterator(final Iterator<T> iterator) {

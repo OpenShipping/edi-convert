@@ -2,7 +2,7 @@ package dk.ange.parserbase;
 
 /**
  * A sequence that is repeated one or more times.
- * 
+ *
  * @param <T>
  *            The class of the data item, e.g. an Enum that has values such as TABLE_HEADER, TABLE_CONTENT_LINE...
  * @param <D>
@@ -16,7 +16,7 @@ public class OneOrMore<T, D, R> implements Sequence<T, D, R> {
 
     /**
      * Initialize this instance.
-     * 
+     *
      * @param repeatable
      *            The sequence to repeat one or more times.
      */

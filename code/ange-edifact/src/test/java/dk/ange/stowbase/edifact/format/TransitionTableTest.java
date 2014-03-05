@@ -47,7 +47,7 @@ public final class TransitionTableTest {
 
     /**
      * Test
-     * 
+     *
      * @param args
      */
     public static void main(final String[] args) {

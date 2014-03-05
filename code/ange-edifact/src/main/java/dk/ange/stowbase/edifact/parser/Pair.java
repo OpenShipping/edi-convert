@@ -2,11 +2,11 @@ package dk.ange.stowbase.edifact.parser;
 
 /**
  * A generic pair a la C++ std::pair.
- * 
+ *
  * Pairs two instances of types F and S, whatever they might be.
- * 
+ *
  * @author Anders Sewerin Johansen
- * 
+ *
  * @param <F>
  *            Type of first item in pair.
  * @param <S>
@@ -20,7 +20,7 @@ public class Pair<F, S> {
 
     /**
      * Bind two item into a pair.
-     * 
+     *
      * @param first
      *            The first item in the pair.
      * @param second
@@ -32,7 +32,7 @@ public class Pair<F, S> {
     }
 
     /**
-     * 
+     *
      * @return The first item of this pair.
      */
     public F getFirst() {
@@ -40,7 +40,7 @@ public class Pair<F, S> {
     }
 
     /**
-     * 
+     *
      * @return The second item of this pair.
      */
     public S getSecond() {

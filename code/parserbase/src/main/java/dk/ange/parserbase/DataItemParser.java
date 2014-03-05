@@ -2,7 +2,7 @@ package dk.ange.parserbase;
 
 /**
  * A parser for a single data item.
- * 
+ *
  * @param <D>
  *            The type of the data item to parse.
  * @param <R>
@@ -12,7 +12,7 @@ public interface DataItemParser<D, R> {
 
     /**
      * Parse a single data item.
-     * 
+     *
      * @param item
      *            The data item to parse.
      * @param parseState

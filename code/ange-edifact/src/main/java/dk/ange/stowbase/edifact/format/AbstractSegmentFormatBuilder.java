@@ -6,22 +6,22 @@ package dk.ange.stowbase.edifact.format;
 public abstract class AbstractSegmentFormatBuilder {
 
     /**
-     * 
+     *
      */
     public String position;
 
     /**
-     * 
+     *
      */
     public String name;
 
     /**
-     * 
+     *
      */
     public boolean mandatory;
 
     /**
-     * 
+     *
      */
     public int occurrences;
 

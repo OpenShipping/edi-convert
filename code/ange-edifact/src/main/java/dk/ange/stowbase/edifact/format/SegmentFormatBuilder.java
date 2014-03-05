@@ -6,7 +6,7 @@ package dk.ange.stowbase.edifact.format;
 public class SegmentFormatBuilder extends AbstractSegmentFormatBuilder {
 
     /**
-     * 
+     *
      */
     public String tag;
 
