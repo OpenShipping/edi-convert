@@ -44,7 +44,7 @@ public final class Segment {
      */
     public Segment(final Tag tag, final List<Composite> dataElements) {
         this.tag = tag;
-        this.dataElements = new ArrayList<Composite>(dataElements);
+        this.dataElements = new ArrayList<>(dataElements);
     }
 
     private static Tag initTag(final List<Token> tokenList) {
@@ -57,7 +57,7 @@ public final class Segment {
     }
 
     private List<Composite> parse(final List<Token> tokenList) {
-        final List<Composite> dataElements1 = new ArrayList<Composite>();
+        final List<Composite> dataElements1 = new ArrayList<>();
         int firstToken = 0;
         for (int lastToken = 0; lastToken <= tokenList.size(); ++lastToken) {
             if (lastToken != tokenList.size() && !(tokenList.get(lastToken) instanceof DataElementSeparator)) {

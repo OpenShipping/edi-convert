@@ -48,7 +48,7 @@ public class BaplieContentHandler implements ContentHandler {
 
     private final References moves = new References();
 
-    private final List<DangerousGoods> dangerousGoodsList = new ArrayList<DangerousGoods>();
+    private final List<DangerousGoods> dangerousGoodsList = new ArrayList<>();
 
     /**
      * @param stowbase

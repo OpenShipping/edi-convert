@@ -28,7 +28,7 @@ public class SegmentGroupFormatBuilder extends AbstractSegmentFormatBuilder {
     public SegmentGroupFormatBuilder(final String position, final String name, final boolean mandatory,
             final int occurrences, final int groupBoundaryColumn) {
         super(position, name, mandatory, occurrences);
-        this.members = new ArrayList<AbstractSegmentFormatBuilder>();
+        this.members = new ArrayList<>();
         this.groupBoundaryColumn = groupBoundaryColumn;
     }
 

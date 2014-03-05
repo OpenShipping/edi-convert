@@ -1,5 +1,6 @@
 package dk.ange.stowbase.edifact.baplie;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 import org.stowbase.client.StowbaseObjectFactory;
@@ -41,8 +42,11 @@ public class ImportBaplie {
         final BaplieContentHandler contentHandler = new BaplieContentHandler(stowbase, "1000000");
         reader.setContentHandler(contentHandler);
         reader.setSegmentTable(FormatReader.readFormat(BaplieContentHandler.class.getResourceAsStream("BAPLIE_D.95B")));
-        final InputStream inputStream = ImportBaplie.class.getResourceAsStream(fileName);
-        reader.parse(new EdifactLexer(inputStream));
+        try (final InputStream inputStream = ImportBaplie.class.getResourceAsStream(fileName)) {
+            reader.parse(new EdifactLexer(inputStream));
+        } catch (final IOException e) {
+            throw new RuntimeException(e);
+        }
         System.out.println("Saw " + contentHandler.getCount() + " containers in " + fileName);
         stowbase.flush();
         writerExporter.flush(fileName + ".json");

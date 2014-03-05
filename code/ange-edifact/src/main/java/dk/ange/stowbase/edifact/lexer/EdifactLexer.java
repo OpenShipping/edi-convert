@@ -30,7 +30,7 @@ public final class EdifactLexer implements Iterator<Segment> {
 
     private void updateNext() {
         if (scanner.hasNext()) {
-            final List<Token> tokenList = new ArrayList<Token>();
+            final List<Token> tokenList = new ArrayList<>();
             while (true) {
                 final Token token = scanner.next();
                 if (token instanceof SegmentTerminator) {

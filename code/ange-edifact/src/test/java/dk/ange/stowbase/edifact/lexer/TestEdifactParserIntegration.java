@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import dk.ange.stowbase.edifact.Segment;
 import dk.ange.stowbase.edifact.Tag;
-import dk.ange.stowbase.edifact.parser.BaplieTest;
+import dk.ange.stowbase.edifact.baplie.BaplieTest;
 
 /**
  * Small integration test for EdifactParser.

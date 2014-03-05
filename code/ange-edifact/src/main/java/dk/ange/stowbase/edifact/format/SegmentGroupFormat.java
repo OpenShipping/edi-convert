@@ -31,7 +31,7 @@ public class SegmentGroupFormat extends AbstractSegmentFormat {
      */
     public SegmentGroupFormat(final SegmentGroupFormatBuilder builder) {
         super(builder);
-        final List<AbstractSegmentFormat> newMembers = new ArrayList<AbstractSegmentFormat>(builder.members.size());
+        final List<AbstractSegmentFormat> newMembers = new ArrayList<>(builder.members.size());
         for (final AbstractSegmentFormatBuilder member : builder.members) {
             newMembers.add(member.build());
         }

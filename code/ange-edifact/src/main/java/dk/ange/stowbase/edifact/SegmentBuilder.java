@@ -11,7 +11,7 @@ public final class SegmentBuilder {
 
     private Tag tag = null;
 
-    private final List<Composite> dataElements = new ArrayList<Composite>();
+    private final List<Composite> dataElements = new ArrayList<>();
 
     /**
      * @param string

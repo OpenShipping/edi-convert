@@ -11,33 +11,31 @@ import dk.ange.stowbase.edifact.lexer.EdifactLexer;
 /**
  * Test a very simple example
  */
-public class RunAsjFormat {
+public class RunAsjFormatTest {
 
     /**
-     * @param args
+     * @throws IOException
      */
-    public static void main(final String[] args) {
+    public void test() throws IOException {
         final EdifactReader reader = new EdifactReader();
         reader.setContentHandler(new CH());
         reader.setSegmentTable(FormatReader.readFormat(BaplieTest.class.getResourceAsStream("ASJ_D.95B")));
         try (final InputStream inputStream = BaplieTest.class.getResourceAsStream("ASJ.edi.txt")) {
             reader.parse(new EdifactLexer(inputStream));
-        } catch (final IOException e) {
-            throw new RuntimeException(e);
         }
     }
 
     private static class CH implements ContentHandler {
         public void startGroup(final String position) {
-            System.out.println("startGroup: " + position);
+            // System.out.println("startGroup: " + position);
         }
 
         public void endGroup(final String position) {
-            System.out.println("endGroup: " + position);
+            // System.out.println("endGroup: " + position);
         }
 
         public void segment(final String position, final Segment segment) {
-            System.out.println("Segment at: " + position);
+            // System.out.println("Segment at: " + position);
         }
     }
 

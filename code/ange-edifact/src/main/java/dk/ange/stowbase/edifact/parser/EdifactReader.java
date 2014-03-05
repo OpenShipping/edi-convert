@@ -47,11 +47,11 @@ public class EdifactReader {
             throw new RuntimeException("Cannot parse before segment table has been set");
         }
 
-        final ParseState<ContentHandler> initialState = new ParseState<ContentHandler>(contentHandler);
+        final ParseState<ContentHandler> initialState = new ParseState<>(contentHandler);
 
         try {
             EdifactFactory.makeSequence(group).parse(
-                    new IteratorBasedLexer<Tag, Segment>(new ModifyIterator(segments)), initialState);
+                    new IteratorBasedLexer<>(new ModifyIterator(segments)), initialState);
         } catch (final ParseError e) {
             throw new RuntimeException("Error parsing document", e);
         }
@@ -67,7 +67,7 @@ public class EdifactReader {
 
         public ModifyIterator(final Iterator<Segment> iterator) {
             iterator.next(); // Skip first element
-            this.iterator = new SkipLastIterator<Segment>(iterator);
+            this.iterator = new SkipLastIterator<>(iterator);
         }
 
         public boolean hasNext() {
@@ -80,10 +80,10 @@ public class EdifactReader {
             }
             if (iterator.hasNext()) {
                 final Segment segment = iterator.next();
-                return new GenericLexedPair<Tag, Segment>(segment.getTag(), segment);
+                return new GenericLexedPair<>(segment.getTag(), segment);
             } else {
                 hasSentEOF = true;
-                return new GenericLexedPair<Tag, Segment>(Tag.END_OF_EDIFACT_FILE, null);
+                return new GenericLexedPair<>(Tag.END_OF_EDIFACT_FILE, null);
             }
         }
 

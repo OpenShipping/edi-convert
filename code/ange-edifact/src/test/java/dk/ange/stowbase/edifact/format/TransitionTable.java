@@ -26,9 +26,9 @@ public class TransitionTable {
      */
     public TransitionTable(final SegmentGroupFormat segmentGroupFormat) {
         this.segments = getSegments(segmentGroupFormat);
-        transitionTable = new HashMap<StateInput, SegmentFormat>();
+        transitionTable = new HashMap<>();
         SegmentFormat state = null;
-        final Collection<SegmentFormat> conditionals = new ArrayList<SegmentFormat>();
+        final Collection<SegmentFormat> conditionals = new ArrayList<>();
         for (final SegmentFormat nextState : segments) {
             isNull(transitionTable.put(new StateInput(state, nextState.getTag()), nextState));
             for (final SegmentFormat conditional : conditionals) {
@@ -65,7 +65,7 @@ public class TransitionTable {
     }
 
     private List<SegmentFormat> getSegments(final SegmentGroupFormat group) {
-        final List<SegmentFormat> segments1 = new ArrayList<SegmentFormat>();
+        final List<SegmentFormat> segments1 = new ArrayList<>();
         getSegments(segments1, group);
         return segments1;
     }
@@ -87,11 +87,11 @@ public class TransitionTable {
      */
     public void write(final PrintStream out) {
         // Create list of possible states (segments)
-        final List<SegmentFormat> states = new ArrayList<SegmentFormat>(segments);
+        final List<SegmentFormat> states = new ArrayList<>(segments);
         states.add(0, null);
         // Create list of possible inputs (tags)
-        final Set<Tag> seenTag = new HashSet<Tag>();
-        final List<Tag> inputs = new ArrayList<Tag>();
+        final Set<Tag> seenTag = new HashSet<>();
+        final List<Tag> inputs = new ArrayList<>();
         for (final SegmentFormat format : segments) {
             if (seenTag.contains(format.getTag())) {
                 continue;

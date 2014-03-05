@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import dk.ange.stowbase.edifact.Segment;
-import dk.ange.stowbase.edifact.parser.BaplieTest;
+import dk.ange.stowbase.edifact.baplie.BaplieTest;
 
 /**
  * Test the lexer

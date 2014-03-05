@@ -1,15 +1,18 @@
-package dk.ange.stowbase.edifact.parser;
+package dk.ange.stowbase.edifact.baplie;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 import dk.ange.stowbase.edifact.Segment;
 import dk.ange.stowbase.edifact.format.FormatReader;
 import dk.ange.stowbase.edifact.lexer.EdifactLexer;
+import dk.ange.stowbase.edifact.parser.ContentHandler;
+import dk.ange.stowbase.edifact.parser.EdifactReader;
 
 /**
  *
  */
-public class BaplieTest {
+public class RunBaplie {
 
     /**
      * @param args
@@ -17,9 +20,12 @@ public class BaplieTest {
     public static void main(final String[] args) {
         final EdifactReader reader = new EdifactReader();
         reader.setContentHandler(new CH());
-        reader.setSegmentTable(FormatReader.readFormat(BaplieTest.class.getResourceAsStream("BAPLIE_D.95B")));
-        final InputStream inputStream = BaplieTest.class.getResourceAsStream("GBSOU_arrival.BAPLIE.edi.txt");
-        reader.parse(new EdifactLexer(inputStream));
+        reader.setSegmentTable(FormatReader.readFormat(RunBaplie.class.getResourceAsStream("BAPLIE_D.95B")));
+        try (final InputStream inputStream = RunBaplie.class.getResourceAsStream("GBSOU_arrival.BAPLIE.edi.txt")) {
+            reader.parse(new EdifactLexer(inputStream));
+        } catch (final IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static class CH implements ContentHandler {

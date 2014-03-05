@@ -30,7 +30,7 @@ public final class FormatReader {
                 // Slurp until header is found
             }
 
-            final List<SegmentGroupFormatBuilder> stack = new ArrayList<SegmentGroupFormatBuilder>();
+            final List<SegmentGroupFormatBuilder> stack = new ArrayList<>();
             stack.add(messageFormatBuilder);
 
             String line;

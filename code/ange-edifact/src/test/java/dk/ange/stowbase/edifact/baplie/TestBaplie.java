@@ -2,6 +2,7 @@ package dk.ange.stowbase.edifact.baplie;
 
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.regex.Matcher;
@@ -22,9 +23,11 @@ public class TestBaplie {
 
     /**
      * Test
+     *
+     * @throws IOException
      */
     @Test
-    public void testBaplie() {
+    public void testBaplie() throws IOException {
         final StringWriter stringWriter = new StringWriter();
         final WriterExporter writerExporter = new WriterExporter(stringWriter);
         final StowbaseObjectFactory stowbase = writerExporter.stowbaseObjectFactory();
@@ -35,8 +38,9 @@ public class TestBaplie {
         reader.setContentHandler(contentHandler);
         reader.setSegmentTable(FormatReader.readFormat(BaplieContentHandler.class.getResourceAsStream("BAPLIE_D.95B")));
         final String fileName = "job_43002_input_Release_data.txt";
-        final InputStream inputStream = ImportBaplie.class.getResourceAsStream(fileName);
-        reader.parse(new EdifactLexer(inputStream));
+        try (final InputStream inputStream = ImportBaplie.class.getResourceAsStream(fileName)) {
+            reader.parse(new EdifactLexer(inputStream));
+        }
 
         stowbase.flush();
         writerExporter.flush("baplie.json");
@@ -51,8 +55,8 @@ public class TestBaplie {
         assertTrue("Match data", matcher.find());
         // DGS+IMD+6.1+1809++I'
         final String dataLine = matcher.group();
-        assertTrue("Should contain the data for DGS+IMD+6.1+1809++I': " + dataLine, dataLine
-                .contains("urn:stowbase.org:dg:unNumber=1809,imdgClass=6.1"));
+        assertTrue("Should contain the data for DGS+IMD+6.1+1809++I': " + dataLine,
+                dataLine.contains("urn:stowbase.org:dg:unNumber=1809,imdgClass=6.1"));
     }
 
 }

@@ -4,8 +4,8 @@ import java.io.InputStream;
 
 import dk.ange.stowbase.edifact.Segment;
 import dk.ange.stowbase.edifact.Tag;
+import dk.ange.stowbase.edifact.baplie.BaplieTest;
 import dk.ange.stowbase.edifact.lexer.EdifactLexer;
-import dk.ange.stowbase.edifact.parser.BaplieTest;
 
 /**
  * Read a Baplie file.

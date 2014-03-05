@@ -8,7 +8,7 @@ import java.util.Map;
  */
 public final class Tag {
 
-    private static final Map<String, Tag> instances = new HashMap<String, Tag>();
+    private static final Map<String, Tag> instances = new HashMap<>();
 
     /**
      * The synthetic end-of-file marker used in parsing of EDIFACT files.

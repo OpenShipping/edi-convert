@@ -47,7 +47,7 @@ public final class Composite {
             throw new IllegalArgumentException("token0=" + token0);
         }
 
-        composite = new ArrayList<DataElement>();
+        composite = new ArrayList<>();
         composite.add(standalone);
         for (int tNo = 1; tNo < tokenList.size(); ++tNo) {
             final Token token = tokenList.get(tNo);
@@ -83,7 +83,7 @@ public final class Composite {
             if (dataElements.length == 1) {
                 composite = null;
             } else {
-                final ArrayList<DataElement> list = new ArrayList<DataElement>();
+                final ArrayList<DataElement> list = new ArrayList<>();
                 for (final String dataelement : dataElements) {
                     list.add(new DataElement(dataelement));
                 }
@@ -113,7 +113,7 @@ public final class Composite {
             return composite;
         }
         // We have one item, create a list and cache it
-        composite = new ArrayList<DataElement>(1);
+        composite = new ArrayList<>(1);
         composite.add(standalone);
         composite = Collections.unmodifiableList(composite);
         return composite;

@@ -16,7 +16,7 @@ public abstract class IteratorToList {
      * @return a list with all the data from iterator
      */
     public static <T> List<T> read(final Iterator<T> iterator) {
-        final List<T> list = new ArrayList<T>();
+        final List<T> list = new ArrayList<>();
         while (iterator.hasNext()) {
             list.add(iterator.next());
         }

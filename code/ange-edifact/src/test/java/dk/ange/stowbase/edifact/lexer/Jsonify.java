@@ -31,8 +31,7 @@ public abstract class Jsonify {
      *            The JSON document is encoded using this encoding.
      */
     public static void jsonify(final List<Segment> segments, final OutputStream destination, final JsonEncoding encoding) {
-        try {
-            final JsonGenerator jgen = new JsonFactory().createJsonGenerator(destination, encoding);
+        try (final JsonGenerator jgen = new JsonFactory().createJsonGenerator(destination, encoding)) {
             jgen.useDefaultPrettyPrinter();
             jgen.writeStartArray();// BEGIN list of segments
             for (final Segment seg : segments) {
@@ -51,7 +50,6 @@ public abstract class Jsonify {
                 jgen.writeEndObject(); // END segment object
             }
             jgen.writeEndArray(); // END list of segments
-            jgen.close();
         } catch (final JsonGenerationException e) {
             throw new RuntimeException("There was en error in the JSON-generating code", e);
         } catch (final IOException e) {
