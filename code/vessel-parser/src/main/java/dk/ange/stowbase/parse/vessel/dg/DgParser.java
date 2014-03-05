@@ -1,4 +1,4 @@
-package dk.ange.stowbase.parse.vessel;
+package dk.ange.stowbase.parse.vessel.dg;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,6 +20,7 @@ import org.stowbase.client.objects.VesselProfile;
 import dk.ange.stowbase.parse.utils.BRL;
 import dk.ange.stowbase.parse.utils.IterableIterator;
 import dk.ange.stowbase.parse.utils.Messages;
+import dk.ange.stowbase.parse.vessel.BaysMapping;
 import dk.ange.stowbase.parse.vessel.stacks.StackData;
 import dk.ange.stowbase.parse.vessel.stacks.StackDataSheetsParser;
 

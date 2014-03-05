@@ -15,6 +15,7 @@ import org.stowbase.client.objects.VesselProfile;
 
 import dk.ange.stowbase.parse.utils.Messages;
 import dk.ange.stowbase.parse.utils.ParseException;
+import dk.ange.stowbase.parse.vessel.dg.DgParser;
 import dk.ange.stowbase.parse.vessel.stability.BonjeanParser;
 import dk.ange.stowbase.parse.vessel.stability.ConstWgtsParser;
 import dk.ange.stowbase.parse.vessel.stability.HullWgtDistrParser;
