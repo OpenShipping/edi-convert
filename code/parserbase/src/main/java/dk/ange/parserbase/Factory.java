@@ -9,7 +9,7 @@ import dk.ange.parserbase.factoryhelperclasses.BackpatchableZeroOrMore;
 
 /**
  * A factory class for various classes that are useful when constructing a parser.
- * 
+ *
  * @param <T>
  *            The lexer type of the input to parse.
  * @param <D>
@@ -21,21 +21,21 @@ public abstract class Factory<T, D, R> {
 
     /**
      * This is where you should be making your parser.
-     * 
+     *
      * @return The Sequence that is your parser.
      */
     public abstract Sequence<T, D, R> makeSequence();
 
     /**
      * Create a sequence that will be accepted one or more times. Equivalent to the regular expression metacharacter +
-     * 
+     *
      * @param obj
      *            The objects to turn into a sequence.
      * @return A sequence that will be accepted one or more times.
-     * 
+     *
      */
     public Sequence<T, D, R> oneOrMore(final Object... obj) {
-        return new OneOrMore<T, D, R>(sequence(obj));
+        return new OneOrMore<>(sequence(obj));
     }
 
     /**
@@ -44,32 +44,32 @@ public abstract class Factory<T, D, R> {
      * @return A sequence that will be matched zero or one times.
      */
     public Sequence<T, D, R> optional(final Object... obj) {
-        return new BackpatchableOptional<T, D, R>(sequence(obj));
+        return new BackpatchableOptional<>(sequence(obj));
     }
 
     /**
-     * 
+     *
      * @param obj
      *            The objects to make an optional sequence of.
      * @return A sequence that will be matched zero, one or more times.
      */
     public Sequence<T, D, R> zeroOrMore(final Object... obj) {
-        return new BackpatchableZeroOrMore<T, D, R>(sequence(obj));
+        return new BackpatchableZeroOrMore<>(sequence(obj));
     }
 
     /**
-     * 
+     *
      * @param obj
      *            The different sequences that can be matched here.
      * @return A sequence that will match one of the provided optional sequences.
      */
     public Sequence<T, D, R> oneOrOther(final Object... obj) {
         final List<Sequence<T, D, R>> alternatives = objectsToSequences(obj);
-        return new OneOrOther<T, D, R>(alternatives);
+        return new OneOrOther<>(alternatives);
     }
 
     /**
-     * 
+     *
      * @param objects
      *            A sequence of one or more sub-sequences.
      * @return A sequence consisting of one or more sub-sequences.
@@ -82,31 +82,31 @@ public abstract class Factory<T, D, R> {
         if (sequences.size() == 1) {
             return sequences.get(0);
         }
-        return new CompoundSequence<T, D, R>(objectsToSequences(objects));
+        return new CompoundSequence<>(objectsToSequences(objects));
     }
 
     @SuppressWarnings("unchecked")
     private List<Sequence<T, D, R>> objectsToSequences(final Object... objects) {
-        final List<Object> objectsAndEnd = new LinkedList<Object>(Arrays.asList(objects));
+        final List<Object> objectsAndEnd = new LinkedList<>(Arrays.asList(objects));
         objectsAndEnd.add(neutral);
-        final List<Sequence<T, D, R>> res = new LinkedList<Sequence<T, D, R>>();
+        final List<Sequence<T, D, R>> res = new LinkedList<>();
         T seenT = null;
         for (final Object obj : objectsAndEnd) {
             if (obj instanceof Sequence) {
                 if (seenT != null) {
-                    res.add(new SingleItemSequence<T, D, R>(seenT, neutral));
+                    res.add(new SingleItemSequence<>(seenT, neutral));
                 }
                 res.add((Sequence<T, D, R>) obj);
                 seenT = null;
             } else if (obj instanceof DataItemParser) {
                 if (seenT != null) {
-                    res.add(new SingleItemSequence<T, D, R>(seenT, (DataItemParser<D, R>) obj));
+                    res.add(new SingleItemSequence<>(seenT, (DataItemParser<D, R>) obj));
                     seenT = null;
                 }
             } else {
                 // Assume object is type T
                 if (seenT != null) {
-                    res.add(new SingleItemSequence<T, D, R>(seenT, neutral));
+                    res.add(new SingleItemSequence<>(seenT, neutral));
                 }
                 seenT = (T) obj;
             }

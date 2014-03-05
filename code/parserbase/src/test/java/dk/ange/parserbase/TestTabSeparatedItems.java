@@ -23,6 +23,7 @@ public class TestTabSeparatedItems extends TestCase {
     /**
      * Test simple creation.
      */
+    @SuppressWarnings("unused")
     public void testCanCreate() {
         new HelperClass();
     }
@@ -32,7 +33,7 @@ public class TestTabSeparatedItems extends TestCase {
      */
     public void testEmptyString() {
         final HelperClass parser = new HelperClass();
-        final ParseState<String> parseState = new ParseState<String>("");
+        final ParseState<String> parseState = new ParseState<>("");
         assertNull(parser.seen);
         final ParseState<String> parseResult = parser.parse("", parseState);
         assertSame(parseState, parseResult);
@@ -47,7 +48,7 @@ public class TestTabSeparatedItems extends TestCase {
      */
     public void testOneString() {
         final HelperClass parser = new HelperClass();
-        final ParseState<String> parseState = new ParseState<String>("");
+        final ParseState<String> parseState = new ParseState<>("");
         assertNull(parser.seen);
         final ParseState<String> parseResult = parser.parse("1", parseState);
         assertSame(parseState, parseResult);
@@ -62,7 +63,7 @@ public class TestTabSeparatedItems extends TestCase {
      */
     public void testTwoStrings() {
         final HelperClass parser = new HelperClass();
-        final ParseState<String> parseState = new ParseState<String>("");
+        final ParseState<String> parseState = new ParseState<>("");
         assertNull(parser.seen);
         final ParseState<String> parseResult = parser.parse("1\t2", parseState);
         assertSame(parseState, parseResult);
@@ -77,7 +78,7 @@ public class TestTabSeparatedItems extends TestCase {
 
         @Override
         protected ParseState<Double> parse(final List<String> l, final ParseState<Double> parseState) {
-            return new ParseState<Double>(stringToDouble(l.get(0)));
+            return new ParseState<>(stringToDouble(l.get(0)));
         }
 
     }
@@ -100,7 +101,7 @@ public class TestTabSeparatedItems extends TestCase {
     }
 
     private void parseAndCompare(final Converter converter, final Double expected, final String input) {
-        assertEquals(expected, converter.parse(input, new ParseState<Double>(667.666)).getResult());
+        assertEquals(expected, converter.parse(input, new ParseState<>(667.666)).getResult());
     }
 
 }

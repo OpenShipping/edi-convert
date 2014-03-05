@@ -5,7 +5,7 @@ import dk.ange.parserbase.Sequence;
 
 /**
  * Extend the base class to create Optional instances once the followed-by part is provided.
- * 
+ *
  * @param <T>
  *            The lexer type of the input to parse.
  * @param <D>
@@ -17,7 +17,7 @@ public class BackpatchableOptional<T, D, R> extends BackpatchableFollowedBy<T, D
 
     /**
      * Initialize super with the optional part of this sequence.
-     * 
+     *
      * @param optionalPart
      *            The optional part of this sequence.
      */
@@ -27,7 +27,7 @@ public class BackpatchableOptional<T, D, R> extends BackpatchableFollowedBy<T, D
 
     @Override
     protected Sequence<T, D, R> makeWrapped(final Sequence<T, D, R> optionalPart, final Sequence<T, D, R> followedBy) {
-        return new Optional<T, D, R>(optionalPart, followedBy);
+        return new Optional<>(optionalPart, followedBy);
     }
 
     @Override

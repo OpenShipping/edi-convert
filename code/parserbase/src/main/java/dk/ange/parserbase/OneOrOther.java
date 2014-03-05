@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * Accept one of the provided sequences.
- * 
+ *
  * @param <T>
  *            The class of the data item, e.g. an Enum that has values such as TABLE_HEADER, TABLE_CONTENT_LINE...
  * @param <D>
@@ -19,12 +19,12 @@ public class OneOrOther<T, D, R> implements Sequence<T, D, R> {
 
     /**
      * Initialize the instance.
-     * 
+     *
      * @param alternatives
      *            The sequences that this sequence will accept one of.
      */
     public OneOrOther(final List<Sequence<T, D, R>> alternatives) {
-        this.alternatives = new ArrayList<Sequence<T, D, R>>(alternatives);
+        this.alternatives = new ArrayList<>(alternatives);
     }
 
     public ParseState<R> parse(final ItemProvider<T, D> itemProvider, final ParseState<R> initialState)

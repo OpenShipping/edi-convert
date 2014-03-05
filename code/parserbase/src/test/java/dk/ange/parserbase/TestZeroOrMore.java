@@ -51,14 +51,14 @@ public class TestZeroOrMore extends TestCase {
 
         assertTrue(seq.consumes(LexerType.FIRST_KIND));
 
-        final List<LexedPair<LexerType, String>> input = new LinkedList<LexedPair<LexerType, String>>();
+        final List<LexedPair<LexerType, String>> input = new LinkedList<>();
 
-        input.add(new GenericLexedPair<LexerType, String>(LexerType.THIRD_KIND, ""));
+        input.add(new GenericLexedPair<>(LexerType.THIRD_KIND, ""));
 
-        final IteratorBasedLexer<LexerType, String> lex = new IteratorBasedLexer<LexerType, String>(input.iterator());
+        final IteratorBasedLexer<LexerType, String> lex = new IteratorBasedLexer<>(input.iterator());
 
         try {
-            seq.parse(lex, new ParseState<Integer>(0));
+            seq.parse(lex, new ParseState<>(0));
             fail("Should throw!");
         } catch (final ParseError e) {
             assertEquals(0, e.getPosition());
@@ -67,7 +67,7 @@ public class TestZeroOrMore extends TestCase {
 
     /**
      * Test that an action is matched as expected.
-     * 
+     *
      * @throws ParseError
      */
     public void testActionIsExecuted() throws ParseError {
@@ -77,12 +77,12 @@ public class TestZeroOrMore extends TestCase {
 
         assertTrue(seq.consumes(LexerType.FIRST_KIND));
 
-        final List<LexedPair<LexerType, String>> input = new LinkedList<LexedPair<LexerType, String>>();
+        final List<LexedPair<LexerType, String>> input = new LinkedList<>();
 
-        input.add(new GenericLexedPair<LexerType, String>(LexerType.FIRST_KIND, "data item"));
-        input.add(new GenericLexedPair<LexerType, String>(LexerType.SECOND_KIND, "data item"));
+        input.add(new GenericLexedPair<>(LexerType.FIRST_KIND, "data item"));
+        input.add(new GenericLexedPair<>(LexerType.SECOND_KIND, "data item"));
 
-        final IteratorBasedLexer<LexerType, String> lex = new IteratorBasedLexer<LexerType, String>(input.iterator());
+        final IteratorBasedLexer<LexerType, String> lex = new IteratorBasedLexer<>(input.iterator());
 
         assertEquals(0, action.executed);
 
@@ -90,7 +90,7 @@ public class TestZeroOrMore extends TestCase {
 
         assertEquals("", action.seenDataItem);
 
-        final Integer parseRes = seq.parse(lex, new ParseState<Integer>(667)).getResult();
+        final Integer parseRes = seq.parse(lex, new ParseState<>(667)).getResult();
 
         assertEquals(Integer.valueOf(999), parseRes);
 
@@ -103,7 +103,7 @@ public class TestZeroOrMore extends TestCase {
 
     /**
      * Test that an action is matched as expected.
-     * 
+     *
      * @throws ParseError
      */
     public void testActionIsExecutedTwice() throws ParseError {
@@ -113,13 +113,13 @@ public class TestZeroOrMore extends TestCase {
 
         assertTrue(seq.consumes(LexerType.FIRST_KIND));
 
-        final List<LexedPair<LexerType, String>> input = new LinkedList<LexedPair<LexerType, String>>();
+        final List<LexedPair<LexerType, String>> input = new LinkedList<>();
 
-        input.add(new GenericLexedPair<LexerType, String>(LexerType.FIRST_KIND, "data item"));
-        input.add(new GenericLexedPair<LexerType, String>(LexerType.FIRST_KIND, "data item"));
-        input.add(new GenericLexedPair<LexerType, String>(LexerType.SECOND_KIND, "data item"));
+        input.add(new GenericLexedPair<>(LexerType.FIRST_KIND, "data item"));
+        input.add(new GenericLexedPair<>(LexerType.FIRST_KIND, "data item"));
+        input.add(new GenericLexedPair<>(LexerType.SECOND_KIND, "data item"));
 
-        final IteratorBasedLexer<LexerType, String> lex = new IteratorBasedLexer<LexerType, String>(input.iterator());
+        final IteratorBasedLexer<LexerType, String> lex = new IteratorBasedLexer<>(input.iterator());
 
         assertEquals(0, action.executed);
 
@@ -127,7 +127,7 @@ public class TestZeroOrMore extends TestCase {
 
         assertEquals("", action.seenDataItem);
 
-        final Integer parseRes = seq.parse(lex, new ParseState<Integer>(667)).getResult();
+        final Integer parseRes = seq.parse(lex, new ParseState<>(667)).getResult();
 
         assertEquals(Integer.valueOf(999), parseRes);
 
@@ -140,7 +140,7 @@ public class TestZeroOrMore extends TestCase {
 
     /**
      * Test that an action is matched as expected.
-     * 
+     *
      * @throws ParseError
      */
     public void testOtherActionIsExecuted() throws ParseError {
@@ -150,12 +150,12 @@ public class TestZeroOrMore extends TestCase {
 
         assertTrue(seq.consumes(LexerType.FIRST_KIND));
 
-        final List<LexedPair<LexerType, String>> input = new LinkedList<LexedPair<LexerType, String>>();
+        final List<LexedPair<LexerType, String>> input = new LinkedList<>();
 
-        input.add(new GenericLexedPair<LexerType, String>(LexerType.FIRST_KIND, "data item"));
-        input.add(new GenericLexedPair<LexerType, String>(LexerType.SECOND_KIND, "data item"));
+        input.add(new GenericLexedPair<>(LexerType.FIRST_KIND, "data item"));
+        input.add(new GenericLexedPair<>(LexerType.SECOND_KIND, "data item"));
 
-        final IteratorBasedLexer<LexerType, String> lex = new IteratorBasedLexer<LexerType, String>(input.iterator());
+        final IteratorBasedLexer<LexerType, String> lex = new IteratorBasedLexer<>(input.iterator());
 
         assertEquals(0, action.executed);
 
@@ -163,7 +163,7 @@ public class TestZeroOrMore extends TestCase {
 
         assertEquals("", action.seenDataItem);
 
-        final Integer parseRes = seq.parse(lex, new ParseState<Integer>(667)).getResult();
+        final Integer parseRes = seq.parse(lex, new ParseState<>(667)).getResult();
 
         assertEquals(Integer.valueOf(42), parseRes);
 
@@ -191,14 +191,14 @@ public class TestZeroOrMore extends TestCase {
 
         assertTrue(seq.consumes(LexerType.FIRST_KIND));
 
-        final List<LexedPair<LexerType, String>> input = new LinkedList<LexedPair<LexerType, String>>();
+        final List<LexedPair<LexerType, String>> input = new LinkedList<>();
 
-        input.add(new GenericLexedPair<LexerType, String>(LexerType.FIRST_KIND, "data item"));
+        input.add(new GenericLexedPair<>(LexerType.FIRST_KIND, "data item"));
 
-        final IteratorBasedLexer<LexerType, String> lex = new IteratorBasedLexer<LexerType, String>(input.iterator());
+        final IteratorBasedLexer<LexerType, String> lex = new IteratorBasedLexer<>(input.iterator());
 
         try {
-            seq.parse(lex, new ParseState<Integer>(667)).getResult();
+            seq.parse(lex, new ParseState<>(667)).getResult();
             fail("Should have thrown");
         } catch (final ParseError e) {
             assertEquals(0, e.getPosition());
@@ -208,12 +208,12 @@ public class TestZeroOrMore extends TestCase {
 
     private Sequence<LexerType, String, Integer> makeSequence(final DataItemParser<String, Integer> action1,
             final DataItemParser<String, Integer> action2) {
-        final Sequence<LexerType, String, Integer> seq1 = new SingleItemSequence<LexerType, String, Integer>(
+        final Sequence<LexerType, String, Integer> seq1 = new SingleItemSequence<>(
                 LexerType.FIRST_KIND, action1);
-        final Sequence<LexerType, String, Integer> seq2 = new SingleItemSequence<LexerType, String, Integer>(
+        final Sequence<LexerType, String, Integer> seq2 = new SingleItemSequence<>(
                 LexerType.SECOND_KIND, action2);
 
-        return new ZeroOrMore<LexerType, String, Integer>(seq1, seq2);
+        return new ZeroOrMore<>(seq1, seq2);
     }
 
 }

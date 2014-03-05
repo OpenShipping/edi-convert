@@ -21,6 +21,7 @@ public class TestOneOrMore extends TestCase {
     /**
      * Ensure we can make a simple item
      */
+    @SuppressWarnings("unused")
     public void testCanCreate() {
         new OneOrMore<String, String, String>(null);
     }
@@ -30,7 +31,7 @@ public class TestOneOrMore extends TestCase {
      */
     public void testConsumes() {
 
-        final Sequence<LexerType, String, Integer> seq = new OneOrMore<LexerType, String, Integer>(
+        final Sequence<LexerType, String, Integer> seq = new OneOrMore<>(
                 new SingleItemSequence<LexerType, String, Integer>(LexerType.FIRST_KIND, null));
 
         assertTrue(seq.consumes(LexerType.FIRST_KIND));
@@ -40,7 +41,7 @@ public class TestOneOrMore extends TestCase {
      * Avoid a false positive on the coverage test
      */
     public void testToString() {
-        final Sequence<LexerType, String, Integer> seq = new OneOrMore<LexerType, String, Integer>(
+        final Sequence<LexerType, String, Integer> seq = new OneOrMore<>(
                 new SingleItemSequence<LexerType, String, Integer>(LexerType.FIRST_KIND, null));
         assertNotNull(seq.toString());
         assertFalse("".equals(seq.toString()));
@@ -55,14 +56,14 @@ public class TestOneOrMore extends TestCase {
 
         assertTrue(seq.consumes(LexerType.FIRST_KIND));
 
-        final List<LexedPair<LexerType, String>> input = new LinkedList<LexedPair<LexerType, String>>();
+        final List<LexedPair<LexerType, String>> input = new LinkedList<>();
 
-        input.add(new GenericLexedPair<LexerType, String>(LexerType.SECOND_KIND, ""));
+        input.add(new GenericLexedPair<>(LexerType.SECOND_KIND, ""));
 
-        final IteratorBasedLexer<LexerType, String> lex = new IteratorBasedLexer<LexerType, String>(input.iterator());
+        final IteratorBasedLexer<LexerType, String> lex = new IteratorBasedLexer<>(input.iterator());
 
         try {
-            seq.parse(lex, new ParseState<Integer>(0));
+            seq.parse(lex, new ParseState<>(0));
             fail("Should throw!");
         } catch (final ParseError e) {
             assertEquals(0, e.getPosition());
@@ -71,7 +72,7 @@ public class TestOneOrMore extends TestCase {
 
     /**
      * Test that an action is matched as expected.
-     * 
+     *
      * @throws ParseError
      */
     public void testActionIsExecuted() throws ParseError {
@@ -81,12 +82,12 @@ public class TestOneOrMore extends TestCase {
 
         assertTrue(seq.consumes(LexerType.FIRST_KIND));
 
-        final List<LexedPair<LexerType, String>> input = new LinkedList<LexedPair<LexerType, String>>();
+        final List<LexedPair<LexerType, String>> input = new LinkedList<>();
 
-        input.add(new GenericLexedPair<LexerType, String>(LexerType.FIRST_KIND, FIRST_DATA_ITEM));
-        input.add(new GenericLexedPair<LexerType, String>(LexerType.SECOND_KIND, SECOND_DATA_ITEM));
+        input.add(new GenericLexedPair<>(LexerType.FIRST_KIND, FIRST_DATA_ITEM));
+        input.add(new GenericLexedPair<>(LexerType.SECOND_KIND, SECOND_DATA_ITEM));
 
-        final IteratorBasedLexer<LexerType, String> lex = new IteratorBasedLexer<LexerType, String>(input.iterator());
+        final IteratorBasedLexer<LexerType, String> lex = new IteratorBasedLexer<>(input.iterator());
 
         assertEquals(0, action.executed);
 
@@ -94,7 +95,7 @@ public class TestOneOrMore extends TestCase {
 
         assertEquals("", action.seenDataItem);
 
-        final Integer parseRes = seq.parse(lex, new ParseState<Integer>(667)).getResult();
+        final Integer parseRes = seq.parse(lex, new ParseState<>(667)).getResult();
 
         assertEquals(Integer.valueOf(42), parseRes);
 
@@ -107,7 +108,7 @@ public class TestOneOrMore extends TestCase {
 
     /**
      * Test that an action is matched as expected.
-     * 
+     *
      * @throws ParseError
      */
     public void testActionIsExecutedSeveralTimes() throws ParseError {
@@ -117,13 +118,13 @@ public class TestOneOrMore extends TestCase {
 
         assertTrue(seq.consumes(LexerType.FIRST_KIND));
 
-        final List<LexedPair<LexerType, String>> input = new LinkedList<LexedPair<LexerType, String>>();
+        final List<LexedPair<LexerType, String>> input = new LinkedList<>();
 
-        input.add(new GenericLexedPair<LexerType, String>(LexerType.FIRST_KIND, FIRST_DATA_ITEM));
-        input.add(new GenericLexedPair<LexerType, String>(LexerType.FIRST_KIND, SECOND_DATA_ITEM));
-        input.add(new GenericLexedPair<LexerType, String>(LexerType.SECOND_KIND, THIRD_DATA_ITEM));
+        input.add(new GenericLexedPair<>(LexerType.FIRST_KIND, FIRST_DATA_ITEM));
+        input.add(new GenericLexedPair<>(LexerType.FIRST_KIND, SECOND_DATA_ITEM));
+        input.add(new GenericLexedPair<>(LexerType.SECOND_KIND, THIRD_DATA_ITEM));
 
-        final IteratorBasedLexer<LexerType, String> lex = new IteratorBasedLexer<LexerType, String>(input.iterator());
+        final IteratorBasedLexer<LexerType, String> lex = new IteratorBasedLexer<>(input.iterator());
 
         assertEquals(0, action.executed);
 
@@ -131,7 +132,7 @@ public class TestOneOrMore extends TestCase {
 
         assertEquals("", action.seenDataItem);
 
-        final Integer parseRes = seq.parse(lex, new ParseState<Integer>(667)).getResult();
+        final Integer parseRes = seq.parse(lex, new ParseState<>(667)).getResult();
 
         assertEquals(Integer.valueOf(42), parseRes);
 
@@ -159,14 +160,14 @@ public class TestOneOrMore extends TestCase {
 
         assertTrue(seq.consumes(LexerType.FIRST_KIND));
 
-        final List<LexedPair<LexerType, String>> input = new LinkedList<LexedPair<LexerType, String>>();
+        final List<LexedPair<LexerType, String>> input = new LinkedList<>();
 
-        input.add(new GenericLexedPair<LexerType, String>(LexerType.FIRST_KIND, FIRST_DATA_ITEM));
+        input.add(new GenericLexedPair<>(LexerType.FIRST_KIND, FIRST_DATA_ITEM));
 
-        final IteratorBasedLexer<LexerType, String> lex = new IteratorBasedLexer<LexerType, String>(input.iterator());
+        final IteratorBasedLexer<LexerType, String> lex = new IteratorBasedLexer<>(input.iterator());
 
         try {
-            seq.parse(lex, new ParseState<Integer>(667)).getResult();
+            seq.parse(lex, new ParseState<>(667)).getResult();
             fail("Should have thrown");
         } catch (final ParseError e) {
             assertEquals(0, e.getPosition());
@@ -175,7 +176,7 @@ public class TestOneOrMore extends TestCase {
     }
 
     private OneOrMore<LexerType, String, Integer> makeSequence(final DataItemParser<String, Integer> action) {
-        return new OneOrMore<LexerType, String, Integer>(new SingleItemSequence<LexerType, String, Integer>(
+        return new OneOrMore<>(new SingleItemSequence<>(
                 LexerType.FIRST_KIND, action));
     }
 

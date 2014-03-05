@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * A sequence that consists of one or more sequences.
- * 
+ *
  * @param <T>
  *            The lexer type of the data items.
  * @param <D>
@@ -19,11 +19,11 @@ public class CompoundSequence<T, D, R> implements Sequence<T, D, R>, HasFollowed
 
     private final List<Sequence<T, D, R>> unfixedSequence;
 
-    private final List<Sequence<T, D, R>> followedBy = new LinkedList<Sequence<T, D, R>>();
+    private final List<Sequence<T, D, R>> followedBy = new LinkedList<>();
 
     /**
      * Create an instance.
-     * 
+     *
      * @param sequence
      *            The sequence of one or more subsequences.
      */
@@ -53,7 +53,7 @@ public class CompoundSequence<T, D, R> implements Sequence<T, D, R>, HasFollowed
 
     @SuppressWarnings("unchecked")
     private List<Sequence<T, D, R>> fixSequence(final List<Sequence<T, D, R>> sequence2) {
-        final List<Sequence<T, D, R>> res = new LinkedList<Sequence<T, D, R>>();
+        final List<Sequence<T, D, R>> res = new LinkedList<>();
         for (int i = 0; i < sequence2.size(); ++i) {
             final Sequence<T, D, R> item = sequence2.get(i);
             res.add(item);
@@ -80,10 +80,10 @@ public class CompoundSequence<T, D, R> implements Sequence<T, D, R>, HasFollowed
                                     + "the parser classes, as it really ought to work - sorry.");
                         }
                     } else {
-                        itemAsFollowedBy.setFollowedBy(new OneOrOther<T, D, R>(followedBy));
+                        itemAsFollowedBy.setFollowedBy(new OneOrOther<>(followedBy));
                     }
                 } else {
-                    itemAsFollowedBy.setFollowedBy(new CompoundSequence<T, D, R>(restOfList));
+                    itemAsFollowedBy.setFollowedBy(new CompoundSequence<>(restOfList));
                 }
                 return res;
             }

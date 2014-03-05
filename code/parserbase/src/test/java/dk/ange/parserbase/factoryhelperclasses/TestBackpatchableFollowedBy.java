@@ -55,6 +55,7 @@ public class TestBackpatchableFollowedBy extends TestCase {
     /**
      * Test simple creation.
      */
+    @SuppressWarnings("unused")
     public void testCanCreate() {
         new Helper(null);
     }
@@ -74,9 +75,9 @@ public class TestBackpatchableFollowedBy extends TestCase {
      * Test setFollowedBy works as expected
      */
     public void testSetFollowedBy() {
-        final Sequence<LexerType, String, Integer> optional = new SingleItemSequence<LexerType, String, Integer>(
+        final Sequence<LexerType, String, Integer> optional = new SingleItemSequence<>(
                 LexerType.FIRST_KIND, neutral);
-        final Sequence<LexerType, String, Integer> followedBy = new SingleItemSequence<LexerType, String, Integer>(
+        final Sequence<LexerType, String, Integer> followedBy = new SingleItemSequence<>(
                 LexerType.SECOND_KIND, neutral);
 
         final Helper h = new Helper(optional);

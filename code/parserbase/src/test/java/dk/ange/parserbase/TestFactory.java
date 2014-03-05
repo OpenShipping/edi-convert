@@ -15,7 +15,7 @@ import dk.ange.parserbase.lexer.IteratorBasedLexer;
 public class TestFactory extends TestCase {
 
     private class Model {
-        List<Integer> seen = new LinkedList<Integer>();
+        List<Integer> seen = new LinkedList<>();
     }
 
     private class Lexer extends IteratorBasedLexer<LexerType, Integer> {
@@ -36,7 +36,7 @@ public class TestFactory extends TestCase {
 
     /**
      * Test running a single item sequence through a simple single item grammar.
-     * 
+     *
      * @throws ParseError
      */
     public void testSingleItemPass() throws ParseError {
@@ -53,7 +53,7 @@ public class TestFactory extends TestCase {
         final List<LexedPair<LexerType, Integer>> input = splice(lexList(LexerType.FIRST_KIND), intList(42));
 
         final Model m = simpleFactory.makeSequence().parse(new Lexer(input.iterator()),
-                new ParseState<Model>(new Model())).getResult();
+                new ParseState<>(new Model())).getResult();
 
         assertFalse(m.seen.isEmpty());
 
@@ -87,7 +87,7 @@ public class TestFactory extends TestCase {
 
     /**
      * Test that parsing works with two simple items.
-     * 
+     *
      * @throws ParseError
      */
     public void testSeveralItemsPass() throws ParseError {
@@ -104,7 +104,7 @@ public class TestFactory extends TestCase {
                 intList(42, 667));
 
         final Model m = simpleFactory.makeSequence().parse(new Lexer(input.iterator()),
-                new ParseState<Model>(new Model())).getResult();
+                new ParseState<>(new Model())).getResult();
 
         assertFalse(m.seen.isEmpty());
 
@@ -117,7 +117,7 @@ public class TestFactory extends TestCase {
 
     /**
      * Test that parsing works with two simple items.
-     * 
+     *
      */
     public void testSeveralItemsFail() {
         final Factory<LexerType, Integer, Model> simpleFactory = new Factory<LexerType, Integer, Model>() {
@@ -152,7 +152,7 @@ public class TestFactory extends TestCase {
     private void expectParseFail(final Factory<LexerType, Integer, Model> simpleFactory,
             final List<LexedPair<LexerType, Integer>> input2) {
         try {
-            simpleFactory.makeSequence().parse(new Lexer(input2.iterator()), new ParseState<Model>(new Model()));
+            simpleFactory.makeSequence().parse(new Lexer(input2.iterator()), new ParseState<>(new Model()));
             fail("Expected an exception here");
         } catch (final ParseError e) { // NOPMD Expected
             // Expected
@@ -161,9 +161,9 @@ public class TestFactory extends TestCase {
 
     private static List<LexedPair<LexerType, Integer>> splice(final List<LexerType> lexList, final List<Integer> intList) {
         assertEquals(lexList.size(), intList.size());
-        final List<LexedPair<LexerType, Integer>> res = new LinkedList<LexedPair<LexerType, Integer>>();
+        final List<LexedPair<LexerType, Integer>> res = new LinkedList<>();
         for (int i = 0; i < lexList.size(); ++i) {
-            res.add(new GenericLexedPair<LexerType, Integer>(lexList.get(i), intList.get(i)));
+            res.add(new GenericLexedPair<>(lexList.get(i), intList.get(i)));
         }
         return res;
     }

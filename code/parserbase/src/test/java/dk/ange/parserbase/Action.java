@@ -23,7 +23,7 @@ public class Action implements DataItemParser<String, Integer> {
         seenResult = parseState.getResult();
         seenDataItem = item;
 
-        final ParseState<Integer> res = new ParseState<Integer>(setTo);
+        final ParseState<Integer> res = new ParseState<>(setTo);
 
         return res;
     }

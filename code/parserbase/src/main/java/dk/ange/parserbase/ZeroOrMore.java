@@ -2,7 +2,7 @@ package dk.ange.parserbase;
 
 /**
  * A sequence that is repeated zero, one or more times.
- * 
+ *
  * @param <T>
  *            The class of the data item, e.g. an Enum that has values such as TABLE_HEADER, TABLE_CONTENT_LINE...
  * @param <D>
@@ -16,14 +16,14 @@ public class ZeroOrMore<T, D, R> implements Sequence<T, D, R> {
 
     /**
      * Create a new instance.
-     * 
+     *
      * @param repeatable
      *            The sequence to repeat zero, one or more times.
      * @param followedBy
      *            The sequence that follows the repeatable sequence.
      */
     public ZeroOrMore(final Sequence<T, D, R> repeatable, final Sequence<T, D, R> followedBy) {
-        wrapped = new Optional<T, D, R>(new OneOrMore<T, D, R>(repeatable), followedBy);
+        wrapped = new Optional<>(new OneOrMore<>(repeatable), followedBy);
     }
 
     public boolean consumes(final T type) {
