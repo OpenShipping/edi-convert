@@ -58,7 +58,7 @@ public class StressLimitsParser extends SheetsParser {
         if (sheet == null) {
             return;
         }
-        tableRows = new ArrayList<TableRow>();
+        tableRows = new ArrayList<>();
         try {
             parseSheet(sheet);
         } catch (final ParseException e) {
@@ -70,7 +70,7 @@ public class StressLimitsParser extends SheetsParser {
         final Iterator<Row> rowIterator = sheet.rowIterator();
 
         final Row firstRow = rowIterator.next();
-        keyMap = new HashMap<Header, Integer>();
+        keyMap = new HashMap<>();
         for (final Cell cell : firstRow) {
             keyMap.put(header(cellString(cell)), cell.getColumnIndex());
         }
@@ -87,7 +87,7 @@ public class StressLimitsParser extends SheetsParser {
                 .get(header("Torsion Torque positive (MNm)")) : -1;
         final int torsionNegColumn = keyMap.containsKey(header("Torsion Torque negative (MNm)")) ? keyMap
                 .get(header("Torsion Torque negative (MNm)")) : -1;
-        for (final Row row : new IterableIterator<Row>(rowIterator)) {
+        for (final Row row : new IterableIterator<>(rowIterator)) {
             try {
                 parseRow(row, lengthColumn, bendingPosColumn, bendingNegColumn, shearPosColumn, shearNegColumn,
                         torsionPosColumn, torsionNegColumn);
@@ -179,8 +179,8 @@ public class StressLimitsParser extends SheetsParser {
         stresslimitFunction.setInput1("lcg");
         stresslimitFunction.setInput2("draft");
         stresslimitFunction.setOutput(valuestring);
-        final List<Double> lcg = new ArrayList<Double>(tableRows.size());
-        final List<Double> stresslimit = new ArrayList<Double>(tableRows.size());
+        final List<Double> lcg = new ArrayList<>(tableRows.size());
+        final List<Double> stresslimit = new ArrayList<>(tableRows.size());
         for (final TableRow tableRow : tableRows) {
             switch (type) {
             case BENDING_MAX:

@@ -61,7 +61,7 @@ public final class VarTanksParser extends SingleSheetParser {
 
     private void parseSheet() {
         final PeekingIterator<Row> rowIterator = Iterators.peekingIterator(sheet.rowIterator());
-        for (final Row row : new IterableIterator<Row>(rowIterator)) {
+        for (final Row row : new IterableIterator<>(rowIterator)) {
             final Cell cell = row.getCell(0);
             final Header key = Header.header(cellString(cell));
             if (key == null || key.toString().length() == 0) {
@@ -157,7 +157,7 @@ public final class VarTanksParser extends SingleSheetParser {
     }
 
     private List<Double> readNumbers(final Row row) {
-        final List<Double> numbers = new ArrayList<Double>();
+        final List<Double> numbers = new ArrayList<>();
         for (final Cell cell : row) {
             if (cell.getColumnIndex() == 0) {
                 continue; // Skip first column

@@ -15,9 +15,9 @@ public class Messages {
 
     private Workbook workbook;
 
-    private final Collection<String> parsedSheets = new ArrayList<String>();
+    private final Collection<String> parsedSheets = new ArrayList<>();
 
-    private final Collection<String> warnings = new ArrayList<String>();
+    private final Collection<String> warnings = new ArrayList<>();
 
     private Exception exception = null;
 
@@ -32,7 +32,7 @@ public class Messages {
      * @param sheets
      */
     public void addParsedSheets(final Sheet... sheets) {
-        for (Sheet sheet : sheets) {
+        for (final Sheet sheet : sheets) {
             parsedSheets.add(sheet.getSheetName());
         }
     }
@@ -62,7 +62,7 @@ public class Messages {
 
     /**
      * The parser threw an exception
-     *
+     * 
      * @param e
      */
     public void setException(final Exception e) {
@@ -81,33 +81,31 @@ public class Messages {
      */
     public String getStatus() {
         final StringWriter stringWriter = new StringWriter();
-        final PrintWriter printWriter = new PrintWriter(stringWriter);
+        try (final PrintWriter printWriter = new PrintWriter(stringWriter)) {
+            if (exception == null) {
+                printWriter.println("OK");
+            } else {
+                printWriter.println("ERROR: " + exception.getMessage());
+                printWriter.println("<!--");
+                exception.printStackTrace(printWriter);
+                printWriter.print("-->");
+            }
+            printWriter.println("Parsed the following sheets: " + parsedSheets);
 
-        if (exception == null) {
-            printWriter.println("OK");
-        } else {
-            printWriter.println("ERROR: " + exception.getMessage());
-            printWriter.println("<!--");
-            exception.printStackTrace(printWriter);
-            printWriter.print("-->");
-        }
-        printWriter.println("Parsed the following sheets: " + parsedSheets);
+            if (workbook == null) {
+                printWriter.println("Could not read Excel format.");
+            } else {
+                final Collection<String> unusedSheets = getSheetNames(workbook);
+                unusedSheets.removeAll(parsedSheets);
+                if (!unusedSheets.isEmpty()) {
+                    printWriter.println("Unused sheets: " + unusedSheets);
+                }
+            }
 
-        if (workbook == null) {
-            printWriter.println("Could not read Excel format.");
-        } else {
-            final Collection<String> unusedSheets = getSheetNames(workbook);
-            unusedSheets.removeAll(parsedSheets);
-            if (!unusedSheets.isEmpty()) {
-                printWriter.println("Unused sheets: " + unusedSheets);
+            for (final String warning : warnings) {
+                printWriter.println(warning);
             }
         }
-
-        for (final String warning : warnings) {
-            printWriter.println(warning);
-        }
-
-        printWriter.close();
         return stringWriter.toString();
     }
 
@@ -116,18 +114,16 @@ public class Messages {
      */
     public String getDeveloperStatus() {
         final StringWriter stringWriter = new StringWriter();
-        final PrintWriter printWriter = new PrintWriter(stringWriter);
-
-        if (exception != null) {
-            exception.printStackTrace(printWriter);
+        try (final PrintWriter printWriter = new PrintWriter(stringWriter)) {
+            if (exception != null) {
+                exception.printStackTrace(printWriter);
+            }
         }
-
-        printWriter.close();
         return stringWriter.toString();
     }
 
     private static Collection<String> getSheetNames(final Workbook workbook) {
-        final Collection<String> sheetNames = new ArrayList<String>();
+        final Collection<String> sheetNames = new ArrayList<>();
         for (int sheetIndex = 0; sheetIndex < workbook.getNumberOfSheets(); ++sheetIndex) {
             sheetNames.add(workbook.getSheetName(sheetIndex));
         }

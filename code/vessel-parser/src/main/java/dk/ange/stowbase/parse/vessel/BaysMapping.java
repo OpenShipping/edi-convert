@@ -23,7 +23,7 @@ public class BaysMapping {
      * @return all bay names
      */
     public Collection<String> bayNames() {
-        final List<String> bayNames = new ArrayList<String>();
+        final List<String> bayNames = new ArrayList<>();
         for (final BayLabels bayLabels : data) {
             bayNames.add(bayLabels.bayName);
         }
@@ -78,11 +78,11 @@ public class BaysMapping {
      * The builder for {@link BaysMapping}
      */
     public static class BaysMappingBuilder {
-        private final List<BayLabels> data = new ArrayList<BayLabels>();
+        private final List<BayLabels> data = new ArrayList<>();
 
-        private final UniqueCheck<String> uniqueBayName = new UniqueCheck<String>();
+        private final UniqueCheck<String> uniqueBayName = new UniqueCheck<>();
 
-        private final UniqueCheck<String> uniqueBayNumber = new UniqueCheck<String>();
+        private final UniqueCheck<String> uniqueBayNumber = new UniqueCheck<>();
 
         /**
          * @param bayName
@@ -134,7 +134,7 @@ public class BaysMapping {
     }
 
     private static class UniqueCheck<T> {
-        private final Set<T> set = new HashSet<T>();
+        private final Set<T> set = new HashSet<>();
 
         void check(final T unique) {
             if (unique == null) {

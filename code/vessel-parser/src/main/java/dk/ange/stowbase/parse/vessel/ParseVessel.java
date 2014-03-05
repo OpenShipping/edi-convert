@@ -133,10 +133,8 @@ public final class ParseVessel {
      */
     public static byte[] compress(final byte[] content) {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        try {
-            final GZIPOutputStream gzipOutputStream = new GZIPOutputStream(byteArrayOutputStream);
+        try (final GZIPOutputStream gzipOutputStream = new GZIPOutputStream(byteArrayOutputStream)) {
             gzipOutputStream.write(content);
-            gzipOutputStream.close();
         } catch (final IOException e) {
             throw new RuntimeException(e);
         }

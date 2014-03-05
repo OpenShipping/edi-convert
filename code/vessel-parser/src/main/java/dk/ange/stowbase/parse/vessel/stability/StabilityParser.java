@@ -44,7 +44,7 @@ public class StabilityParser extends SheetsParser {
         if (sheet == null) {
             return;
         }
-        map = new HashMap<Header, String>();
+        map = new HashMap<>();
         readKeyValueSheet(sheet, map);
     }
 

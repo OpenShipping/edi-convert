@@ -42,7 +42,7 @@ public class StacksParser extends StackDataSheetsParser {
 
     private final boolean fileHasPos2040;
 
-    private final Map<BRL, VesselStack> exportedVesselStacks = new HashMap<BRL, VesselStack>();
+    private final Map<BRL, VesselStack> exportedVesselStacks = new HashMap<>();
 
     /**
      * Construct and parse
@@ -71,7 +71,7 @@ public class StacksParser extends StackDataSheetsParser {
 
     private Map<BRL, StackData> readTier20() {
         final Sheet sheetTier20 = getSheetMandatory("Tier20");
-        final Map<BRL, StackData> data = new HashMap<BRL, StackData>();
+        final Map<BRL, StackData> data = new HashMap<>();
         readStacksData(sheetTier20, data, TierAction.INSTANCE, true);
         log.debug("data20 = {}", data);
         return Collections.unmodifiableMap(data);
@@ -79,7 +79,7 @@ public class StacksParser extends StackDataSheetsParser {
 
     private Map<BRL, StackData> readTier40() {
         final Sheet sheetTier40 = getSheetMandatory("Tier40");
-        final Map<BRL, StackData> data = new HashMap<BRL, StackData>();
+        final Map<BRL, StackData> data = new HashMap<>();
         readStacksData(sheetTier40, data, TierAction.INSTANCE, true);
         log.debug("data40 = {}", data);
         return Collections.unmodifiableMap(data);
@@ -169,7 +169,7 @@ public class StacksParser extends StackDataSheetsParser {
      * @param vesselProfile
      */
     public void addDataToVesselProfile(final VesselProfile vesselProfile) {
-        final SortedMap<BRL, Collection<BRL>> combinedToBayName = new TreeMap<BRL, Collection<BRL>>();
+        final SortedMap<BRL, Collection<BRL>> combinedToBayName = new TreeMap<>();
         for (final BRL brl : Iterables.concat(data20.keySet(), data40.keySet())) {
             final String bayName = baysMapping.bayName(brl.bay);
             if (bayName == null) {
@@ -183,7 +183,7 @@ public class StacksParser extends StackDataSheetsParser {
         }
         log.debug("combinedToBayName = {}", combinedToBayName);
 
-        final Collection<VesselStack> vesselStacks = new ArrayList<VesselStack>();
+        final Collection<VesselStack> vesselStacks = new ArrayList<>();
         for (final BRL stackBrl : combinedToBayName.keySet()) {
             final VesselStack stack = createStowbaseStack(stackBrl, combinedToBayName);
             vesselStacks.add(stack);
@@ -194,7 +194,7 @@ public class StacksParser extends StackDataSheetsParser {
 
     private VesselStack createStowbaseStack(final BRL stackBrl, final SortedMap<BRL, Collection<BRL>> combinedToBayName) {
         final Collection<BRL> stackSupportBrls = combinedToBayName.get(stackBrl);
-        final Collection<VesselStackSupport> vesselStackSupports = new ArrayList<VesselStackSupport>();
+        final Collection<VesselStackSupport> vesselStackSupports = new ArrayList<>();
         double stackCenterToTheFore = 0.0;
         int stackCount = 0;
         for (final BRL stackSupportBrl : stackSupportBrls) {
@@ -233,12 +233,12 @@ public class StacksParser extends StackDataSheetsParser {
         }
         vesselStackSupports.add(vesselStackSupport);
         vesselStackSupport.setBayName(stackSupportBrl.bay);
-        final List<String> dcTiersFromBelow = new ArrayList<String>();
+        final List<String> dcTiersFromBelow = new ArrayList<>();
         for (int tier = stackData.tierBottom; tier <= stackData.tierTop; tier += 2) {
             dcTiersFromBelow.add(Integer.toString(tier));
         }
         vesselStackSupport.setDcTiersFromBelow(dcTiersFromBelow);
-        final List<String> dcReeeferTiersFromBelow = new ArrayList<String>();
+        final List<String> dcReeeferTiersFromBelow = new ArrayList<>();
         for (int tier = stackData.reeferTierBottom; tier <= stackData.reeferTierTop; tier += 2) {
             if (tier > 0) {
                 dcReeeferTiersFromBelow.add(Integer.toString(tier));
@@ -247,7 +247,7 @@ public class StacksParser extends StackDataSheetsParser {
         if (!dcReeeferTiersFromBelow.isEmpty()) {
             vesselStackSupport.setDcReeferTiersFromBelow(dcReeeferTiersFromBelow);
         }
-        final List<String> dcFourtyFiveTiersFromBelow = new ArrayList<String>();
+        final List<String> dcFourtyFiveTiersFromBelow = new ArrayList<>();
         for (int tier = stackData.fourtyfiveTierBottom; tier <= stackData.fourtyfiveTierTop; tier += 2) {
             if (tier > 0) {
                 dcFourtyFiveTiersFromBelow.add(Integer.toString(tier));

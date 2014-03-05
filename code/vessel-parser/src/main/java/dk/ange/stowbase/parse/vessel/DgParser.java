@@ -64,7 +64,7 @@ public class DgParser extends StackDataSheetsParser {
     private void readImo() {
         final Sheet sheetImo = getSheetOptionalWithOldName("DG", "IMO");
         if (sheetImo != null) {
-            final HashSet<String> bayNames = new HashSet<String>(baysMapping.bayNames());
+            final HashSet<String> bayNames = new HashSet<>(baysMapping.bayNames());
             parseImoData(sheetImo, bayNames);
         }
     }
@@ -73,14 +73,14 @@ public class DgParser extends StackDataSheetsParser {
     private void parseImoData(final Sheet sheet, final Set<String> feuBays) {
         boolean titleLine = false;
         String type = null;
-        final List<String> bays = new ArrayList<String>();
+        final List<String> bays = new ArrayList<>();
         Map<BRL, StackData> stackData = null;
         String level = null;
         final String[] validLevelsArray = { "ABOVE", "BELOW" };
         final List<String> validLevels = Arrays.asList(validLevelsArray);
         // a map holdmap(bay) giving as output the hold for the input bay
-        final HashMap<String, String> holdmap = new HashMap<String, String>();
-        for (final Row row : new IterableIterator<Row>(sheet.rowIterator())) {
+        final HashMap<String, String> holdmap = new HashMap<>();
+        for (final Row row : new IterableIterator<>(sheet.rowIterator())) {
             log.trace("Line {}", row.getRowNum());
             final Cell cell0 = row.getCell(0);
             log.trace("cell0={}", cell0);
@@ -107,8 +107,8 @@ public class DgParser extends StackDataSheetsParser {
                         throw new RuntimeException("Expected a row starting with 'FEUBAY' at " + pos(cell0)
                                 + ", but got '" + cell0String + "'");
                     }
-                    bays2hold = new HashMap<String, List<String>>();
-                    holdAcceptsImoClass = new HashMap<String, List<String>>();
+                    bays2hold = new HashMap<>();
+                    holdAcceptsImoClass = new HashMap<>();
                 } else if ("# IMO STACKS 20".equals(type) || "# IMO STACKS 40".equals(type)) {
                     if (type.endsWith("40")) {
                         stackData = data40;
@@ -154,7 +154,7 @@ public class DgParser extends StackDataSheetsParser {
                                 log.trace("hold {} in bay {}", hold, bays.get(cellIndex - 1));
                                 List<String> baysInHold = bays2hold.get(hold);
                                 if (baysInHold == null) {
-                                    baysInHold = new ArrayList<String>();
+                                    baysInHold = new ArrayList<>();
                                     bays2hold.put(hold, baysInHold);
                                 }
                                 baysInHold.add(bays.get(cellIndex - 1));
@@ -174,7 +174,7 @@ public class DgParser extends StackDataSheetsParser {
                                     if (hold != null && hold.length() > 0) {
                                         List<String> imoClassesInHold = holdAcceptsImoClass.get(hold);
                                         if (imoClassesInHold == null) {
-                                            imoClassesInHold = new ArrayList<String>();
+                                            imoClassesInHold = new ArrayList<>();
                                             holdAcceptsImoClass.put(hold, imoClassesInHold);
                                         }
                                         imoClassesInHold.add(imoClass);

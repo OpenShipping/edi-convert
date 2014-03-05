@@ -38,7 +38,7 @@ public class HydrostaticsParser extends SheetsParser {
 
     /**
      * Construct and parse
-     * 
+     *
      * @param stowbaseObjectFactory
      * @param messages
      * @param workbook
@@ -54,7 +54,7 @@ public class HydrostaticsParser extends SheetsParser {
         if (sheet == null) {
             return;
         }
-        tableRows = new ArrayList<TableRow>();
+        tableRows = new ArrayList<>();
         try {
             parseSheet(sheet);
         } catch (final ParseException e) {
@@ -66,7 +66,7 @@ public class HydrostaticsParser extends SheetsParser {
         final Iterator<Row> rowIterator = sheet.rowIterator();
 
         final Row firstRow = rowIterator.next();
-        final Map<Header, Integer> keyMap = new HashMap<Header, Integer>();
+        final Map<Header, Integer> keyMap = new HashMap<>();
         for (final Cell cell : firstRow) {
             keyMap.put(header(cellString(cell)), cell.getColumnIndex());
         }
@@ -75,7 +75,7 @@ public class HydrostaticsParser extends SheetsParser {
         final int lcbColumn = Header.headerColumnMandatory(keyMap, "LCB in m");
         final int mctColumn = Header.headerColumnMandatory(keyMap, "MCT in ton m / cm");
 
-        for (final Row row : new IterableIterator<Row>(rowIterator)) {
+        for (final Row row : new IterableIterator<>(rowIterator)) {
             try {
                 parseRow(row, draftColumn, displacementColumn, lcbColumn, mctColumn);
             } catch (final Exception e) {
@@ -111,8 +111,8 @@ public class HydrostaticsParser extends SheetsParser {
         draftFunction.setInput1("displacement");
         draftFunction.setInput2("lcg");
         draftFunction.setOutput("draft");
-        final List<Double> displacements = new ArrayList<Double>(tableRows.size());
-        final List<Double> drafts = new ArrayList<Double>(tableRows.size());
+        final List<Double> displacements = new ArrayList<>(tableRows.size());
+        final List<Double> drafts = new ArrayList<>(tableRows.size());
         for (final TableRow tableRow : tableRows) {
             displacements.add(tableRow.displacement);
             drafts.add(tableRow.draft);
@@ -129,9 +129,9 @@ public class HydrostaticsParser extends SheetsParser {
         draftFunction.setInput1("displacement");
         draftFunction.setInput2("lcg");
         draftFunction.setOutput("trim");
-        final List<Double> displacements = new ArrayList<Double>(tableRows.size());
-        final List<Double> lcgs = new ArrayList<Double>(tableRows.size());
-        final Map<Double, TableRow> displacementLookup = new HashMap<Double, TableRow>(tableRows.size());
+        final List<Double> displacements = new ArrayList<>(tableRows.size());
+        final List<Double> lcgs = new ArrayList<>(tableRows.size());
+        final Map<Double, TableRow> displacementLookup = new HashMap<>(tableRows.size());
         double lcbMin = Double.POSITIVE_INFINITY;
         double lcbMax = Double.NEGATIVE_INFINITY;
         for (final TableRow tableRow : tableRows) {
@@ -146,7 +146,7 @@ public class HydrostaticsParser extends SheetsParser {
         lcgs.add(lcbMax + 100);
         draftFunction.setSamplePoints1(displacements);
         draftFunction.setSamplePoints2(lcgs);
-        final List<Double> data = new ArrayList<Double>(displacements.size() * lcgs.size());
+        final List<Double> data = new ArrayList<>(displacements.size() * lcgs.size());
         for (final Double lcg : lcgs) {
             for (final Double displacement : displacements) {
                 final TableRow tableRow = displacementLookup.get(displacement);

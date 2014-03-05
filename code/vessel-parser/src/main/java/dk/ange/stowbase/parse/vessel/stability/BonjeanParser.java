@@ -36,7 +36,7 @@ public class BonjeanParser extends SheetsParser {
 
     /**
      * Construct and parse
-     * 
+     *
      * @param stowbaseObjectFactory
      * @param messages
      * @param workbook
@@ -52,7 +52,7 @@ public class BonjeanParser extends SheetsParser {
         if (sheet == null) {
             return;
         }
-        bonjean_matrix = new HashMap<Double, Map<Double, Double>>();
+        bonjean_matrix = new HashMap<>();
 
         try {
             parseSheet(sheet);
@@ -64,7 +64,7 @@ public class BonjeanParser extends SheetsParser {
     private void parseSheet(final Sheet sheet) {
         final Iterator<Row> rowIterator = sheet.rowIterator();
         final Row firstRow = rowIterator.next();
-        keyMap = new HashMap<Integer, Double>();
+        keyMap = new HashMap<>();
         for (final Cell cell : firstRow) {
             try {
                 final String cell0String = cellString(cell);
@@ -73,11 +73,11 @@ public class BonjeanParser extends SheetsParser {
                 }
             } catch (final Exception e) {
                 log.debug("Error when parsing a bonjean bay header #" + cell.getColumnIndex(), e);
-                messages.addSheetWarning(SHEET_NAME, "Error when parsing a bonjean bay header #" + cell.getColumnIndex() 
+                messages.addSheetWarning(SHEET_NAME, "Error when parsing a bonjean bay header #" + cell.getColumnIndex()
                         + " Error: " + e.getMessage());
             }
         }
-        for (final Row row : new IterableIterator<Row>(rowIterator)) {
+        for (final Row row : new IterableIterator<>(rowIterator)) {
             try {
                 parseRow(row);
             } catch (final Exception e) {
@@ -88,7 +88,7 @@ public class BonjeanParser extends SheetsParser {
     }
 
     private void parseRow(final Row row) {
-        final Map<Double, Double> bonjean_row = new HashMap<Double, Double>();
+        final Map<Double, Double> bonjean_row = new HashMap<>();
 
         for (final Cell cell : row) {
             final String cell0String = cellString(cell);
@@ -120,9 +120,9 @@ public class BonjeanParser extends SheetsParser {
         bonjeanCurve.setInput2("draft");
         bonjeanCurve.setInput1("lcg");
         bonjeanCurve.setOutput("bonjeanArea");
-        final List<Double> drafts = new ArrayList<Double>();
-        final List<Double> lcgs = new ArrayList<Double>();
-        final List<Double> bonjeanAreas = new ArrayList<Double>();
+        final List<Double> drafts = new ArrayList<>();
+        final List<Double> lcgs = new ArrayList<>();
+        final List<Double> bonjeanAreas = new ArrayList<>();
         drafts.addAll(bonjean_matrix.keySet());
         lcgs.addAll(bonjean_matrix.get(drafts.get(0)).keySet());
         for (final Double draft : drafts) {

@@ -41,19 +41,19 @@ public class XlsVesselToJson {
         }
 
         log.info("Parse {}", xlsFile);
-        final Result result = ParseVessel.parse(new FileInputStream(xlsFile));
+        final Result result;
+        try (FileInputStream excelStream = new FileInputStream(xlsFile)) {
+            result = ParseVessel.parse(excelStream);
+        }
 
         // Status contains all the debug info we want
         log.info("Status: {}", result.messages.getStatus().replaceAll("\n$", ""));
         final String jsonFileName = xlsFileName.replaceFirst("\\.xls$", "") + ".json";
-        final FileWriter jsonWriter = new FileWriter(jsonFileName);
-        try {
+        try (final FileWriter jsonWriter = new FileWriter(jsonFileName)) {
             if (result.json == null) {
                 return; // Don't write null as that fails, but still open the file in order to delete it
             }
             jsonWriter.write(result.json);
-        } finally {
-            jsonWriter.close();
         }
     }
 

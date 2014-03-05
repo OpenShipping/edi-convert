@@ -47,7 +47,7 @@ public class LidsParser extends SheetsParser {
     private void parse() {
         final Sheet sheetLids = getSheetOptional("Lids");
         if (sheetLids != null) {
-            lids = new TreeMap<LidKey, LidData>();
+            lids = new TreeMap<>();
             new LidsSectionParser().readSheet(sheetLids);
         }
         log.debug("lids = {}", lids);
@@ -58,19 +58,19 @@ public class LidsParser extends SheetsParser {
      */
     public void addDataToVesselProfile(final VesselProfile vesselProfile) {
         if (lids != null) {
-            final Collection<VesselLid> vesselLids = new ArrayList<VesselLid>();
+            final Collection<VesselLid> vesselLids = new ArrayList<>();
             for (final LidKey lidKey : lids.keySet()) {
                 final LidData lidData = lids.get(lidKey);
                 final VesselLid lid = VesselLid.create(stowbaseObjectFactory);
                 // Above
-                final List<VesselStack> aboveDeck = new ArrayList<VesselStack>();
+                final List<VesselStack> aboveDeck = new ArrayList<>();
                 Collections.sort(lidData.aboveDeck);
                 for (final BRL stackBrl : lidData.aboveDeck) {
                     aboveDeck.add(exportedVesselStacks.get(stackBrl));
                 }
                 lid.setVesselStacksOnTopLid(aboveDeck);
                 // Below
-                final List<VesselStack> belowDeck = new ArrayList<VesselStack>();
+                final List<VesselStack> belowDeck = new ArrayList<>();
                 Collections.sort(lidData.belowDeck);
                 for (final BRL stackBrl : lidData.belowDeck) {
                     belowDeck.add(exportedVesselStacks.get(stackBrl));
@@ -116,9 +116,9 @@ public class LidsParser extends SheetsParser {
 
     private static class LidData {
 
-        final List<BRL> aboveDeck = new ArrayList<BRL>();
+        final List<BRL> aboveDeck = new ArrayList<>();
 
-        final List<BRL> belowDeck = new ArrayList<BRL>();
+        final List<BRL> belowDeck = new ArrayList<>();
 
     }
 

@@ -58,10 +58,10 @@ public class HullWgtDistrParser extends SheetsParser {
     }
 
     private void parseSheet(final Sheet sheet) {
-        hullweight_blocks = new ArrayList<BlockData>();
+        hullweight_blocks = new ArrayList<>();
         final Iterator<Row> rowIterator = sheet.rowIterator();
         final Row firstRow = rowIterator.next();
-        keyMap = new HashMap<Integer, String>();
+        keyMap = new HashMap<>();
         for (final Cell cell : firstRow) {
             final String cell0String = cellString(cell);
             if (!cell0String.startsWith("#")) {
@@ -69,7 +69,7 @@ public class HullWgtDistrParser extends SheetsParser {
             }
         }
 
-        for (final Row row : new IterableIterator<Row>(rowIterator)) {
+        for (final Row row : new IterableIterator<>(rowIterator)) {
             try {
                 parseRow(row);
             } catch (final Exception e) {

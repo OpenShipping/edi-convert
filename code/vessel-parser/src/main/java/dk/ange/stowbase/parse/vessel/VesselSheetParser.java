@@ -21,7 +21,7 @@ public class VesselSheetParser extends SheetsParser {
 
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(VesselSheetParser.class);
 
-    private final Map<Header, String> vesselMap = new HashMap<Header, String>();
+    private final Map<Header, String> vesselMap = new HashMap<>();
 
     private LongitudinalPositiveDirection longitudinalPositiveDirection;
 

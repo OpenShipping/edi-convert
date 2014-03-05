@@ -64,7 +64,7 @@ public final class TanksParser extends SingleSheetParser {
         final Iterator<Row> rowIterator = sheet.rowIterator();
         // Check the headers
         final Row firstRow = rowIterator.next();
-        final Map<Header, Integer> keyMap = new HashMap<Header, Integer>();
+        final Map<Header, Integer> keyMap = new HashMap<>();
         for (final Cell cell : firstRow) {
             keyMap.put(header(cellString(cell)), cell.getColumnIndex());
         }
@@ -80,7 +80,7 @@ public final class TanksParser extends SingleSheetParser {
         final int tcgColumn = Header.headerColumnMandatory(keyMap, "TCG in m");
         final int fsmColumn = Header.headerColumnMandatory(keyMap, "Max FSM in m4");
         // Read all data lines
-        for (final Row row : new IterableIterator<Row>(rowIterator)) {
+        for (final Row row : new IterableIterator<>(rowIterator)) {
             final String description = cellString(row.getCell(descriptionColumn));
             if (description == null || description.length() == 0 || description.startsWith("#")) {
                 continue; // Skip unnamed tanks or tanks starting with # in the name

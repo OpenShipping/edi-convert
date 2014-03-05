@@ -125,7 +125,7 @@ public abstract class SheetsParser {
      * @param map
      */
     protected void readKeyValueSheet(final Sheet sheet, final Map<Header, String> map) {
-        for (final Row row : new IterableIterator<Row>(sheet.rowIterator())) {
+        for (final Row row : new IterableIterator<>(sheet.rowIterator())) {
             final Header key = header(cellString(row.getCell(0)));
             if (map.containsKey(key)) {
                 messages.addSheetWarning(sheet.getSheetName(), "Key '" + cellString(row.getCell(0))
@@ -223,7 +223,7 @@ public abstract class SheetsParser {
             boolean nextLineIsTagTitleLine = false;
             String sectionTag = null;
             Map<Integer, String> columnTitles = null;
-            for (final Row row : new IterableIterator<Row>(sheet.rowIterator())) {
+            for (final Row row : new IterableIterator<>(sheet.rowIterator())) {
                 log.trace("Line {}", row.getRowNum());
                 final Cell cell0 = row.getCell(0);
                 log.trace("cell0={}", cell0);
@@ -244,7 +244,7 @@ public abstract class SheetsParser {
                     nextLineIsTagTitleLine = false;
                     sectionTag = cell0String;
                     log.debug("TAG {}", sectionTag);
-                    columnTitles = new TreeMap<Integer, String>();
+                    columnTitles = new TreeMap<>();
                     for (int cellIndex = 1; cellIndex < row.getLastCellNum(); ++cellIndex) {
                         final Cell cell = row.getCell(cellIndex);
                         final String cellString = cellString(cell);

@@ -49,7 +49,7 @@ public class MetaCenterParser extends SheetsParser {
         if (sheet == null) {
             return;
         }
-        metaCenterMatrix = new HashMap<Double, Map<Double, Double>>();
+        metaCenterMatrix = new HashMap<>();
         try {
             parseSheet(sheet);
         } catch (final ParseException e) {
@@ -60,8 +60,8 @@ public class MetaCenterParser extends SheetsParser {
     private void parseSheet(final Sheet sheet) {
         final Iterator<Row> rowIterator = sheet.rowIterator();
         final Row firstRow = rowIterator.next();
-        keyMap = new HashMap<Integer, Double>();
-        metaCenterMatrix = new HashMap<Double, Map<Double, Double>>();
+        keyMap = new HashMap<>();
+        metaCenterMatrix = new HashMap<>();
         for (final Cell cell : firstRow) {
             try {
                 final String cell0String = cellString(cell);
@@ -74,7 +74,7 @@ public class MetaCenterParser extends SheetsParser {
                         + " Error: " + e.getMessage());
             }
         }
-        for (final Row row : new IterableIterator<Row>(rowIterator)) {
+        for (final Row row : new IterableIterator<>(rowIterator)) {
             try {
                 parseRow(row);
             } catch (final Exception e) {
@@ -85,7 +85,7 @@ public class MetaCenterParser extends SheetsParser {
     }
 
     private void parseRow(final Row row) {
-        final Map<Double, Double> metacenterRow = new HashMap<Double, Double>();
+        final Map<Double, Double> metacenterRow = new HashMap<>();
         for (final Cell cell : row) {
             final String cell0String = cellString(cell);
             if (!cell0String.startsWith("#")) {
@@ -116,9 +116,9 @@ public class MetaCenterParser extends SheetsParser {
         bonjeanCurve.setInput2("draftInM");
         bonjeanCurve.setInput1("trimInM");
         bonjeanCurve.setOutput("metaCentreInMAboveKeel");
-        final List<Double> drafts = new ArrayList<Double>();
-        final List<Double> trims = new ArrayList<Double>();
-        final List<Double> metacentres = new ArrayList<Double>();
+        final List<Double> drafts = new ArrayList<>();
+        final List<Double> trims = new ArrayList<>();
+        final List<Double> metacentres = new ArrayList<>();
         drafts.addAll(metaCenterMatrix.keySet());
         trims.addAll(metaCenterMatrix.get(drafts.get(0)).keySet());
         for (final Double draft : drafts) {
