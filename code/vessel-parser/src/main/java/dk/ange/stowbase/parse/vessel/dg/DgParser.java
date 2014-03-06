@@ -45,7 +45,7 @@ public class DgParser extends SheetsParser implements VesselProfileDataAdder {
             if (string0.equals("# HOLDS")) {
                 realParser = new OldDgParser(stowbaseObjectFactory, messages, workbook, baysMapping, data20, data40);
             } else {
-                throw new RuntimeException("NEW TODO ");
+                realParser = new NewDgParser(stowbaseObjectFactory, messages, workbook, baysMapping);
             }
         }
     }

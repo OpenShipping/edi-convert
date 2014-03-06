@@ -253,7 +253,7 @@ public abstract class SheetsParser {
                     sectionType = cell0String;
                     log.debug("TYPE {}", sectionType);
                     if (nextLineIsTagTitleLine) {
-                        throw new RuntimeException("titleLine==true in TYPE line");
+                        throw new ParseException("Title lines starting with # without data in between in " + pos(cell0));
                     }
                     sectionTag = null;
                     columnTitles = null;
@@ -270,7 +270,7 @@ public abstract class SheetsParser {
                             continue;
                         }
                         if (columnTitles.values().contains(cellString)) {
-                            throw new RuntimeException("Duplicated data in column '" + cellString + "' found in "
+                            throw new ParseException("Duplicated data in column '" + cellString + "' found in "
                                     + pos(cell) + ". columnTitles=" + columnTitles);
                         }
                         columnTitles.put(cellIndex, cellString);
@@ -320,7 +320,7 @@ public abstract class SheetsParser {
                 final String columnTitle, final String cellString) {
             {
                 final BRL brl = new BRL(columnTitle, rowTitle, sectionTag);
-                log.trace("{}: {} <- {}", new Object[] { brl, sectionType, cellString });
+                log.trace("{}: {} <- {}", new Object[] { sectionType, brl, cellString });
                 handleDataItem(sectionType, brl, cellString);
             }
         }

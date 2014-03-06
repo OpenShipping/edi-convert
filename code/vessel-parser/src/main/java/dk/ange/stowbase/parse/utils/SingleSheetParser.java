@@ -7,7 +7,7 @@ import org.stowbase.client.StowbaseObjectFactory;
 /**
  * Helper class for parsers that only parse a single sheet
  */
-public abstract class SingleSheetParser extends SheetsParser {
+public abstract class SingleSheetParser extends SheetsParser implements SheetWarner {
 
     /**
      * The sheet we are parsing, will be null if it's not in the workbook
@@ -37,11 +37,8 @@ public abstract class SingleSheetParser extends SheetsParser {
         return sheet != null;
     }
 
-    /**
-     * @param warning
-     *            Warning to add to the messages
-     */
-    protected void addSheetWarning(final String warning) {
+    @Override
+    public void addSheetWarning(final String warning) {
         messages.addSheetWarning(getSheetName(), warning);
     }
 

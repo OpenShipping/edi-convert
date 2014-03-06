@@ -25,7 +25,7 @@ import dk.ange.stowbase.parse.vessel.stacks.StackData;
 import dk.ange.stowbase.parse.vessel.stacks.StackDataSheetsParser;
 
 /**
- * Parse 'DG' sheet
+ * Parse old 'DG' sheet
  */
 public class OldDgParser extends StackDataSheetsParser implements VesselProfileDataAdder {
 

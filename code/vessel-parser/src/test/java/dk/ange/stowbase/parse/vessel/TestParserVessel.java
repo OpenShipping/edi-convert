@@ -4,13 +4,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.stowbase.client.import_.Bundle;
 import org.stowbase.client.import_.BundleStowbaseObject;
@@ -28,7 +27,6 @@ public class TestParserVessel {
      *
      * @throws Exception
      */
-    @Ignore("New DG format not working right now, ticket #1373")
     @Test
     public void convertLegoWithStability() throws Exception {
         final Result result;
@@ -43,17 +41,23 @@ public class TestParserVessel {
         assertTrue(result.messages.getStatus().startsWith("OK"));
         assertEquals("" //
                 + "OK\n" //
-                + "Parsed the following sheets: [Vessel, Bays, Tier20, Tier40, Reef20, Reef40, Height20, "
-                + "Height40, Pos20, Pos40, DG, tanks, VarTanks, ConstWgts, Stability, Hydrostatics, "
-                + "MetaCenter, HullWgtDistr, Bonjean, StressLimits]\n" //
-                + "Tanks: The volume capacity written in tanks!B4 is 490.00 while the one derived from "
-                + "mass capacity and density is 487.80\n", //
+                + "Parsed the following sheets: [Vessel, Bays, Tier20, Tier40, Reef20, Reef40, Height20,"
+                + " Height40, Pos20, Pos40, DG, tanks, VarTanks, ConstWgts, Stability, Hydrostatics,"
+                + " MetaCenter, HullWgtDistr, Bonjean, StressLimits]\n" //
+                + "Unused sheets: [DgStacks]\n" //
+                + "DG: Unknown DG class '7.7'\n" //
+                + "DG: Known DG classes: [1.1-1.6, 1.4S, 2.1, 2.2, 2.3, 3, 3(B), 3(C),"
+                + " 4.1, 4.2, 4.3, 4.3(A), 4.3(B), 4.3(C), 4.3(D), 5.1, 5.2,"
+                + " 6.1, 6.1(A), 6.1(B), 6.1(C), 6.1(D), 8, 8(A), 8(B), 8(C), 8(D), 9]\n" //
+                + "DG: Unknown permission 'X', it will be ignored. Known permissions are [P, N]\n" //
+                + "Tanks: The volume capacity written in tanks!B4 is 490.00 while the one derived from"
+                + " mass capacity and density is 487.80\n", //
                 result.messages.getStatus());
         assertNotNull(result.messages.getStatus());
 
         final Bundle bundle = StowbaseReader.readStowbaseData(result.json);
         assertNotNull(bundle);
-        Assert.assertEquals(203, bundle.size());
+        assertEquals(203, bundle.size());
 
         final BundleStowbaseObject vesselProfile = bundle.single("vesselProfile");
         assertNotNull(vesselProfile);
@@ -78,12 +82,12 @@ public class TestParserVessel {
             final BundleStowbaseObject stackSupport0200A = stack0200A.get("vesselStackSupports").getAsObjects().get(2);
             assertEquals("2", stackSupport0200A.get("bayName").getAsString());
             assertEquals(Arrays.asList("80", "82"), stackSupport0200A.get("dcTiersFromBelow").getAsStringList());
-            assertNull(stackSupport0200A.get("imoForbidden"));
+            // assertNull(stackSupport0200A.get("imoForbidden"));
 
             final BundleStowbaseObject stackSupport0100A = stack0200A.get("vesselStackSupports").getAsObjects().get(0);
             assertEquals("1", stackSupport0100A.get("bayName").getAsString());
             assertEquals(Arrays.asList("80", "82"), stackSupport0100A.get("dcTiersFromBelow").getAsStringList());
-            assertNull(stackSupport0100A.get("imoForbidden"));
+            // assertNull(stackSupport0100A.get("imoForbidden"));
         }
         {
             final BundleStowbaseObject stack0203A = vesselStacks.get(6);
@@ -93,12 +97,12 @@ public class TestParserVessel {
             final BundleStowbaseObject stackSupport0203A = stack0203A.get("vesselStackSupports").getAsObjects().get(2);
             assertEquals("2", stackSupport0203A.get("bayName").getAsString());
             assertEquals(Arrays.asList("80", "82"), stackSupport0203A.get("dcTiersFromBelow").getAsStringList());
-            assertEquals(true, stackSupport0203A.get("imoForbidden").getAsBoolean());
+            // assertEquals(true, stackSupport0203A.get("imoForbidden").getAsBoolean());
 
             final BundleStowbaseObject stackSupport0103A = stack0203A.get("vesselStackSupports").getAsObjects().get(0);
             assertEquals("1", stackSupport0103A.get("bayName").getAsString());
             assertEquals(Arrays.asList("80", "82"), stackSupport0103A.get("dcTiersFromBelow").getAsStringList());
-            assertEquals(true, stackSupport0103A.get("imoForbidden").getAsBoolean());
+            // assertEquals(true, stackSupport0103A.get("imoForbidden").getAsBoolean());
         }
     }
 
@@ -132,11 +136,35 @@ public class TestParserVessel {
 
     private void validateHolds(final List<BundleStowbaseObject> holds) {
         assertEquals(3, holds.size());
-        final BundleStowbaseObject hold2 = holds.get(1);
-        assertEquals(Arrays.asList("14", "10"), hold2.get("feubays").getAsStringList());
-        final List<String> acceptsImo = hold2.get("acceptsImo").getAsStringList();
-        assertTrue(acceptsImo.contains("2.2"));
-        assertTrue(!acceptsImo.contains("2.3"));
+        {
+            final BundleStowbaseObject hold2 = holds.get(1);
+            assertEquals("2", hold2.get("name").getAsString());
+            assertEquals(Arrays.asList("10", "14"), hold2.get("feubays").getAsStringList());
+            final List<String> acceptsImo = hold2.get("acceptsImo").getAsStringList();
+            assertTrue(acceptsImo.contains("2.2"));
+            assertTrue(!acceptsImo.contains("2.3"));
+        }
+        assertEquals("?", getPermissionAbove(holds.get(0), "7.7"));
+        assertEquals("P", getPermissionAbove(holds.get(1), "7.7"));
+        assertEquals("N", getPermissionAbove(holds.get(2), "7.7"));
     }
 
+    private String getPermissionAbove(final BundleStowbaseObject hold, final String class_) {
+        final boolean permitted = hold.get("dgAbovePermitted").getAsStringList().contains(class_);
+        final boolean notPermitted = hold.get("dgAboveNotPermitted").getAsStringList().contains(class_);
+        if (permitted) {
+            if (notPermitted) {
+                fail("Both permitted and notPermitted? '" + class_ + "' " + hold);
+                throw new RuntimeException("Will exit at fail");
+            } else {
+                return "P";
+            }
+        } else {
+            if (notPermitted) {
+                return "N";
+            } else {
+                return "?";
+            }
+        }
+    }
 }

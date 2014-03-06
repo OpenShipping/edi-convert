@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -75,6 +77,23 @@ public class BaysMapping {
     }
 
     /**
+     * @return a map from cargo space name to feu bay names
+     */
+    public Map<String, List<String>> cargoSpaces() {
+        final Map<String, List<String>> map = new LinkedHashMap<>();
+        for (final BayLabels bayLabel : data) {
+            final String cargoSpaceName = bayLabel.cargoSpace;
+            if (cargoSpaceName != null) {
+                if (!map.containsKey(cargoSpaceName)) {
+                    map.put(cargoSpaceName, new ArrayList<String>());
+                }
+                map.get(cargoSpaceName).add(bayLabel.bayName);
+            }
+        }
+        return map;
+    }
+
+    /**
      * The builder for {@link BaysMapping}
      */
     public static class BaysMappingBuilder {
@@ -89,8 +108,10 @@ public class BaysMapping {
          * @param twentyFore
          * @param forty
          * @param twentyAft
+         * @param cargoSpace
          */
-        public void add(final String bayName, final String twentyFore, final String forty, final String twentyAft) {
+        public void add(final String bayName, final String twentyFore, final String forty, final String twentyAft,
+                final String cargoSpace) {
             uniqueBayName.check(bayName);
             final String nonEmptyTwentyFore = mapEmptyToNull(twentyFore);
             final String nonEmptyForty = mapEmptyToNull(forty);
@@ -98,7 +119,8 @@ public class BaysMapping {
             uniqueBayNumber.check(nonEmptyTwentyFore);
             uniqueBayNumber.check(nonEmptyForty);
             uniqueBayNumber.check(nonEmptyTwentyAft);
-            data.add(new BayLabels(bayName, nonEmptyTwentyFore, nonEmptyForty, nonEmptyTwentyAft));
+            data.add(new BayLabels(bayName, nonEmptyTwentyFore, nonEmptyForty, nonEmptyTwentyAft,
+                    mapEmptyToNull(cargoSpace)));
         }
 
         /**
@@ -118,11 +140,15 @@ public class BaysMapping {
 
         final String twentyAft;
 
-        BayLabels(final String bayName, final String twentyFore, final String forty, final String twentyAft) {
+        final String cargoSpace;
+
+        BayLabels(final String bayName, final String twentyFore, final String forty, final String twentyAft,
+                final String cargoSpace) {
             this.bayName = bayName;
             this.twentyFore = twentyFore;
             this.forty = forty;
             this.twentyAft = twentyAft;
+            this.cargoSpace = cargoSpace;
         }
     }
 

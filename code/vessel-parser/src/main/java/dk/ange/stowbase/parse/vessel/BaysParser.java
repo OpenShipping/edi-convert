@@ -42,7 +42,8 @@ public class BaysParser extends SheetsParser {
             final String twentyFore = cellString(row.getCell(1));
             final String forty = cellString(row.getCell(2));
             final String twentyAft = cellString(row.getCell(3));
-            builder.add(bayName, twentyFore, forty, twentyAft);
+            final String cargoSpace = cellString(row.getCell(4));
+            builder.add(bayName, twentyFore, forty, twentyAft, cargoSpace);
         }
         baysMapping = builder.build();
         log.debug("baysMapping = {}", baysMapping);
