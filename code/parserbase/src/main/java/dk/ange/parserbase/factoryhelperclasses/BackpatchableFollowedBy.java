@@ -34,6 +34,7 @@ public abstract class BackpatchableFollowedBy<T, D, R> implements Sequence<T, D,
         this.optionalPart = optionalPart;
     }
 
+    @Override
     public boolean consumes(final T type) {
         if (wrapped == null) {
             throw new IllegalStateException("FollowedBy was never set for this item");
@@ -41,6 +42,7 @@ public abstract class BackpatchableFollowedBy<T, D, R> implements Sequence<T, D,
         return wrapped.consumes(type);
     }
 
+    @Override
     public ParseState<R> parse(final ItemProvider<T, D> itemProvider, final ParseState<R> initialState)
             throws ParseError {
         if (wrapped == null) {
@@ -52,6 +54,7 @@ public abstract class BackpatchableFollowedBy<T, D, R> implements Sequence<T, D,
         return wrapped.parse(itemProvider, initialState);
     }
 
+    @Override
     public void setFollowedBy(final Sequence<T, D, R> followedBy) {
         if (wrapped != null) {
             throw new IllegalStateException("FollowedBy was already set for this instance. This is probably an "

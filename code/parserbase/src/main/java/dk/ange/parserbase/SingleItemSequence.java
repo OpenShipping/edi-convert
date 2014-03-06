@@ -29,6 +29,7 @@ public class SingleItemSequence<T, D, R> implements Sequence<T, D, R> {
         this.consumer = consumer;
     }
 
+    @Override
     public ParseState<R> parse(final ItemProvider<T, D> itemProvider, final ParseState<R> initialState)
             throws ParseError {
         if (!consumes.equals(itemProvider.peek().getLexerType())) {
@@ -45,6 +46,7 @@ public class SingleItemSequence<T, D, R> implements Sequence<T, D, R> {
         }
     }
 
+    @Override
     public boolean consumes(final T type) {
         return consumes.equals(type);
     }

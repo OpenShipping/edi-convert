@@ -26,6 +26,7 @@ public class TextFile implements Iterable<String> {
     }
 
     // This is the one method of the Iterable interface
+    @Override
     public Iterator<String> iterator() {
         return new TextFileIterator();
     }
@@ -51,11 +52,13 @@ public class TextFile implements Iterable<String> {
         }
 
         // If the next line is non-null, then we have a next line
+        @Override
         public boolean hasNext() {
             return nextline != null;
         }
 
         // Return the next line, but first read the line that follows it.
+        @Override
         public String next() {
             try {
                 final String result = nextline;
@@ -74,6 +77,7 @@ public class TextFile implements Iterable<String> {
         }
 
         // The file is read-only; we don't allow lines to be removed.
+        @Override
         public void remove() {
             throw new UnsupportedOperationException();
         }

@@ -36,6 +36,7 @@ public class EdifactFactory /* extends Factory<Tag, Segment, ContentHandler> */{
 
     private final static DataItemParser<Segment, ContentHandler> NEUTRAL = new DataItemParser<Segment, ContentHandler>() {
 
+        @Override
         public ParseState<ContentHandler> parse(final Segment item, final ParseState<ContentHandler> parseState) {
             // Do nothing on purpose.
             return parseState;
@@ -67,6 +68,7 @@ public class EdifactFactory /* extends Factory<Tag, Segment, ContentHandler> */{
             this.pathToParent = pathToParent;
         }
 
+        @Override
         public boolean consumes(final Tag type) {
             if (groupIsMandatory && numExecutions == 0) {
                 return groupAsSequence.consumes(type);
@@ -74,6 +76,7 @@ public class EdifactFactory /* extends Factory<Tag, Segment, ContentHandler> */{
             return groupAsSequence.consumes(type) || followedBy.consumes(type);
         }
 
+        @Override
         public ParseState<ContentHandler> parse(final ItemProvider<Tag, Segment> itemProvider,
                 final ParseState<ContentHandler> initialState) throws ParseError {
 

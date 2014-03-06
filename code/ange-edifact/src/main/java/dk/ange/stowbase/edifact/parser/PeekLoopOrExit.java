@@ -34,11 +34,13 @@ public class PeekLoopOrExit implements Sequence<Tag, Segment, ContentHandler> {
         this.headOfLoop = headOfLoop;
     }
 
+    @Override
     public boolean consumes(final Tag type) {
         assertReady();
         return headOfLoop.consumes(type) || exitPoint.consumes(type);
     }
 
+    @Override
     @SuppressWarnings("unused")
     public ParseState<ContentHandler> parse(final ItemProvider<Tag, Segment> itemProvider,
             final ParseState<ContentHandler> initialState) throws ParseError {

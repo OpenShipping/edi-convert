@@ -34,6 +34,7 @@ public class CompoundSequence<T, D, R> implements Sequence<T, D, R>, HasFollowed
         this.unfixedSequence = sequence;
     }
 
+    @Override
     public ParseState<R> parse(final ItemProvider<T, D> itemProvider, final ParseState<R> initialState)
             throws ParseError {
         initSequence();
@@ -95,6 +96,7 @@ public class CompoundSequence<T, D, R> implements Sequence<T, D, R>, HasFollowed
         return (unfixedSequence.get(unfixedSequence.size() - 1) instanceof HasFollowedBy<?, ?, ?>);
     }
 
+    @Override
     public boolean consumes(final T type) {
         initSequence();
         return sequence.get(0).consumes(type);
@@ -114,6 +116,7 @@ public class CompoundSequence<T, D, R> implements Sequence<T, D, R>, HasFollowed
         return msg.toString();
     }
 
+    @Override
     public void setFollowedBy(final Sequence<T, D, R> followedBy) {
         if (sequence != null) {
             throw new RuntimeException("Adding to followedBy too late!");

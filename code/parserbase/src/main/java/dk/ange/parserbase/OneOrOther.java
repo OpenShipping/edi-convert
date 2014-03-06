@@ -27,6 +27,7 @@ public class OneOrOther<T, D, R> implements Sequence<T, D, R> {
         this.alternatives = new ArrayList<>(alternatives);
     }
 
+    @Override
     public ParseState<R> parse(final ItemProvider<T, D> itemProvider, final ParseState<R> initialState)
             throws ParseError {
         for (final Sequence<T, D, R> item : alternatives) {
@@ -38,6 +39,7 @@ public class OneOrOther<T, D, R> implements Sequence<T, D, R> {
                 itemProvider.getItemIdx(), itemProvider.describePositionType());
     }
 
+    @Override
     public boolean consumes(final T type) {
         for (final Sequence<T, D, R> item : alternatives) {
             if (item.consumes(type)) {

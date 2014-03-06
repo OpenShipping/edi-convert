@@ -70,10 +70,12 @@ public class EdifactReader {
             this.iterator = new SkipLastIterator<>(iterator);
         }
 
+        @Override
         public boolean hasNext() {
             return !hasSentEOF;
         }
 
+        @Override
         public LexedPair<Tag, Segment> next() {
             if (hasSentEOF) {
                 throw new NoSuchElementException();
@@ -87,6 +89,7 @@ public class EdifactReader {
             }
         }
 
+        @Override
         public void remove() {
             throw new UnsupportedOperationException();
         }

@@ -72,6 +72,7 @@ public abstract class LexerBase<T, D> implements ItemProvider<T, D> {
      *
      * @see dk.ange.orion.parser.sequence.ItemProvider#peek()
      */
+    @Override
     public final LexedPair<T, D> peek() {
         return iterBasedLexer.peek();
     }
@@ -81,6 +82,7 @@ public abstract class LexerBase<T, D> implements ItemProvider<T, D> {
      *
      * @see dk.ange.orion.parser.sequence.ItemProvider#pop()
      */
+    @Override
     public final LexedPair<T, D> pop() {
         return iterBasedLexer.pop();
     }
@@ -90,6 +92,7 @@ public abstract class LexerBase<T, D> implements ItemProvider<T, D> {
      *
      * @see dk.ange.orion.parser.sequence.ItemProvider#getItemIdx()
      */
+    @Override
     public final int getItemIdx() {
         if (iterBasedLexer == null) {
             return -1;

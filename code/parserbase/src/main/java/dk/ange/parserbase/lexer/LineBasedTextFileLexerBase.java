@@ -37,6 +37,7 @@ public abstract class LineBasedTextFileLexerBase<T> extends LexerBase<T, String>
         return "";
     }
 
+    @Override
     public String describePositionType() {
         return "line";
     }

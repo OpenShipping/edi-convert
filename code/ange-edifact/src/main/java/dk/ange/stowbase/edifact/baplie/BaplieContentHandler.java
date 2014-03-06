@@ -59,6 +59,7 @@ public class BaplieContentHandler implements ContentHandler {
         this.vesselImo = vesselImo;
     }
 
+    @Override
     public void segment(final String position, final Segment segment) {
         if (position.startsWith("LOC/")) {
             if (position.equals("LOC/LOC")) {
@@ -154,6 +155,7 @@ public class BaplieContentHandler implements ContentHandler {
         dangerousGoodsList.clear();
     }
 
+    @Override
     public void startGroup(final String position) {
         if (position.equals("LOC")) {
             clearContainer();
@@ -162,6 +164,7 @@ public class BaplieContentHandler implements ContentHandler {
         // System.out.println("startGroup: " + position);
     }
 
+    @Override
     public void endGroup(final String position) {
         if (position.equals("LOC")) {
             container.setLiveReefer(temperature != null);

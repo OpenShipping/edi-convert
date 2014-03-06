@@ -107,6 +107,7 @@ public class TestSingleItemSequence extends TestCase {
 
         final DataItemParser<String, Integer> action = new DataItemParser<String, Integer>() {
 
+            @Override
             public ParseState<Integer> parse(final String item, final ParseState<Integer> parseState) {
                 throw exceptionToThrow;
             }

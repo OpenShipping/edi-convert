@@ -27,10 +27,12 @@ public class GenericLexedPair<T, D> implements LexedPair<T, D> {
         this.dataType = dataType;
     }
 
+    @Override
     public D getData() {
         return dataType;
     }
 
+    @Override
     public T getLexerType() {
         return lexedType;
     }

@@ -11,6 +11,7 @@ import java.util.List;
  */
 public abstract class TabSeparatedItems<R> implements DataItemParser<String, R> {
 
+    @Override
     final public ParseState<R> parse(final String item, final ParseState<R> parseState) {
         final String[] items = item.split("\t");
         final List<String> l = new ArrayList<>(items.length);

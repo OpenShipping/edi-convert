@@ -28,6 +28,7 @@ public class TestFactory extends TestCase {
 
     private final DataItemParser<Integer, Model> addingAction = new DataItemParser<Integer, Model>() {
 
+        @Override
         public ParseState<Model> parse(final Integer item, final ParseState<Model> parseState) {
             parseState.getResult().seen.add(item);
             return parseState;

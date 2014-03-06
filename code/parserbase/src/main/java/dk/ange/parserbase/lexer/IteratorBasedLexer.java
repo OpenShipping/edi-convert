@@ -32,14 +32,17 @@ public class IteratorBasedLexer<T, D> implements ItemProvider<T, D> {
         this.iter = iter;
     }
 
+    @Override
     public String describePositionType() {
         return "iterator position";
     }
 
+    @Override
     public int getItemIdx() {
         return itemIdx;
     }
 
+    @Override
     public LexedPair<T, D> peek() {
         if (top == null) {
             throw new IllegalStateException("Attempt to peek past end of input");
@@ -47,6 +50,7 @@ public class IteratorBasedLexer<T, D> implements ItemProvider<T, D> {
         return top;
     }
 
+    @Override
     public LexedPair<T, D> pop() {
         if (top == null) {
             throw new IllegalStateException("Attempt to pop past end of input");

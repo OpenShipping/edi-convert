@@ -37,10 +37,12 @@ public class TestBackpatchableFollowedBy extends TestCase {
 
             return new Sequence<LexerType, String, Integer>() {
 
+                @Override
                 public boolean consumes(final LexerType type) {
                     return optionalPart1.consumes(type) || followedBy.consumes(type);
                 }
 
+                @Override
                 @SuppressWarnings("unused")
                 public ParseState<Integer> parse(final ItemProvider<LexerType, String> itemProvider,
                         final ParseState<Integer> initialState) throws ParseError {
@@ -65,6 +67,7 @@ public class TestBackpatchableFollowedBy extends TestCase {
      */
     protected final DataItemParser<String, Integer> neutral = new DataItemParser<String, Integer>() {
 
+        @Override
         public ParseState<Integer> parse(final String item, final ParseState<Integer> parseState) {
             return parseState;
         }

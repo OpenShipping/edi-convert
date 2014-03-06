@@ -32,6 +32,7 @@ public class EdifactParseAction implements DataItemParser<Segment, ContentHandle
         this.countedTagName = countedTagName;
     }
 
+    @Override
     public ParseState<ContentHandler> parse(final Segment item, final ParseState<ContentHandler> parseState) {
         if (!countedTagName.startsWith(item.getTag().toString())) {
             throw new RuntimeException("Expected " + countedTagName + " to start with " + item.getTag().toString());

@@ -28,6 +28,7 @@ public final class EdifactScanner implements Iterator<Token> {
         updateNext();
     }
 
+    @Override
     public Token next() {
         if (!hasNext()) {
             throw new NoSuchElementException();
@@ -125,10 +126,12 @@ public final class EdifactScanner implements Iterator<Token> {
         return EdifactScanner.class.getSimpleName();
     }
 
+    @Override
     public boolean hasNext() {
         return next != null;
     }
 
+    @Override
     public void remove() {
         throw new UnsupportedOperationException(EdifactScanner.class.getSimpleName() + " can not remove()");
     }

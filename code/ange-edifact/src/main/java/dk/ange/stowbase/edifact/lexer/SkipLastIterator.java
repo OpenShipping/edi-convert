@@ -25,10 +25,12 @@ public class SkipLastIterator<T> implements Iterator<T> {
         updateNext();
     }
 
+    @Override
     public boolean hasNext() {
         return hasNext;
     }
 
+    @Override
     public T next() {
         if (!hasNext) {
             throw new NoSuchElementException();
@@ -43,6 +45,7 @@ public class SkipLastIterator<T> implements Iterator<T> {
         hasNext = iterator.hasNext();
     }
 
+    @Override
     public void remove() {
         throw new UnsupportedOperationException(SkipLastIterator.class.getSimpleName() + " can not remove");
     }

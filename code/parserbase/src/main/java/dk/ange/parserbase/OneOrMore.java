@@ -24,6 +24,7 @@ public class OneOrMore<T, D, R> implements Sequence<T, D, R> {
         this.repeatable = repeatable;
     }
 
+    @Override
     public ParseState<R> parse(final ItemProvider<T, D> itemProvider, final ParseState<R> initialState)
             throws ParseError {
         ParseState<R> current = repeatable.parse(itemProvider, initialState);
@@ -33,6 +34,7 @@ public class OneOrMore<T, D, R> implements Sequence<T, D, R> {
         return current;
     }
 
+    @Override
     public boolean consumes(final T type) {
         return repeatable.consumes(type);
     }

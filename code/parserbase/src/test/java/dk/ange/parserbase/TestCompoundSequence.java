@@ -159,6 +159,7 @@ public class TestCompoundSequence extends TestCase {
 
         final DataItemParser<String, Integer> action = new DataItemParser<String, Integer>() {
 
+            @Override
             public ParseState<Integer> parse(final String item, final ParseState<Integer> parseState) {
                 throw exceptionToThrow;
             }
@@ -192,6 +193,7 @@ public class TestCompoundSequence extends TestCase {
 
         Sequence<LexerType, String, Integer> followedBy = null;
 
+        @Override
         public void setFollowedBy(final Sequence<LexerType, String, Integer> followedBy) {
             this.followedBy = followedBy;
         }

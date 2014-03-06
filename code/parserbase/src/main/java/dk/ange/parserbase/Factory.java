@@ -119,6 +119,7 @@ public abstract class Factory<T, D, R> {
      */
     protected final DataItemParser<D, R> neutral = new DataItemParser<D, R>() {
 
+        @Override
         public ParseState<R> parse(final D item, final ParseState<R> parseState) {
             return parseState;
         }

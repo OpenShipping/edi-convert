@@ -36,10 +36,12 @@ public class Optional<T, D, R> implements Sequence<T, D, R> {
         return res;
     }
 
+    @Override
     public boolean consumes(final T type) {
         return wrapped.consumes(type);
     }
 
+    @Override
     public ParseState<R> parse(final ItemProvider<T, D> itemProvider, final ParseState<R> initialState)
             throws ParseError {
         return wrapped.parse(itemProvider, initialState);

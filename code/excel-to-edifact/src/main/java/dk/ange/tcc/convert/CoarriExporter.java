@@ -68,6 +68,7 @@ public class CoarriExporter implements EdiFactExporter {
     /* (non-Javadoc)
      * @see dk.ange.tcc.convert.EdiFactExporter#addContainer(java.lang.String, java.lang.String, int, java.lang.Integer, java.lang.Integer, java.lang.Integer, boolean, boolean, java.lang.String, java.lang.String, java.util.List, java.lang.Double, java.lang.String, java.util.List, java.lang.String)
      */
+    @Override
     public void addContainer(final String containerId, final String isocode, final int weight,
             final Integer overWidthRight, final Integer overWidthLeft, final Integer overHeight,
             final boolean liveReefer, final boolean isEmpty, final String bookingNumber,
@@ -445,6 +446,7 @@ public class CoarriExporter implements EdiFactExporter {
     /**
      * Write out the entire Coarri
      */
+    @Override
     public void flush() {
         insertHeader();
         insertFooter();
@@ -544,6 +546,7 @@ public class CoarriExporter implements EdiFactExporter {
     /**
      * @param loadPort
      */
+    @Override
     public void setLoadPort(final String loadPort) {
         this.port = loadPort;
     }
@@ -551,6 +554,7 @@ public class CoarriExporter implements EdiFactExporter {
     /**
      * @param vesselImo
      */
+    @Override
     public void setVesselImo(final String vesselImo) {
         this.vesselImo = vesselImo;
     }
@@ -558,6 +562,7 @@ public class CoarriExporter implements EdiFactExporter {
     /**
      * @param voyageCode
      */
+    @Override
     public void setVoyageCode(final String voyageCode) {
         this.voyageId = voyageCode;
     }
