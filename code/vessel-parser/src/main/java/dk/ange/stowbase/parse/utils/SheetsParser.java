@@ -71,25 +71,43 @@ public abstract class SheetsParser {
      *            Old name of sheet
      * @return The sheet or null if it not there
      */
-    protected Sheet getSheetOptionalWithOldName(final String name, final String oldName) {
+    protected Sheet getSheetOptionalWithOldNameNoMessages(final String name, final String oldName) {
         final Sheet sheet = workbook.getSheet(name);
         final Sheet oldSheet = workbook.getSheet(oldName);
         if (sheet == null) {
             if (oldSheet == null) {
                 return null;
             } else {
-                messages.addParsedSheets(oldSheet);
-                messages.addSheetWarning(oldName, "Sheet is given old name, rename to '" + name + "'");
                 return oldSheet;
             }
         } else {
             if (oldSheet == null) {
-                messages.addParsedSheets(sheet);
                 return sheet;
             } else {
                 throw new ParseException("Both " + name + " and " + oldName + " sheets exists");
             }
         }
+    }
+
+    /**
+     * Get the sheet. Will fail is sheets of both names exists, will warn if sheet with the old name is used. Will also
+     * call messages.addParsedSheets if the sheet is in the workbook.
+     *
+     * @param name
+     *            Name of sheet
+     * @param oldName
+     *            Old name of sheet
+     * @return The sheet or null if it not there
+     */
+    protected Sheet getSheetOptionalWithOldName(final String name, final String oldName) {
+        final Sheet sheet = getSheetOptionalWithOldNameNoMessages(name, oldName);
+        if (sheet != null) {
+            messages.addParsedSheets(sheet);
+            if (sheet == workbook.getSheet(oldName)) {
+                messages.addSheetWarning(oldName, "Sheet is given old name, rename to '" + name + "'");
+            }
+        }
+        return sheet;
     }
 
     /**
