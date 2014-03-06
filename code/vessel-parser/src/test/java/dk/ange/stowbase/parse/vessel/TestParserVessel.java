@@ -42,9 +42,9 @@ public class TestParserVessel {
         assertEquals("" //
                 + "OK\n" //
                 + "Parsed the following sheets: [Vessel, Bays, Tier20, Tier40, Reef20, Reef40, Height20,"
-                + " Height40, Pos20, Pos40, DG, tanks, VarTanks, ConstWgts, Stability, Hydrostatics,"
+                + " Height40, Pos20, Pos40, Dg20, Dg40, DG, tanks, VarTanks, ConstWgts, Stability, Hydrostatics,"
                 + " MetaCenter, HullWgtDistr, Bonjean, StressLimits]\n" //
-                + "Unused sheets: [DgStacks]\n" //
+                + "Dg40: Unknown rule 'X' ignored. The known rule is 'Z'.\n" //
                 + "DG: Unknown DG class '7.7'\n" //
                 + "DG: Known DG classes: [1.1-1.6, 1.4S, 2.1, 2.2, 2.3, 3, 3(B), 3(C),"
                 + " 4.1, 4.2, 4.3, 4.3(A), 4.3(B), 4.3(C), 4.3(D), 5.1, 5.2,"
@@ -74,7 +74,7 @@ public class TestParserVessel {
     }
 
     private void validateStacks(final List<BundleStowbaseObject> vesselStacks) {
-        {
+        { // index 0, 0200A
             final BundleStowbaseObject stack0200A = vesselStacks.get(0);
             assertEquals("0", stack0200A.get("rowName").getAsString());
             assertEquals("2", stack0200A.get("overlappingFeuBay").getAsString());
@@ -82,14 +82,41 @@ public class TestParserVessel {
             final BundleStowbaseObject stackSupport0200A = stack0200A.get("vesselStackSupports").getAsObjects().get(2);
             assertEquals("2", stackSupport0200A.get("bayName").getAsString());
             assertEquals(Arrays.asList("80", "82"), stackSupport0200A.get("dcTiersFromBelow").getAsStringList());
-            // assertNull(stackSupport0200A.get("imoForbidden"));
+            assertNull(stackSupport0200A.get("imoForbidden"));
 
             final BundleStowbaseObject stackSupport0100A = stack0200A.get("vesselStackSupports").getAsObjects().get(0);
             assertEquals("1", stackSupport0100A.get("bayName").getAsString());
             assertEquals(Arrays.asList("80", "82"), stackSupport0100A.get("dcTiersFromBelow").getAsStringList());
-            // assertNull(stackSupport0100A.get("imoForbidden"));
+            assertNull(stackSupport0100A.get("imoForbidden"));
         }
-        {
+        { // index 1, 0200B
+            final BundleStowbaseObject stack = vesselStacks.get(1);
+            assertEquals("0", stack.get("rowName").getAsString());
+            assertEquals("2", stack.get("overlappingFeuBay").getAsString());
+            final BundleStowbaseObject stackSupport = stack.get("vesselStackSupports").getAsObjects().get(2);
+            assertEquals("2", stackSupport.get("bayName").getAsString());
+            assertEquals(Arrays.asList("2"), stackSupport.get("dcTiersFromBelow").getAsStringList());
+            assertEquals(true, stackSupport.get("imoForbidden").getAsBoolean());
+        }
+        { // index 3, 0201B
+            final BundleStowbaseObject stack = vesselStacks.get(3);
+            assertEquals("1", stack.get("rowName").getAsString());
+            assertEquals("2", stack.get("overlappingFeuBay").getAsString());
+            final BundleStowbaseObject stackSupport = stack.get("vesselStackSupports").getAsObjects().get(2);
+            assertEquals("2", stackSupport.get("bayName").getAsString());
+            assertEquals(Arrays.asList("2"), stackSupport.get("dcTiersFromBelow").getAsStringList());
+            assertNull(stackSupport.get("imoForbidden"));
+        }
+        { // index 5, 0202B
+            final BundleStowbaseObject stack = vesselStacks.get(5);
+            assertEquals("2", stack.get("rowName").getAsString());
+            assertEquals("2", stack.get("overlappingFeuBay").getAsString());
+            final BundleStowbaseObject stackSupport = stack.get("vesselStackSupports").getAsObjects().get(2);
+            assertEquals("2", stackSupport.get("bayName").getAsString());
+            assertEquals(Arrays.asList("2"), stackSupport.get("dcTiersFromBelow").getAsStringList());
+            assertNull(stackSupport.get("imoForbidden"));
+        }
+        { // index 6, 0203A
             final BundleStowbaseObject stack0203A = vesselStacks.get(6);
             assertEquals("2", stack0203A.get("overlappingFeuBay").getAsString());
             assertEquals("3", stack0203A.get("rowName").getAsString());
@@ -97,12 +124,12 @@ public class TestParserVessel {
             final BundleStowbaseObject stackSupport0203A = stack0203A.get("vesselStackSupports").getAsObjects().get(2);
             assertEquals("2", stackSupport0203A.get("bayName").getAsString());
             assertEquals(Arrays.asList("80", "82"), stackSupport0203A.get("dcTiersFromBelow").getAsStringList());
-            // assertEquals(true, stackSupport0203A.get("imoForbidden").getAsBoolean());
+            assertEquals(true, stackSupport0203A.get("imoForbidden").getAsBoolean());
 
             final BundleStowbaseObject stackSupport0103A = stack0203A.get("vesselStackSupports").getAsObjects().get(0);
             assertEquals("1", stackSupport0103A.get("bayName").getAsString());
             assertEquals(Arrays.asList("80", "82"), stackSupport0103A.get("dcTiersFromBelow").getAsStringList());
-            // assertEquals(true, stackSupport0103A.get("imoForbidden").getAsBoolean());
+            assertEquals(true, stackSupport0103A.get("imoForbidden").getAsBoolean());
         }
     }
 

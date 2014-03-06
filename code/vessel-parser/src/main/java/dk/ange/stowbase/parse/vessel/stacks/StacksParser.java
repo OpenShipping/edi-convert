@@ -21,6 +21,7 @@ import com.google.common.collect.Iterables;
 import dk.ange.stowbase.parse.utils.BRL;
 import dk.ange.stowbase.parse.utils.Messages;
 import dk.ange.stowbase.parse.utils.ParseException;
+import dk.ange.stowbase.parse.utils.SheetWrapperWarner;
 import dk.ange.stowbase.parse.vessel.BaysMapping;
 import dk.ange.stowbase.parse.vessel.BaysMapping.TwentyForeAftForty;
 import dk.ange.stowbase.parse.vessel.VesselSheetParser.LongitudinalPositiveDirection;
@@ -67,6 +68,8 @@ public class StacksParser extends StackDataSheetsParser {
         readWgt2040();
         readHeight2040();
         fileHasPos2040 = readPos2040();
+        readDg20();
+        readDg40();
     }
 
     private Map<BRL, StackData> readTier20() {
@@ -83,6 +86,30 @@ public class StacksParser extends StackDataSheetsParser {
         readStacksData(sheetTier40, data, TierAction.INSTANCE, true);
         log.debug("data40 = {}", data);
         return Collections.unmodifiableMap(data);
+    }
+
+    private void readSlots45() {
+        final Sheet sheetSlots45 = getSheetOptional("Slots45");
+        if (sheetSlots45 != null) {
+            readStacksData(sheetSlots45, data40, FourtyFiveAction.INSTANCE);
+        }
+        log.debug("data40 = {}", data40);
+    }
+
+    private void readReef20() {
+        final Sheet sheetReefer20 = getSheetOptionalWithOldName("Reef20", "ReeferSlots20");
+        if (sheetReefer20 != null) {
+            readStacksData(sheetReefer20, data20, ReeferAction.INSTANCE);
+        }
+        log.debug("data20 = {}", data20);
+    }
+
+    private void readReef40() {
+        final Sheet sheetReefer40 = getSheetOptionalWithOldName("Reef40", "ReeferSlots40");
+        if (sheetReefer40 != null) {
+            readStacksData(sheetReefer40, data40, ReeferAction.INSTANCE);
+        }
+        log.debug("data40 = {}", data40);
     }
 
     private void readWgt2040() {
@@ -139,26 +166,18 @@ public class StacksParser extends StackDataSheetsParser {
         return sheetsInFile;
     }
 
-    private void readReef20() {
-        final Sheet sheetReefer20 = getSheetOptionalWithOldName("Reef20", "ReeferSlots20");
-        if (sheetReefer20 != null) {
-            readStacksData(sheetReefer20, data20, ReeferAction.INSTANCE);
+    private void readDg20() {
+        final Sheet sheetDg20 = getSheetOptional("Dg20");
+        if (sheetDg20 != null) {
+            readStacksData(sheetDg20, data20, new DgStacksAction(new SheetWrapperWarner(messages, sheetDg20)));
         }
         log.debug("data20 = {}", data20);
     }
 
-    private void readReef40() {
-        final Sheet sheetReefer40 = getSheetOptionalWithOldName("Reef40", "ReeferSlots40");
-        if (sheetReefer40 != null) {
-            readStacksData(sheetReefer40, data40, ReeferAction.INSTANCE);
-        }
-        log.debug("data40 = {}", data40);
-    }
-
-    private void readSlots45() {
-        final Sheet sheetSlots45 = getSheetOptional("Slots45");
-        if (sheetSlots45 != null) {
-            readStacksData(sheetSlots45, data40, FourtyFiveAction.INSTANCE);
+    private void readDg40() {
+        final Sheet sheetDg40 = getSheetOptional("Dg40");
+        if (sheetDg40 != null) {
+            readStacksData(sheetDg40, data40, new DgStacksAction(new SheetWrapperWarner(messages, sheetDg40)));
         }
         log.debug("data40 = {}", data40);
     }
