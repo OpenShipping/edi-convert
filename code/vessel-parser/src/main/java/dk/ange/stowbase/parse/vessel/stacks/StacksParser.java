@@ -259,7 +259,9 @@ public class StacksParser extends StackDataSheetsParser {
         if (!Double.isNaN(stackData.maxWeight)) {
             vesselStackSupport.setMaxWeightInKg(stackData.maxWeight);
         }
-        vesselStackSupport.setTopAboveInM(stackData.posTop);
+        if (!Double.isNaN(stackData.posTop)) {
+            vesselStackSupport.setTopAboveInM(stackData.posTop);
+        }
         return vesselStackSupport;
     }
 
