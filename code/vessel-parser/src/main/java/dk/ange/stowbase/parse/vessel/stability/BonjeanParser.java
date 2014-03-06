@@ -8,7 +8,6 @@ import java.util.Map;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.stowbase.client.Reference;
 import org.stowbase.client.StowbaseObjectFactory;
@@ -18,17 +17,15 @@ import org.stowbase.client.objects.VesselProfile;
 import dk.ange.stowbase.parse.utils.IterableIterator;
 import dk.ange.stowbase.parse.utils.Messages;
 import dk.ange.stowbase.parse.utils.ParseException;
-import dk.ange.stowbase.parse.utils.SheetsParser;
+import dk.ange.stowbase.parse.utils.SingleSheetParser;
 
 /**
  * Parse the "Bonjean" sheet.
  */
 
-public class BonjeanParser extends SheetsParser {
+public class BonjeanParser extends SingleSheetParser {
 
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(BonjeanParser.class);
-
-    private static final String SHEET_NAME = "Bonjean";
 
     private Map<Double, Map<Double, Double>> bonjean_matrix;
 
@@ -47,21 +44,25 @@ public class BonjeanParser extends SheetsParser {
         parse();
     }
 
+    @Override
+    public String getSheetName() {
+        return "Bonjean";
+    }
+
     private void parse() {
-        final Sheet sheet = getSheetOptional(SHEET_NAME);
-        if (sheet == null) {
+        if (!sheetFound()) {
             return;
         }
         bonjean_matrix = new HashMap<>();
 
         try {
-            parseSheet(sheet);
+            parseSheet();
         } catch (final ParseException e) {
-            messages.addSheetWarning(SHEET_NAME, e.getMessage());
+            addSheetWarning(e.getMessage());
         }
     }
 
-    private void parseSheet(final Sheet sheet) {
+    private void parseSheet() {
         final Iterator<Row> rowIterator = sheet.rowIterator();
         final Row firstRow = rowIterator.next();
         keyMap = new HashMap<>();
@@ -73,8 +74,8 @@ public class BonjeanParser extends SheetsParser {
                 }
             } catch (final Exception e) {
                 log.debug("Error when parsing a bonjean bay header #" + cell.getColumnIndex(), e);
-                messages.addSheetWarning(SHEET_NAME, "Error when parsing a bonjean bay header #" + cell.getColumnIndex()
-                        + " Error: " + e.getMessage());
+                addSheetWarning("Error when parsing a bonjean bay header in cell " + pos(cell) + " Error: "
+                        + e.getMessage());
             }
         }
         for (final Row row : new IterableIterator<>(rowIterator)) {
@@ -82,7 +83,7 @@ public class BonjeanParser extends SheetsParser {
                 parseRow(row);
             } catch (final Exception e) {
                 log.debug("Error when parsing a bonjean line", e);
-                messages.addSheetWarning(SHEET_NAME, "Error when parsing a bonjean line: " + e.getMessage());
+                addSheetWarning("Error when parsing a bonjean line: " + e.getMessage());
             }
         }
     }
