@@ -50,7 +50,7 @@ public final class VesselParser extends SheetsParser {
      */
     public void addDataToStowage(final StowbaseObject stowage) {
         if (imoNumber != null) {
-            stowage.put("vessel", StowbaseURN.vessel(imoNumber, null).toString());
+            stowage.put("vessel", StowbaseURN.vessel(imoNumber));
         }
     }
 

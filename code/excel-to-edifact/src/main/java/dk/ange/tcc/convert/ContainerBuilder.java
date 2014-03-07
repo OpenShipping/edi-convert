@@ -2,7 +2,6 @@ package dk.ange.tcc.convert;
 
 import static dk.ange.tcc.convert.SheetFunctions.cellString;
 import static dk.ange.tcc.convert.SheetFunctions.pos;
-import static org.stowbase.client.objects.Units.FOOT;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +12,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.stowbase.client.References;
 import org.stowbase.client.StowbaseObjectFactory;
-import org.stowbase.client.StowbaseURI;
 import org.stowbase.client.objects.Container;
 import org.stowbase.client.objects.DangerousGoods;
 import org.stowbase.client.objects.Move;
@@ -470,8 +468,7 @@ public final class ContainerBuilder {
             container.setLength45();
             break;
         case 'P':
-            container.put("lengthInM", 53 * FOOT);
-            container.put("lengthName", StowbaseURI.forFootLength("53").toString());
+            container.setLength53();
             break;
         default:
             throw new RuntimeException("Json: Unsupported first char in '" + isoCode + "'");
