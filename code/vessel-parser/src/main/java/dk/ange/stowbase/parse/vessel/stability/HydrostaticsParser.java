@@ -12,7 +12,6 @@ import java.util.Map;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.stowbase.client.Reference;
 import org.stowbase.client.StowbaseObjectFactory;
@@ -23,16 +22,14 @@ import dk.ange.stowbase.parse.utils.Header;
 import dk.ange.stowbase.parse.utils.IterableIterator;
 import dk.ange.stowbase.parse.utils.Messages;
 import dk.ange.stowbase.parse.utils.ParseException;
-import dk.ange.stowbase.parse.utils.SheetsParser;
+import dk.ange.stowbase.parse.utils.SingleSheetParser;
 
 /**
  * Parse the "Hydrostatics" sheet.
  */
-public class HydrostaticsParser extends SheetsParser {
+public class HydrostaticsParser extends SingleSheetParser {
 
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(HydrostaticsParser.class);
-
-    private static final String SHEET_NAME = "Hydrostatics";
 
     private Collection<TableRow> tableRows;
 
@@ -49,20 +46,24 @@ public class HydrostaticsParser extends SheetsParser {
         parse();
     }
 
+    @Override
+    public String getSheetName() {
+        return "Hydrostatics";
+    }
+
     private void parse() {
-        final Sheet sheet = getSheetOptional(SHEET_NAME);
-        if (sheet == null) {
+        if (!sheetFound()) {
             return;
         }
         tableRows = new ArrayList<>();
         try {
-            parseSheet(sheet);
+            parseSheet();
         } catch (final ParseException e) {
-            messages.addSheetWarning(SHEET_NAME, e.getMessage());
+            addSheetWarning(e.getMessage());
         }
     }
 
-    private void parseSheet(final Sheet sheet) {
+    private void parseSheet() {
         final Iterator<Row> rowIterator = sheet.rowIterator();
 
         final Row firstRow = rowIterator.next();
@@ -80,7 +81,7 @@ public class HydrostaticsParser extends SheetsParser {
                 parseRow(row, draftColumn, displacementColumn, lcbColumn, mctColumn);
             } catch (final Exception e) {
                 log.debug("Error when parsing a hydrostatics line", e);
-                messages.addSheetWarning(SHEET_NAME, "Error when parsing a hydrostatics line: " + e.getMessage());
+                addSheetWarning("Error when parsing a hydrostatics line: " + e.getMessage());
             }
         }
     }

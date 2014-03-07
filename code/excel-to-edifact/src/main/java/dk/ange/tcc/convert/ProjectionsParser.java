@@ -3,9 +3,8 @@ package dk.ange.tcc.convert;
 import java.io.OutputStream;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.Random;
-import java.lang.Math;
+import java.util.Set;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -84,7 +83,7 @@ public final class ProjectionsParser extends SheetsParser {
         final CoprarExporter coprarExporter = coprarOutputStream != null ? new CoprarExporter(vesselImo, vesselName,
                 coprarOutputStream) : null;
         int containerIdCounter = 0;
-        Random random_generator = new Random();
+        final Random random_generator = new Random();
         for (int r = 1; r < sheet.getPhysicalNumberOfRows(); ++r) { // Skip first row
             final Row row = sheet.getRow(r);
             try {
@@ -93,23 +92,24 @@ public final class ProjectionsParser extends SheetsParser {
                     continue; // Skip containers without container numbers
                 }
                 /**
-                * TODO: make an abstract parent class for the projections and the loadlist container builder
-                * and have the specialized container builders handle the whole generation.
-                */
+                 * TODO: make an abstract parent class for the projections and the loadlist container builder and have
+                 * the specialized container builders handle the whole generation.
+                 */
                 final int numberOfContainers = Integer.parseInt(cellString(row.getCell(0)));
                 final double stdDevContainerWeight = Double.parseDouble(cellString(row.getCell(1)));
                 final ContainerBuilder builder = new ContainerBuilder(vesselImo, "");
-                builder.parseContainer(row, messages, sheet.getSheetName(), calls);
-                for(int i=0; i < numberOfContainers; ++i){
+                builder.parseContainer(row, messages, sheet, calls);
+                for (int i = 0; i < numberOfContainers; ++i) {
                     builder.setContainerId(String.format("TEMP%07d", containerIdCounter));
                     /**
-                     * Generating containers with a user-defined standard deviation on the weight
-                     * since real world cargo distributions have a weight spread  - in the range
-                     * 3 to 32 tons
+                     * Generating containers with a user-defined standard deviation on the weight since real world cargo
+                     * distributions have a weight spread - in the range 3 to 32 tons
                      */
-                    long newWeight = Math.max(Math.round(builder.getContainerWeight()) + 1000*Math.round(stdDevContainerWeight * random_generator.nextGaussian()), 3000);
+                    long newWeight = Math.max(
+                            Math.round(builder.getContainerWeight()) + 1000
+                                    * Math.round(stdDevContainerWeight * random_generator.nextGaussian()), 3000);
                     newWeight = Math.min(newWeight, 32000);
-                    builder.setContainerWeight((int)newWeight); // cast to int safe due to above max
+                    builder.setContainerWeight((int) newWeight); // cast to int safe due to above max
                     builder.build(stowbaseObjectFactory, moves, coprarExporter);
                     ++containerIdCounter;
                 }

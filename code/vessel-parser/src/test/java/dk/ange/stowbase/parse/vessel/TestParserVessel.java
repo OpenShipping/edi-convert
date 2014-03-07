@@ -42,15 +42,15 @@ public class TestParserVessel {
         assertEquals("" //
                 + "OK\n" //
                 + "Parsed the following sheets: [Vessel, Bays, Tier20, Tier40, Reef20, Reef40, Height20,"
-                + " Height40, Pos20, Pos40, Dg20, Dg40, DG, tanks, VarTanks, ConstWgts, Stability, Hydrostatics,"
+                + " Height40, Pos20, Pos40, Dg20, Dg40, DG, Tanks, VarTanks, ConstWgts, Stability, Hydrostatics,"
                 + " MetaCenter, HullWgtDistr, Bonjean, StressLimits]\n" //
                 + "Dg40: Unknown rule 'X' ignored. The known rule is 'Z'.\n" //
                 + "DG: Unknown DG class '7.7'\n" //
                 + "DG: Known DG classes: [1.1-1.6, 1.4S, 2.1, 2.2, 2.3, 3, 3(B), 3(C),"
                 + " 4.1, 4.2, 4.3, 4.3(A), 4.3(B), 4.3(C), 4.3(D), 5.1, 5.2,"
                 + " 6.1, 6.1(A), 6.1(B), 6.1(C), 6.1(D), 8, 8(A), 8(B), 8(C), 8(D), 9]\n" //
-                + "DG: Unknown permission 'X', it will be ignored. Known permissions are [P, N]\n" //
-                + "Tanks: The volume capacity written in tanks!B4 is 490.00 while the one derived from"
+                + "DG: Unknown permission 'X' in cell DG!D20, it will be ignored. Known permissions are [P, N]\n" //
+                + "Tanks: The volume capacity written in Tanks!B4 is 490.00 while the one derived from"
                 + " mass capacity and density is 487.80\n", //
                 result.messages.getStatus());
         assertNotNull(result.messages.getStatus());

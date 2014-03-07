@@ -46,7 +46,7 @@ public class TestOldVessel {
                 + "Parsed the following sheets: [Vessel, Bays, Tier20, Tier40, Reef20, Reef40, Height20, "
                 + "Height40, Pos20, Pos40, DG, tanks, VarTanks, ConstWgts, Stability, Hydrostatics, "
                 + "MetaCenter, HullWgtDistr, Bonjean, StressLimits]\n" //
-                + "Tanks: The volume capacity written in tanks!B4 is 490.00 while the one derived from "
+                + "tanks: The volume capacity written in tanks!B4 is 490.00 while the one derived from "
                 + "mass capacity and density is 487.80\n", //
                 result.messages.getStatus());
         assertNotNull(result.messages.getStatus());

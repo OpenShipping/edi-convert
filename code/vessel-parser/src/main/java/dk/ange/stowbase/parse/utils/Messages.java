@@ -23,6 +23,7 @@ public class Messages {
 
     /**
      * @param workbook
+     *            workbook used for reporting unused sheets
      */
     public void setWorkbook(final Workbook workbook) {
         this.workbook = workbook;
@@ -38,26 +39,11 @@ public class Messages {
     }
 
     /**
-     * @param warning
-     */
-    public void addWarning(final String warning) {
-        warnings.add(warning);
-    }
-
-    /**
-     * @param sheetName
-     * @param warning
-     */
-    public void addSheetWarning(final String sheetName, final String warning) {
-        warnings.add(sheetName + ": " + warning);
-    }
-
-    /**
      * @param sheet
      * @param warning
      */
     public void addSheetWarning(final Sheet sheet, final String warning) {
-        addSheetWarning(sheet.getSheetName(), warning);
+        warnings.add(sheet.getSheetName() + ": " + warning);
     }
 
     /**

@@ -4,14 +4,13 @@ import static dk.ange.tcc.convert.SheetFunctions.cellString;
 import static dk.ange.tcc.convert.SheetFunctions.pos;
 import static org.stowbase.client.objects.Units.FOOT;
 
-import dk.ange.tcc.convert.UndgNumberImdgCode;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.stowbase.client.References;
 import org.stowbase.client.StowbaseObjectFactory;
 import org.stowbase.client.StowbaseURI;
@@ -76,10 +75,10 @@ public final class ContainerBuilder {
      *
      * @param row
      * @param messages
-     * @param sheetName
+     * @param sheet
      */
-    public void parseContainer(final Row row, final Messages messages, final String sheetName) {
-        parseContainer(row, messages, sheetName, null);
+    public void parseContainer(final Row row, final Messages messages, final Sheet sheet) {
+        parseContainer(row, messages, sheet, null);
     }
 
     /**
@@ -87,13 +86,13 @@ public final class ContainerBuilder {
      *
      * @param row
      * @param messages
-     * @param sheetName
+     * @param sheet
      * @param calls
      *            list of calls in schedule. Containers loaded outside schedule will be assumed to be onboard and
      *            containers discharged outside schedule will be assumed to stay onboard. If list is null all calls are
      *            treated as in schedule.
      */
-    public void parseContainer(final Row row, Messages messages, final String sheetName, final Set<String> calls) {
+    public void parseContainer(final Row row, final Messages messages, final Sheet sheet, final Set<String> calls) {
         // See user documentation at
         // convert/grails-app/views/shared/_loadlistInstructionsTemplate.gsp
         // for name and position of fields
@@ -102,106 +101,106 @@ public final class ContainerBuilder {
         // Columns/Fields have fixed order, they _must_ appear in the order as documented
         // Rows without CONTAINER_ID are skipped silently
         {
-            //final StringBuilder isoCodeBuilder = new StringBuilder();
-            String stif = cellString(row.getCell(4)); // E  4 STIF_CODE
+            // final StringBuilder isoCodeBuilder = new StringBuilder();
+            final String stif = cellString(row.getCell(4)); // E 4 STIF_CODE
             String isoCodeFromStif = "";
             if (stif != null && stif.length() == 4) {
-                // 22G0    20' x 8'6       GP      GENERAL PURPOSE         20DV
+                // 22G0 20' x 8'6 GP GENERAL PURPOSE 20DV
                 if (stif.equals("20DV")) {
                     isoCodeFromStif = "22G0";
-                // 22P1    20' x 8'6       PF      PLATFORM (FIXED ENDS)   20FR
+                    // 22P1 20' x 8'6 PF PLATFORM (FIXED ENDS) 20FR
                 } else if (stif.equals("20FR")) {
                     isoCodeFromStif = "22P1";
-                // 22R0    20' x 8'6       RE      REFRIGERATED    20RF
+                    // 22R0 20' x 8'6 RE REFRIGERATED 20RF
                 } else if (stif.equals("20RF")) {
                     isoCodeFromStif = "22R0";
-                // 22T2    20' x 8'6       TN      TANK (LIQUID)   20TK
+                    // 22T2 20' x 8'6 TN TANK (LIQUID) 20TK
                 } else if (stif.equals("20TK")) {
                     isoCodeFromStif = "22T0";
-                // 22U1    20' x 8'6       UT      OPEN TOP        20OT
+                    // 22U1 20' x 8'6 UT OPEN TOP 20OT
                 } else if (stif.equals("20OT")) {
                     isoCodeFromStif = "22U1";
-                // 25G0    20' x 9'6       GP      GENERAL PURPOSE         20HC
+                    // 25G0 20' x 9'6 GP GENERAL PURPOSE 20HC
                 } else if (stif.equals("20HC")) {
                     isoCodeFromStif = "25G0";
-                // 28G0    20' x 4'3       GP      GENERAL PURPOSE         20DV
+                    // 28G0 20' x 4'3 GP GENERAL PURPOSE 20DV
                 } else if (stif.equals("20DV")) {
                     isoCodeFromStif = "28G0";
-                // 29P0    20' x <4'       PL      PLATFORM (PLAIN)        20PL
+                    // 29P0 20' x <4' PL PLATFORM (PLAIN) 20PL
                 } else if (stif.equals("20PL")) {
                     isoCodeFromStif = "29P0";
-                // 42G0    40' x 8'6       GP      GENERAL PURPOSE         40DV
+                    // 42G0 40' x 8'6 GP GENERAL PURPOSE 40DV
                 } else if (stif.equals("40DV")) {
                     isoCodeFromStif = "42G0";
-                // 42P1    40' x 8'6       PF      PLATFORM (FIXED ENDS)   40FR
+                    // 42P1 40' x 8'6 PF PLATFORM (FIXED ENDS) 40FR
                 } else if (stif.equals("40FR")) {
                     isoCodeFromStif = "42P1";
-                // 42R0    40' x 8'6       RE      REFRIGERATED    40RF
+                    // 42R0 40' x 8'6 RE REFRIGERATED 40RF
                 } else if (stif.equals("40RF")) {
                     isoCodeFromStif = "42R0";
-                // 42T2    40' x 8'6       TN      TANK (LIQUID)   40TK
+                    // 42T2 40' x 8'6 TN TANK (LIQUID) 40TK
                 } else if (stif.equals("40TK")) {
                     isoCodeFromStif = "42T0";
-                // 42U1    40' x 8'6       UT      OPEN TOP        40OT
+                    // 42U1 40' x 8'6 UT OPEN TOP 40OT
                 } else if (stif.equals("40OT")) {
                     isoCodeFromStif = "42U1";
-                // 45G0    40' x 9'6       GP      GENERAL PURPOSE         40HC
+                    // 45G0 40' x 9'6 GP GENERAL PURPOSE 40HC
                 } else if (stif.equals("40HC")) {
                     isoCodeFromStif = "45G0";
-                // 45P1    40' x 9'6       PF      PLATFORM (FIXED ENDS)   40SR
+                    // 45P1 40' x 9'6 PF PLATFORM (FIXED ENDS) 40SR
                 } else if (stif.equals("40SR")) {
                     isoCodeFromStif = "45P1";
-                // 45R0    40' x 9'6       RE      REFRIGERATED    40RH
+                    // 45R0 40' x 9'6 RE REFRIGERATED 40RH
                 } else if (stif.equals("40RH")) {
                     isoCodeFromStif = "45R0";
-                // 49P0    40' x <4'       PL      PLATFORM (PLAIN)        40PL
+                    // 49P0 40' x <4' PL PLATFORM (PLAIN) 40PL
                 } else if (stif.equals("40PL")) {
                     isoCodeFromStif = "49P0";
-                // L5G0    45' x 9'6       GP      GENERAL PURPOSE         45HC
+                    // L5G0 45' x 9'6 GP GENERAL PURPOSE 45HC
                 } else if (stif.equals("45HC")) {
                     isoCodeFromStif = "L5G0";
-                // L5R0    45' x 9'6       RE      REFRIGERATED    45RH
+                    // L5R0 45' x 9'6 RE REFRIGERATED 45RH
                 } else if (stif.equals("45RH")) {
                     isoCodeFromStif = "L5R0";
-                }  else {
-                    messages.addSheetWarning(sheetName, "row " + (row.getRowNum()+1) + ": field 4 STIF_CODE '" + stif + "' unknown");
+                } else {
+                    messages.addSheetWarning(sheet, "row " + (row.getRowNum() + 1) + ": field 4 STIF_CODE '" + stif
+                            + "' unknown");
                     // isoCodeFromStif == null;
                 }
             }
 
-            String rawIsoCode = cellString(row.getCell(5)); // F  5 ISO_CODE
+            final String rawIsoCode = cellString(row.getCell(5)); // F 5 ISO_CODE
             this.isoCode = "";
             if (isoCodeFromStif.length() == 4) {
                 this.isoCode = isoCodeFromStif;
             }
-            if (rawIsoCode != null && rawIsoCode.length() == 4 ) {  // field 5 ISO_CODE wins over field 4 STIF_CODE
+            if (rawIsoCode != null && rawIsoCode.length() == 4) { // field 5 ISO_CODE wins over field 4 STIF_CODE
                 this.isoCode = rawIsoCode;
             }
-            if (isoCodeFromStif.length() == 4
-                    && this.isoCode.length() == 4
-                    && !this.isoCode.matches(isoCodeFromStif)) {
-                messages.addSheetWarning(sheetName, "row " + (row.getRowNum()+1) + ": field 4 STIF_CODE '" + stif
+            if (isoCodeFromStif.length() == 4 && this.isoCode.length() == 4 && !this.isoCode.matches(isoCodeFromStif)) {
+                messages.addSheetWarning(sheet, "row " + (row.getRowNum() + 1) + ": field 4 STIF_CODE '" + stif
                         + "' --> '" + isoCodeFromStif + "' and field 5 ISO code '" + rawIsoCode
                         + "' are inconsistent, accepted ISO_CODE '" + this.isoCode + "'");
             }
             if (this.isoCode.length() != 4) {
-                messages.addSheetWarning(sheetName, "row " + (row.getRowNum()+1) + ": field 4 STIF_CODE '" + stif
+                messages.addSheetWarning(sheet, "row " + (row.getRowNum() + 1) + ": field 4 STIF_CODE '" + stif
                         + "' or field 5 ISO_CODE '" + rawIsoCode + "' did not generate a valid ISO code");
             }
         }
 
         // G 6 WEIGHT_KG
         {
-            final String rawWeight = cellString(row.getCell(6)); // G  6 WEIGHT_KG
+            final String rawWeight = cellString(row.getCell(6)); // G 6 WEIGHT_KG
             try {
-                final int weightInKg = (int)Math.round(Double.parseDouble(rawWeight));
+                final int weightInKg = (int) Math.round(Double.parseDouble(rawWeight));
                 if (weightInKg < 1000) {
-                    messages.addSheetWarning(sheetName, "row " + (row.getRowNum()+1) + ": field 6 WEIGHT_KG '" + weightInKg + "' expected at least 1000 kg");
+                    messages.addSheetWarning(sheet, "row " + (row.getRowNum() + 1) + ": field 6 WEIGHT_KG '"
+                            + weightInKg + "' expected at least 1000 kg");
                 }
                 this.weight = weightInKg;
-            }
-            catch (NumberFormatException ne) {
-                messages.addSheetWarning(sheetName, "row " + (row.getRowNum()+1) + ": field 6 WEIGHT_KG '" + rawWeight + "' expected integer (in kg)");
+            } catch (final NumberFormatException ne) {
+                messages.addSheetWarning(sheet, "row " + (row.getRowNum() + 1) + ": field 6 WEIGHT_KG '" + rawWeight
+                        + "' expected integer (in kg)");
             }
         }
 
@@ -217,7 +216,8 @@ public final class ContainerBuilder {
                 } else if (emptyStatus.equals("Y")) {
                     this.isEmpty = true;
                 } else {
-                    messages.addSheetWarning(sheetName, "row " + (row.getRowNum()+1) + ": field 7 EMPTY '" + emptyStatus + "' unknown, expected (Y|N)");
+                    messages.addSheetWarning(sheet, "row " + (row.getRowNum() + 1) + ": field 7 EMPTY '" + emptyStatus
+                            + "' unknown, expected (Y|N)");
                 }
             }
         }
@@ -228,38 +228,39 @@ public final class ContainerBuilder {
             if (isoCode.equals("22R0") || isoCode.equals("45R0")) { // is a 20" RF or 40" HR reefer
                 final Cell cell = row.getCell(8); // 8 REEF_LIVE
                 if (cell == null) {
-                    messages.addSheetWarning(sheetName, "row " + (row.getRowNum()+1) + ": field 8 REEF_LIVE (Y|N) expected");
+                    messages.addSheetWarning(sheet, "row " + (row.getRowNum() + 1)
+                            + ": field 8 REEF_LIVE (Y|N) expected");
 
                 }
                 final String aliveStatus = cellString(cell);
                 if (aliveStatus == null || aliveStatus.equals("N") || aliveStatus.equals("")) { // default N
-                  // already false
+                    // already false
                 } else if (aliveStatus.equals("Y")) {
-                        this.isLiveReefer = true;
+                    this.isLiveReefer = true;
                 } else {
-                    messages.addSheetWarning(sheetName, "row " + (row.getRowNum()+1) + ": field 8 REEF_LIVE '" + aliveStatus + "' expected (Y|N)");
+                    messages.addSheetWarning(sheet, "row " + (row.getRowNum() + 1) + ": field 8 REEF_LIVE '"
+                            + aliveStatus + "' expected (Y|N)");
                 }
             }
         }
 
-
         // J 9 REEF_TEMP
         {
-            final Cell cell = row.getCell(9); //  J 9 REEF_TEMP
+            final Cell cell = row.getCell(9); // J 9 REEF_TEMP
             if (!isLiveReefer || cell == null) {
                 this.reeferTemperature = null;
-	    } else {
+            } else {
                 final String temperature = cellString(cell);
                 if (temperature == null || temperature.equals("")) {
                     this.reeferTemperature = null;
-		} else {
+                } else {
                     this.reeferTemperature = Double.parseDouble(temperature);
-		}
+                }
             }
         }
         // K 10 TEMP_UNIT
         {
-            final Cell cell = row.getCell(10); //  K 10 TEMP_UNIT
+            final Cell cell = row.getCell(10); // K 10 TEMP_UNIT
             if (!isLiveReefer || cell == null) {
                 this.temperatureUnit = null;
             } else {
@@ -270,7 +271,8 @@ public final class ContainerBuilder {
                     if (unit.equals("CEL") || unit.equals("FAH")) {
                         this.temperatureUnit = unit;
                     } else {
-                        messages.addSheetWarning(sheetName, "row " + (row.getRowNum()+1) + ": field 10 TEMP_UNIT '" + unit + "' expected (CEL|FAH)");
+                        messages.addSheetWarning(sheet, "row " + (row.getRowNum() + 1) + ": field 10 TEMP_UNIT '"
+                                + unit + "' expected (CEL|FAH)");
                     }
                 }
             }
@@ -287,10 +289,11 @@ public final class ContainerBuilder {
                     final String[] tupleSplit = tuple.split(",");
                     if (tupleSplit.length != 2) { // no IMO Class given, call lookup
                         // handling suffix 'L' for limited quantities, which is not used in imdgClass lookup
-                        // not conforming to COPRAR 1.2, must be handled correctly by upgrade to COPRAR 2.0, see tickets #961 #962
-                        String undgNumber = tupleSplit[0].replace("L","");
-                        dangerousGoodsListNew.add(new DangerousGoods(tupleSplit[0],
-                                UndgNumberImdgCode.imdgClass(undgNumber)));
+                        // not conforming to COPRAR 1.2, must be handled correctly by upgrade to COPRAR 2.0, see tickets
+                        // #961 #962
+                        final String undgNumber = tupleSplit[0].replace("L", "");
+                        dangerousGoodsListNew.add(new DangerousGoods(tupleSplit[0], UndgNumberImdgCode
+                                .imdgClass(undgNumber)));
                     } else {
                         dangerousGoodsListNew.add(new DangerousGoods(tupleSplit[0], tupleSplit[1]));
                     }
@@ -355,14 +358,13 @@ public final class ContainerBuilder {
 
         // Q 16 BOOKING_NO
         {
-            final Cell cell = row.getCell(16); //  Q 16 BOOKING_NO
+            final Cell cell = row.getCell(16); // Q 16 BOOKING_NO
             this.bookingNumber = cellString(cell);
         }
 
-
         // R 17 SLOT_POSITION
         {
-            final Cell cell = row.getCell(17); //  R 17 SLOT_POSITION
+            final Cell cell = row.getCell(17); // R 17 SLOT_POSITION
             String position = cellString(cell);
             if (position != null && position.length() == 5) { // bbbrrtt expected, but get sometimes brrtt from Excel
                 position = "00" + position;
@@ -371,7 +373,7 @@ public final class ContainerBuilder {
                 position = "0" + position;
             }
             if (position != null && position.length() > 0 && position.length() != 7) {
-                messages.addSheetWarning(sheetName, "row " + (row.getRowNum()+1)
+                messages.addSheetWarning(sheet, "row " + (row.getRowNum() + 1)
                         + ": field 17 R SLOT_POSITION format unknown, expected 'bbbrrtt', got '" + position + "'");
             }
             this.slotPosition = position;
@@ -379,39 +381,36 @@ public final class ContainerBuilder {
 
         // S 18 CARRIER
         {
-            final Cell cell = row.getCell(18); //  S 18 CARRIER
+            final Cell cell = row.getCell(18); // S 18 CARRIER
             this.containerCarrierCode = cellString(cell);
         }
 
-
-        parseLoadMove(row, messages, sheetName, calls);      // C  2 POL
-        parseDischargeMove(row, messages, sheetName, calls); // D  3 POD
+        parseLoadMove(row, messages, sheet, calls); // C 2 POL
+        parseDischargeMove(row, messages, sheet, calls); // D 3 POD
 
     }
 
-    private void parseLoadMove(final Row row, final Messages messages, final String sheetName, final Set<String> calls) {
-
-        final Cell cell = row.getCell(2); // C  2 POL
+    private void parseLoadMove(final Row row, final Messages messages, final Sheet sheet, final Set<String> calls) {
+        final Cell cell = row.getCell(2); // C 2 POL
         final String loadText = cell.getStringCellValue();
         if (calls == null || calls.contains(loadText)) {
             this.loadPort = loadText;
         } else {
             this.loadPort = null;
-            messages.addSheetWarning(sheetName, "row " + (row.getRowNum()+1) + ": unknown load port '" + loadText + "' in cell '" + pos(cell)
-                    + "', will assume the container is onboard");
+            messages.addSheetWarning(sheet, "row " + (row.getRowNum() + 1) + ": unknown load port '" + loadText
+                    + "' in cell '" + pos(cell) + "', will assume the container is onboard");
         }
     }
 
-    private void parseDischargeMove(final Row row, final Messages messages, final String sheetName,
-            final Set<String> calls) {
-        final Cell cell = row.getCell(3); // D  3 POD
+    private void parseDischargeMove(final Row row, final Messages messages, final Sheet sheet, final Set<String> calls) {
+        final Cell cell = row.getCell(3); // D 3 POD
         final String dischargeText = cell.getStringCellValue();
         if (calls == null || calls.contains(dischargeText)) {
             this.dischargePort = dischargeText;
         } else {
             this.dischargePort = null;
-            messages.addSheetWarning(sheetName, "row " + (row.getRowNum()+1) + ": unknown discharge port '" + dischargeText + "' in cell '" + pos(cell)
-                    + "', will assume the container should stay onboard");
+            messages.addSheetWarning(sheet, "row " + (row.getRowNum() + 1) + ": unknown discharge port '"
+                    + dischargeText + "' in cell '" + pos(cell) + "', will assume the container should stay onboard");
         }
     }
 
@@ -436,7 +435,7 @@ public final class ContainerBuilder {
         this.weight = containerWeight;
     }
 
-     /**
+    /**
      * Insert the last parsed container into the stowbase and coprar
      *
      * @param stowbase
@@ -445,7 +444,8 @@ public final class ContainerBuilder {
      * @param ediFactExporter
      *            coprar writer to write container to, if it is null it will be skipped
      */
-    public void build(final StowbaseObjectFactory stowbase, final References moves, final EdiFactExporter ediFactExporter) {
+    public void build(final StowbaseObjectFactory stowbase, final References moves,
+            final EdiFactExporter ediFactExporter) {
         if (stowbase != null) {
             buildJson(stowbase, moves);
         }
@@ -483,12 +483,13 @@ public final class ContainerBuilder {
         case '5':
             container.setHeightHC();
             break;
-        case '8':  // TODO: PL container 4.3 foot high
+        case '8': // TODO: PL container 4.3 foot high
             container.setHeightDC();
             break;
-        case '9':  // TODO: PL container <4 foot high
+        case '9': // TODO: PL container <4 foot high
             container.setHeightDC();
-            break;        default:
+            break;
+        default:
             throw new RuntimeException("Json: Unsupported second char in '" + isoCode + "'");
         }
         container.put("rawIsoCode", isoCode);
@@ -522,8 +523,8 @@ public final class ContainerBuilder {
 
     private void buildEdiFact(final EdiFactExporter ediFactExporter) {
         ediFactExporter.addContainer(containerId, isoCode, weight, overWidthRight, overWidthLeft, overHeight,
-                isLiveReefer, isEmpty, bookingNumber, loadPort, dischargePort,
-                dangerousGoodsList, reeferTemperature, temperatureUnit, specialStowList, slotPosition, containerCarrierCode);
+                isLiveReefer, isEmpty, bookingNumber, loadPort, dischargePort, dangerousGoodsList, reeferTemperature,
+                temperatureUnit, specialStowList, slotPosition, containerCarrierCode);
     }
 
 }

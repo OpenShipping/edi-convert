@@ -39,7 +39,7 @@ public abstract class SingleSheetParser extends SheetsParser implements SheetWar
 
     @Override
     public void addSheetWarning(final String warning) {
-        messages.addSheetWarning(getSheetName(), warning);
+        messages.addSheetWarning(sheet, warning);
     }
 
 }

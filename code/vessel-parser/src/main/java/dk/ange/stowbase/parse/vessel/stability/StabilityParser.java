@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.stowbase.client.StowbaseObject;
 import org.stowbase.client.StowbaseObjectFactory;
@@ -15,16 +14,14 @@ import org.stowbase.client.objects.VesselProfile;
 
 import dk.ange.stowbase.parse.utils.Header;
 import dk.ange.stowbase.parse.utils.Messages;
-import dk.ange.stowbase.parse.utils.SheetsParser;
+import dk.ange.stowbase.parse.utils.SingleSheetParser;
 
 /**
  * Parse the "Stability" sheet.
  */
-public class StabilityParser extends SheetsParser {
+public class StabilityParser extends SingleSheetParser {
 
-    private static final String SHEET_NAME = "Stability";
-
-    private Map<Header, String> map;
+    private final Map<Header, String> map = new HashMap<>();
 
     /**
      * Construct and parse
@@ -39,12 +36,15 @@ public class StabilityParser extends SheetsParser {
         parse();
     }
 
+    @Override
+    public String getSheetName() {
+        return "Stability";
+    }
+
     void parse() {
-        final Sheet sheet = getSheetOptional(SHEET_NAME);
-        if (sheet == null) {
+        if (!sheetFound()) {
             return;
         }
-        map = new HashMap<>();
         readKeyValueSheet(sheet, map);
     }
 
@@ -54,7 +54,7 @@ public class StabilityParser extends SheetsParser {
      * @param vesselProfile
      */
     public void addDataToVesselProfile(final VesselProfile vesselProfile) {
-        if (map == null) {
+        if (!sheetFound()) {
             return;
         }
         final StowbaseObject stability = stowbaseObjectFactory.create("stability");
@@ -69,7 +69,7 @@ public class StabilityParser extends SheetsParser {
         readClassificationSociety(stability);
 
         for (final Header key : map.keySet()) {
-            messages.addSheetWarning(SHEET_NAME, "Unused key '" + key + "'");
+            addSheetWarning("Unused key '" + key + "'");
         }
     }
 
@@ -78,8 +78,7 @@ public class StabilityParser extends SheetsParser {
         if (society != null) {
             final List<String> knownSocieties = Arrays.asList("GL", "LR", "DNV");
             if (!knownSocieties.contains(society)) {
-                messages.addSheetWarning(SHEET_NAME, "Unknown society '" + society + "', allowed values are: "
-                        + knownSocieties);
+                addSheetWarning("Unknown society '" + society + "', allowed values are: " + knownSocieties);
             }
         }
     }
@@ -97,8 +96,7 @@ public class StabilityParser extends SheetsParser {
             try {
                 d = Double.parseDouble(string);
             } catch (final NumberFormatException e) {
-                messages.addSheetWarning(SHEET_NAME, "Could not transform '" + string
-                        + "' to a number, see line with '" + keyHeader + "'");
+                addSheetWarning("Could not transform '" + string + "' to a number, see line with '" + keyHeader + "'");
                 return;
             }
             stowbaseObject.put(stowbaseKey, factor * d);

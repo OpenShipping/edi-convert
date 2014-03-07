@@ -67,7 +67,7 @@ public class ExcelConvert2 {
                 // Container
                 final ContainerBuilder builder = new ContainerBuilder(vesselImo, containerId);
                 final Messages messages = new Messages();
-                builder.parseContainer(row, messages, workbook.getSheetName(0));
+                builder.parseContainer(row, messages, workbook.getSheetAt(0));
                 final References moves = new References();
                 builder.build(stowbase, moves, coprar);
                 final StowbaseObject stowage = stowbase.create("stowage");

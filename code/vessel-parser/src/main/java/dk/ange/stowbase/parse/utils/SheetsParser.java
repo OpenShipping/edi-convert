@@ -104,7 +104,7 @@ public abstract class SheetsParser {
         if (sheet != null) {
             messages.addParsedSheets(sheet);
             if (sheet == workbook.getSheet(oldName)) {
-                messages.addSheetWarning(oldName, "Sheet is given old name, rename to '" + name + "'");
+                messages.addSheetWarning(sheet, "Sheet is given old name, rename to '" + name + "'");
             }
         }
         return sheet;
@@ -146,7 +146,7 @@ public abstract class SheetsParser {
         for (final Row row : new IterableIterator<>(sheet.rowIterator())) {
             final Header key = header(cellString(row.getCell(0)));
             if (map.containsKey(key)) {
-                messages.addSheetWarning(sheet.getSheetName(), "Key '" + cellString(row.getCell(0))
+                messages.addSheetWarning(sheet, "Key '" + cellString(row.getCell(0))
                         + "' used more than once, will use the first value");
                 continue;
             }

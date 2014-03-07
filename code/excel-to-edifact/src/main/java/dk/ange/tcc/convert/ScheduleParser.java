@@ -5,20 +5,17 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.stowbase.client.StowbaseObject;
 import org.stowbase.client.StowbaseObjectFactory;
 
 import dk.ange.stowbase.parse.utils.Messages;
-import dk.ange.stowbase.parse.utils.SheetsParser;
+import dk.ange.stowbase.parse.utils.SingleSheetParser;
 
 /**
  * Parse "Schedule"
  */
-public final class ScheduleParser extends SheetsParser {
-
-    private static final String SHEET_NAME = "Schedule";
+public final class ScheduleParser extends SingleSheetParser {
 
     private final List<String> calls = new ArrayList<>();
 
@@ -35,22 +32,27 @@ public final class ScheduleParser extends SheetsParser {
         parse();
     }
 
+    @Override
+    public String getSheetName() {
+        return "Schedule";
+    }
+
     private void parse() {
-        final Sheet sheet = getSheetOptional(SHEET_NAME);
-        if (sheet != null) {
-            for (int r = 1; r < sheet.getPhysicalNumberOfRows(); ++r) { // Skip first row
-                final Row row = sheet.getRow(r);
-                try {
-                    final String portCode = cellString(row.getCell(0));
-                    calls.add(portCode);
-                    final StowbaseObject call = stowbaseObjectFactory.create("call");
-                    call.put("port", "urn:stowbase.org:port:unlocode=" + portCode);
-                } catch (final Exception e) {
-                    throw new RuntimeException("Error was in row " + row.getRowNum(), e);
-                }
-            }
-            messages.addSheetWarning(SHEET_NAME, "Read calls: " + calls); // Should be info, not warning
+        if (!sheetFound()) {
+            return;
         }
+        for (int r = 1; r < sheet.getPhysicalNumberOfRows(); ++r) { // Skip first row
+            final Row row = sheet.getRow(r);
+            try {
+                final String portCode = cellString(row.getCell(0));
+                calls.add(portCode);
+                final StowbaseObject call = stowbaseObjectFactory.create("call");
+                call.put("port", "urn:stowbase.org:port:unlocode=" + portCode);
+            } catch (final Exception e) {
+                throw new RuntimeException("Error was in row " + row.getRowNum(), e);
+            }
+        }
+        addSheetWarning("Read calls: " + calls); // Should be info, not warning
     }
 
     /**
