@@ -63,6 +63,8 @@ public class OldDgParser extends StackDataSheetsParser implements VesselProfileD
     private void readImo() {
         final Sheet sheetImo = getSheetOptionalWithOldName("DG", "IMO");
         if (sheetImo != null) {
+            messages.addSheetWarning(sheetImo,
+                    "Using old format in DG sheet, it should be changed to the new Cargo Spaces based format");
             final HashSet<String> bayNames = new HashSet<>(baysMapping.bayNames());
             parseImoData(sheetImo, bayNames);
         }
