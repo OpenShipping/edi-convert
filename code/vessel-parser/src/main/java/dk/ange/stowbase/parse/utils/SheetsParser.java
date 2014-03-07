@@ -287,7 +287,7 @@ public abstract class SheetsParser {
                         }
                         final String columnTitle = columnTitles.get(cellIndex);
                         try {
-                            handleDataItem(sectionType, sectionTag, rowTitle, columnTitle, cellString);
+                            handleDataItem(sectionType, sectionTag, rowTitle, columnTitle, cellString, cell);
                         } catch (final RuntimeException e) {
                             throw new ParseException(e.getMessage() + ", problem caused by " + pos(cell)
                                     + " containing '" + cellString + "'", e);
@@ -306,9 +306,10 @@ public abstract class SheetsParser {
          * @param rowTitle
          * @param columnTitle
          * @param cellString
+         * @param cell
          */
         protected abstract void handleDataItem(final String sectionType, final String sectionTag,
-                final String rowTitle, final String columnTitle, final String cellString);
+                final String rowTitle, final String columnTitle, final String cellString, final Cell cell);
     }
 
     /**
@@ -317,7 +318,7 @@ public abstract class SheetsParser {
     public static abstract class BrlSectionParser extends SectionParser {
         @Override
         protected final void handleDataItem(final String sectionType, final String sectionTag, final String rowTitle,
-                final String columnTitle, final String cellString) {
+                final String columnTitle, final String cellString, final Cell cell) {
             {
                 final BRL brl = new BRL(columnTitle, rowTitle, sectionTag);
                 log.trace("{}: {} <- {}", new Object[] { sectionType, brl, cellString });

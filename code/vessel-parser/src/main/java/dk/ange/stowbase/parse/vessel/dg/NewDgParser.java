@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.stowbase.client.References;
 import org.stowbase.client.StowbaseObject;
@@ -73,7 +74,7 @@ public class NewDgParser extends SingleSheetParser implements VesselProfileDataA
 
             @Override
             protected void handleDataItem(final String sectionType, final Level level, final String cargoSpace,
-                    final String class_, final String permissionString) {
+                    final String class_, final String permissionString, final Cell cell) {
                 if (!knownClasses.contains(class_) && !unknownClasses.contains(class_)) {
                     addSheetWarning("Unknown DG class '" + class_ + "'");
                     unknownClasses.add(class_);
@@ -112,8 +113,8 @@ public class NewDgParser extends SingleSheetParser implements VesselProfileDataA
                 default:
                     if (!unknownPermissions.contains(permissionString)) {
                         unknownPermissions.add(permissionString);
-                        addSheetWarning("Unknown permission '" + permissionString + "', it will be ignored."
-                                + " Known permissions are [P, N]");
+                        addSheetWarning("Unknown permission '" + permissionString + "' in cell " + pos(cell)
+                                + ", it will be ignored." + " Known permissions are [P, N]");
                     }
                     break;
                 }
@@ -183,18 +184,18 @@ public class NewDgParser extends SingleSheetParser implements VesselProfileDataA
 
         @Override
         protected final void handleDataItem(final String sectionType, final String sectionTag, final String rowTitle,
-                final String columnTitle, final String cellString) {
+                final String columnTitle, final String cellString, final Cell cell) {
             {
                 final Level level = Level.valueOf(sectionTag);
                 final String cargoSpace = columnTitle;
                 if (!cargoSpaces.contains(cargoSpace)) {
-                    sheet.addSheetWarning("Unknown cargo space '" + cargoSpace
-                            + "', cargo spaces are defined in the 'Bays' sheet");
+                    sheet.addSheetWarning("Unknown cargo space '" + cargoSpace + "' in cell " + pos(cell)
+                            + ", cargo spaces are defined in the 'Bays' sheet");
                     return;
                 }
                 // Log message example: # PERMITTED CLASSES: BELOW-3 <- 8(B), N
                 log.trace("{}: {}-{} <- {}, {}", new Object[] { sectionType, level, cargoSpace, rowTitle, cellString });
-                handleDataItem(sectionType, level, cargoSpace, rowTitle, cellString);
+                handleDataItem(sectionType, level, cargoSpace, rowTitle, cellString, cell);
             }
         }
 
@@ -206,9 +207,10 @@ public class NewDgParser extends SingleSheetParser implements VesselProfileDataA
          * @param cargoSpace
          * @param rowTitle
          * @param cellString
+         * @param cell
          */
         protected abstract void handleDataItem(String sectionType, Level level, String cargoSpace, String rowTitle,
-                String cellString);
+                String cellString, Cell cell);
     }
 
 }
