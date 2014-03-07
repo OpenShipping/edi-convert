@@ -1,10 +1,9 @@
 package dk.ange.stowbase.parse.vessel.dg;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -12,9 +11,8 @@ import java.util.Set;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.stowbase.client.References;
-import org.stowbase.client.StowbaseObject;
 import org.stowbase.client.StowbaseObjectFactory;
+import org.stowbase.client.objects.Hold;
 import org.stowbase.client.objects.VesselProfile;
 
 import dk.ange.stowbase.parse.utils.Level;
@@ -65,9 +63,7 @@ public class NewDgParser extends SingleSheetParser implements VesselProfileDataA
 
     private void parseSheet() {
         final Set<String> unknownPermissions = new HashSet<>();
-        final Set<String> knownClasses = new LinkedHashSet<>(Arrays.asList("1.1-1.6", "1.4S", "2.1", "2.2", "2.3", "3",
-                "3(B)", "3(C)", "4.1", "4.2", "4.3", "4.3(A)", "4.3(B)", "4.3(C)", "4.3(D)", "5.1", "5.2", "6.1",
-                "6.1(A)", "6.1(B)", "6.1(C)", "6.1(D)", "8", "8(A)", "8(B)", "8(C)", "8(D)", "9"));
+        final Set<String> knownClasses = Hold.knownClasses();
         final Set<String> unknownClasses = new HashSet<>();
         new CargoSpaceSectionParser(baysMapping, this) {
             private boolean hasWarned = false;
@@ -124,32 +120,34 @@ public class NewDgParser extends SingleSheetParser implements VesselProfileDataA
 
     @Override
     public void addDataToVesselProfile(final VesselProfile vesselProfile) {
-        final References holds = new References();
+        final Collection<Hold> holds = new ArrayList<>();
         final Map<String, List<String>> cargoSpaces = baysMapping.cargoSpaces();
         for (final Entry<String, List<String>> entry : cargoSpaces.entrySet()) {
             final String cargoSpace = entry.getKey();
             final List<String> bays = entry.getValue();
-            final StowbaseObject hold = stowbaseObjectFactory.create("hold");
-            hold.put("name", cargoSpace);
-            hold.put("feubays", bays);
+            final Hold hold = Hold.create(stowbaseObjectFactory);
+            hold.setName(cargoSpace);
+            hold.setBayNames(bays);
             final DgRules dgRules = dgRulesMap.get(cargoSpace);
             if (dgRules != null) {
-                putIfNotNull(hold, "dgAbovePermitted", dgRules.abovePermitted);
-                putIfNotNull(hold, "dgAboveNotPermitted", dgRules.aboveNotPermitted);
-                putIfNotNull(hold, "acceptsImo", dgRules.belowPermitted); // Strange naming caused by history
-                putIfNotNull(hold, "dgBelowNotPermitted", dgRules.belowNotPermitted);
+                if (dgRules.abovePermitted != null) {
+                    hold.setDgAbovePermitted(dgRules.abovePermitted);
+                }
+                if (dgRules.aboveNotPermitted != null) {
+                    hold.setDgAboveNotPermitted(dgRules.aboveNotPermitted);
+                }
+                if (dgRules.belowPermitted != null) {
+                    hold.setDgBelowPermitted(dgRules.belowPermitted);
+                }
+                if (dgRules.belowNotPermitted != null) {
+                    hold.setDgBelowNotPermitted(dgRules.belowNotPermitted);
+                }
             }
-            holds.add(hold.getReference());
+            holds.add(hold);
         }
 
         if (!holds.isEmpty()) {
-            vesselProfile.put("holds", holds);
-        }
-    }
-
-    private void putIfNotNull(final StowbaseObject hold, final String key, final List<String> list) {
-        if (list != null) {
-            hold.put(key, list);
+            vesselProfile.setHolds(holds);
         }
     }
 
