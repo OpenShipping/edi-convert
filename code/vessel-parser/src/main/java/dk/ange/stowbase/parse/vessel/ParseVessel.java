@@ -7,8 +7,9 @@ import java.io.StringWriter;
 import java.util.regex.Pattern;
 import java.util.zip.GZIPOutputStream;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.stowbase.client.StowbaseObjectFactory;
 import org.stowbase.client.export.WriterExporter;
 import org.stowbase.client.objects.VesselProfile;
@@ -86,11 +87,13 @@ public final class ParseVessel {
     private void parseInputStream(final InputStream inputStream) {
         final Workbook workbook;
         try {
-            workbook = new HSSFWorkbook(inputStream);
+            workbook = WorkbookFactory.create(inputStream);
+        } catch (final InvalidFormatException e) {
+            throw new ParseException("Not an Excel file", e);
         } catch (final IOException e) {
             if (Pattern.matches("Invalid header signature; read 0x[0-9A-F]+, expected 0xE11AB1A1E011CFD0",
                     e.getMessage())) {
-                throw new ParseException("Not an Excel file");
+                throw new ParseException("Not an Excel file", e);
             }
             throw new RuntimeException(e);
         }

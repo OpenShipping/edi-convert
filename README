@@ -34,6 +34,7 @@ Install to https://stowage.ange.dk/convert/
 -------------------------------------------
     ssh stowbase@stowage.ange.dk
     ./upgrade-grails-convert
+    exit
 
 Continue install to http://uasc.stowage.net/convert/
 -----------------------------------------------------
