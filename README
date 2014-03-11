@@ -32,17 +32,10 @@ Local use of command line converter
 
 Install to https://stowage.ange.dk/convert/
 -------------------------------------------
-    ssh stowbase@stowage.ange.dk
-    ./upgrade-grails-convert
-    exit
+    ssh stowbase@stowage.ange.dk ./upgrade-grails-convert
 
 Continue install to http://uasc.stowage.net/convert/
 -----------------------------------------------------
-    ssh -A stowbase@stowage.ange.dk
-    ./push-to-uasc.stowage.net  # (requires ssh key)
-    exit
-
-    ssh stowage@uasc.stowage.net
-    ./upgrade-grails-convert
-    exit
+    ssh -A stowbase@stowage.ange.dk ./push-to-uasc.stowage.net  # (requires ssh key)
+    ssh stowage@uasc.stowage.net ./upgrade-grails-convert
 
