@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -134,8 +136,10 @@ public abstract class SheetsParser {
         if (cell == null) {
             return null;
         }
-        cell.setCellType(Cell.CELL_TYPE_STRING);
-        return cell.toString().trim();
+        final DataFormatter df = new DataFormatter();
+        final Workbook workbook2 = cell.getRow().getSheet().getWorkbook();
+        final FormulaEvaluator formulaEval = workbook2.getCreationHelper().createFormulaEvaluator();
+        return df.formatCellValue(cell, formulaEval);
     }
 
     /**
