@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
@@ -24,14 +25,19 @@ public class TestParserVessel {
 
     /**
      * Test convert()
-     *
-     * @throws Exception
      */
     @Test
-    public void convertLegoWithStability() throws Exception {
+    public void convertLegoWithStability() {
+        convertLegoWithStability("lego-maersk-w-stability.xls");
+        convertLegoWithStability("lego-maersk-w-stability.xlsx");
+    }
+
+    private void convertLegoWithStability(final String fileName) {
         final Result result;
-        try (final InputStream inputStream = TestParserVessel.class.getResourceAsStream("lego-maersk-w-stability.xls")) {
+        try (final InputStream inputStream = TestParserVessel.class.getResourceAsStream(fileName)) {
             result = ParseVessel.parse(inputStream);
+        } catch (final IOException e) {
+            throw new RuntimeException(e);
         }
 
         assertNotNull("Be able to display stack trace", result.messages.getDeveloperStatus());
@@ -194,4 +200,5 @@ public class TestParserVessel {
             }
         }
     }
+
 }
