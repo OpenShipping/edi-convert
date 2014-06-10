@@ -35,7 +35,7 @@ public class BaysParser extends SheetsParser {
         for (int rowIndex = 1; rowIndex <= sheet.getLastRowNum(); ++rowIndex) {
             final Row row = sheet.getRow(rowIndex);
             final String bayName = cellString(row.getCell(0));
-            if (bayName.length() == 0) {
+            if (bayName == null || bayName.length() == 0) {
                 continue;
             }
             log.trace("bayName={}", bayName);

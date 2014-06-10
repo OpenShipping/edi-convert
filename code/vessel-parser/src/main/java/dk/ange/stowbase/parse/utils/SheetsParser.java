@@ -149,6 +149,9 @@ public abstract class SheetsParser {
     protected void readKeyValueSheet(final Sheet sheet, final Map<Header, String> map) {
         for (final Row row : new IterableIterator<>(sheet.rowIterator())) {
             final Header key = header(cellString(row.getCell(0)));
+            if (key == null) {
+                continue; // Skip rows with empty headers (data in column A)
+            }
             if (map.containsKey(key)) {
                 messages.addSheetWarning(sheet, "Key '" + cellString(row.getCell(0))
                         + "' used more than once, will use the first value");
