@@ -29,12 +29,20 @@ public class TestParserVessel {
     @Test
     public void convertLegoWithStability() {
         convertLegoWithStability("lego-maersk-w-stability.xls");
+    }
+
+    /**
+     * Test convert() on XLSX file
+     */
+    @Test
+    public void convertLegoWithStabilityXlsx() {
         convertLegoWithStability("lego-maersk-w-stability.xlsx");
     }
 
     private void convertLegoWithStability(final String fileName) {
         final Result result;
         try (final InputStream inputStream = TestParserVessel.class.getResourceAsStream(fileName)) {
+            assertNotNull(inputStream);
             result = ParseVessel.parse(inputStream);
         } catch (final IOException e) {
             throw new RuntimeException(e);
@@ -63,7 +71,7 @@ public class TestParserVessel {
 
         final Bundle bundle = StowbaseReader.readStowbaseData(result.json);
         assertNotNull(bundle);
-        assertEquals(203, bundle.size());
+        assertEquals(205, bundle.size());
 
         final BundleStowbaseObject vesselProfile = bundle.single("vesselProfile");
         assertNotNull(vesselProfile);

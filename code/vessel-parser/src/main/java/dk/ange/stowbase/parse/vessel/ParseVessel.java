@@ -108,7 +108,8 @@ public final class ParseVessel {
         vesselSheetParser.addDataToVesselProfile(vesselProfile);
         final BaysParser baysParser = new BaysParser(stowbaseObjectFactory, messages, workbook);
         final StacksParser stacksParser = new StacksParser(stowbaseObjectFactory, messages, workbook,
-                vesselSheetParser.getLongitudinalPositiveDirection(), baysParser.getBaysMapping());
+                vesselSheetParser.getLongitudinalPositiveDirection(),
+                vesselSheetParser.getTransversePositiveDirection(), baysParser.getBaysMapping());
 
         final DgParser dgParser = new DgParser(stowbaseObjectFactory, messages, workbook, baysParser.getBaysMapping(),
                 stacksParser.getData20(), stacksParser.getData40());
@@ -117,8 +118,10 @@ public final class ParseVessel {
                 .addDataToVesselProfile(vesselProfile);
         dgParser.addDataToVesselProfile(vesselProfile);
 
-        new TanksParser(stowbaseObjectFactory, messages, workbook).addDataToVesselProfile(vesselProfile);
-        new ConstWgtsParser(stowbaseObjectFactory, messages, workbook).addDataToVesselProfile(vesselProfile);
+        new TanksParser(stowbaseObjectFactory, messages, workbook, vesselSheetParser.getTransversePositiveDirection())
+                .addDataToVesselProfile(vesselProfile);
+        new ConstWgtsParser(stowbaseObjectFactory, messages, workbook,
+                vesselSheetParser.getTransversePositiveDirection()).addDataToVesselProfile(vesselProfile);
         new StabilityParser(stowbaseObjectFactory, messages, workbook).addDataToVesselProfile(vesselProfile);
         new HydrostaticsParser(stowbaseObjectFactory, messages, workbook).addDataToVesselProfile(vesselProfile);
         new MetaCenterParser(stowbaseObjectFactory, messages, workbook).addDataToVesselProfile(vesselProfile);

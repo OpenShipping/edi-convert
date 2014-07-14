@@ -23,6 +23,7 @@ import dk.ange.stowbase.parse.utils.IterableIterator;
 import dk.ange.stowbase.parse.utils.Messages;
 import dk.ange.stowbase.parse.utils.ParseException;
 import dk.ange.stowbase.parse.utils.SingleSheetParser;
+import dk.ange.stowbase.parse.vessel.VesselSheetParser.TransversePositiveDirection;
 
 /**
  * Parse the "VarTanks" sheet.
@@ -31,16 +32,20 @@ public final class VarTanksParser extends SingleSheetParser {
 
     private final Map<String, XlsVarTank> varTanks = new HashMap<>();
 
+    private final TransversePositiveDirection transversePositiveDirection;
+
     /**
      * Construct and parse
      *
      * @param stowbaseObjectFactory
      * @param messages
      * @param workbook
+     * @param transversePositiveDirection
      */
     public VarTanksParser(final StowbaseObjectFactory stowbaseObjectFactory, final Messages messages,
-            final Workbook workbook) {
+            final Workbook workbook, final TransversePositiveDirection transversePositiveDirection) {
         super(stowbaseObjectFactory, messages, workbook);
+        this.transversePositiveDirection = transversePositiveDirection;
         parse();
     }
 
@@ -143,7 +148,8 @@ public final class VarTanksParser extends SingleSheetParser {
         final double volume0 = volumes.get(0);
         if (volume0 != 0.0) {
             addSheetWarning("First tank volume in row " + (row.getRowNum() + 1) + " is not 0.0 but " + volume0
-                    + ", a tank volumen of 0.0 m^3 and with FSM 0.0 m^4 is expected to avoid wrong FSM values for small fill %");
+                    + ", a tank volumen of 0.0 m^3 and with FSM 0.0 m^4 is normally used to avoid wrong FSM values"
+                    + " for small fill %");
         }
         return volumes;
     }
@@ -173,6 +179,7 @@ public final class VarTanksParser extends SingleSheetParser {
      * @param lcg
      * @param vcg
      * @param tcg
+     *            TCG as written in XLS sheet
      * @param fsm
      * @param capacityInM3
      */
@@ -221,9 +228,10 @@ public final class VarTanksParser extends SingleSheetParser {
         {
             final LinearInterpolation2d function;
             if (xlsVarTank.tcgs == null) {
-                function = constFunction(capacityInM3, tcg);
+                function = constFunction(capacityInM3, tcg * transversePositiveDirection.signForStarboard());
             } else {
-                function = function(xlsVarTank.volumes, xlsVarTank.tcgs);
+                function = function(xlsVarTank.volumes,
+                        multiply(xlsVarTank.tcgs, transversePositiveDirection.signForStarboard()));
                 final double last = last(xlsVarTank.tcgs);
                 if (!Double.isNaN(tcg) && tcg != last) {
                     addSheetWarning("In VarTanks data for '" + xlsVarTank.description + "' the last value for TCG is "
@@ -249,6 +257,14 @@ public final class VarTanksParser extends SingleSheetParser {
             function.setOutput("fsm");
             tank.setFsmFunction(function);
         }
+    }
+
+    private static List<Double> multiply(final List<Double> list, final double number) {
+        final List<Double> newList = new ArrayList<>(list.size());
+        for (final Double listItem : list) {
+            newList.add(listItem * number);
+        }
+        return newList;
     }
 
     private static <T> T last(final List<T> list) {

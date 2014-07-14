@@ -19,6 +19,7 @@ import dk.ange.stowbase.parse.utils.IterableIterator;
 import dk.ange.stowbase.parse.utils.Messages;
 import dk.ange.stowbase.parse.utils.ParseException;
 import dk.ange.stowbase.parse.utils.SheetsParser;
+import dk.ange.stowbase.parse.vessel.VesselSheetParser.TransversePositiveDirection;
 
 /**
  * Parse the "ConstWgts" sheet.
@@ -26,6 +27,8 @@ import dk.ange.stowbase.parse.utils.SheetsParser;
 public class ConstWgtsParser extends SheetsParser {
 
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(HullWgtDistrParser.class);
+
+    private final TransversePositiveDirection transversePositiveDirection;
 
     private List<BlockData> constantweight_blocks;
 
@@ -37,10 +40,12 @@ public class ConstWgtsParser extends SheetsParser {
      * @param stowbaseObjectFactory
      * @param messages
      * @param workbook
+     * @param transversePositiveDirection
      */
     public ConstWgtsParser(final StowbaseObjectFactory stowbaseObjectFactory, final Messages messages,
-            final Workbook workbook) {
+            final Workbook workbook, final TransversePositiveDirection transversePositiveDirection) {
         super(stowbaseObjectFactory, messages, workbook);
+        this.transversePositiveDirection = transversePositiveDirection;
         parse();
     }
 
@@ -114,7 +119,7 @@ public class ConstWgtsParser extends SheetsParser {
             blockData.foreLcg = forelcg;
             blockData.aftDensity = aftdensity;
             blockData.foreDensity = foredensity;
-            blockData.tcg = tcg;
+            blockData.tcg = tcg * transversePositiveDirection.signForPort();
             blockData.vcg = vcg;
             constantweight_blocks.add(blockData);
         }

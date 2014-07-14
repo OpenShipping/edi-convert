@@ -21,6 +21,7 @@ import dk.ange.stowbase.parse.utils.IterableIterator;
 import dk.ange.stowbase.parse.utils.Messages;
 import dk.ange.stowbase.parse.utils.ParseException;
 import dk.ange.stowbase.parse.utils.SingleSheetParser;
+import dk.ange.stowbase.parse.vessel.VesselSheetParser.TransversePositiveDirection;
 
 /**
  * Parse the "Tanks" sheet.
@@ -37,11 +38,12 @@ public final class TanksParser extends SingleSheetParser {
      * @param stowbaseObjectFactory
      * @param messages
      * @param workbook
+     * @param transversePositiveDirection
      */
     public TanksParser(final StowbaseObjectFactory stowbaseObjectFactory, final Messages messages,
-            final Workbook workbook) {
+            final Workbook workbook, final TransversePositiveDirection transversePositiveDirection) {
         super(stowbaseObjectFactory, messages, workbook);
-        varTanksParser = new VarTanksParser(stowbaseObjectFactory, messages, workbook);
+        varTanksParser = new VarTanksParser(stowbaseObjectFactory, messages, workbook, transversePositiveDirection);
         parse();
     }
 

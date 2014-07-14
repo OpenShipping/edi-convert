@@ -85,10 +85,18 @@ public class VesselSheetParser extends SheetsParser {
     }
 
     /**
-     * @return Which direction is positive
+     * @return Which direction is positive in the longitudinal direction, both in the XLS sheet and in the output JSON.
      */
     public LongitudinalPositiveDirection getLongitudinalPositiveDirection() {
         return longitudinalPositiveDirection;
+    }
+
+    /**
+     * @return Which direction is positive in the transverse direction, in the XLS sheet. The JSON has its own silly
+     *         ideas about which sides that are positive in the transverse direction.
+     */
+    public TransversePositiveDirection getTransversePositiveDirection() {
+        return transversePositiveDirection;
     }
 
     /**

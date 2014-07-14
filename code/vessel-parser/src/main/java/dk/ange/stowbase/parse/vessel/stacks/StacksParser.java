@@ -25,6 +25,7 @@ import dk.ange.stowbase.parse.utils.ParseException;
 import dk.ange.stowbase.parse.utils.SheetWrapperWarner;
 import dk.ange.stowbase.parse.vessel.BaysMapping;
 import dk.ange.stowbase.parse.vessel.BaysMapping.TwentyForeAftForty;
+import dk.ange.stowbase.parse.vessel.VesselSheetParser.TransversePositiveDirection;
 
 /**
  * Parse stacks
@@ -34,6 +35,8 @@ public class StacksParser extends StackDataSheetsParser {
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(StacksParser.class);
 
     private final LongitudinalPositiveDirection longitudinalPositiveDirection;
+
+    private final TransversePositiveDirection transversePositiveDirection;
 
     private final BaysMapping baysMapping;
 
@@ -52,13 +55,15 @@ public class StacksParser extends StackDataSheetsParser {
      * @param messages
      * @param workbook
      * @param longitudinalPositiveDirection
+     * @param transversePositiveDirection
      * @param baysMapping
      */
     public StacksParser(final StowbaseObjectFactory stowbaseObjectFactory, final Messages messages,
             final Workbook workbook, final LongitudinalPositiveDirection longitudinalPositiveDirection,
-            final BaysMapping baysMapping) {
+            final TransversePositiveDirection transversePositiveDirection, final BaysMapping baysMapping) {
         super(stowbaseObjectFactory, messages, workbook);
         this.longitudinalPositiveDirection = longitudinalPositiveDirection;
+        this.transversePositiveDirection = transversePositiveDirection;
         this.baysMapping = baysMapping;
         data20 = readTier20();
         data40 = readTier40();
@@ -154,8 +159,9 @@ public class StacksParser extends StackDataSheetsParser {
         final boolean sheetsInFile;
         if (sheetPos20 != null && sheetPos40 != null) {
             sheetsInFile = true;
-            readStacksData(sheetPos20, data20, PositionAction.INSTANCE);
-            readStacksData(sheetPos40, data40, PositionAction.INSTANCE);
+            final PositionAction positionAction = new PositionAction(transversePositiveDirection);
+            readStacksData(sheetPos20, data20, positionAction);
+            readStacksData(sheetPos40, data40, positionAction);
         } else if (sheetPos20 == null && sheetPos40 == null) {
             sheetsInFile = false;
         } else {

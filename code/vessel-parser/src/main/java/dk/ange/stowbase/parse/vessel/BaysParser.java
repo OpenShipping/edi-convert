@@ -34,6 +34,9 @@ public class BaysParser extends SheetsParser {
         final BaysMappingBuilder builder = new BaysMappingBuilder();
         for (int rowIndex = 1; rowIndex <= sheet.getLastRowNum(); ++rowIndex) {
             final Row row = sheet.getRow(rowIndex);
+            if (row == null) {
+                continue;
+            }
             final String bayName = cellString(row.getCell(0));
             if (bayName == null || bayName.length() == 0) {
                 continue;
