@@ -167,7 +167,7 @@ public class BaplieContentHandler implements ContentHandler {
     @Override
     public void endGroup(final String position) {
         if (position.equals("LOC")) {
-            container.setLiveReefer(temperature != null);
+            container.setIsLiveReefer(temperature != null);
             if (!dangerousGoodsList.isEmpty()) {
                 container.setDangerousGoods(dangerousGoodsList);
             }

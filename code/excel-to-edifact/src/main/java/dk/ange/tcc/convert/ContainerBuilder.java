@@ -491,7 +491,7 @@ public final class ContainerBuilder {
         }
         container.put("rawIsoCode", isoCode);
         container.setGrossWeightInKg(weight);
-        container.setLiveReefer(isLiveReefer);
+        container.setIsLiveReefer(isLiveReefer);
         container.setIsEmpty(isEmpty);
 
         // Load move
