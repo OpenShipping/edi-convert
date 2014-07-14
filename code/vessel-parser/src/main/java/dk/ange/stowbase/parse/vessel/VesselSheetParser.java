@@ -26,6 +26,8 @@ public class VesselSheetParser extends SheetsParser {
 
     private LongitudinalPositiveDirection longitudinalPositiveDirection;
 
+    private TransversePositiveDirection transversePositiveDirection;
+
     /**
      * Construct and parse
      *
@@ -43,6 +45,7 @@ public class VesselSheetParser extends SheetsParser {
         final Sheet sheet = getSheetMandatory("Vessel");
         readKeyValueSheet(sheet, vesselMap);
         log.debug("vesselMap = {}", vesselMap);
+
         final String longitudinalPositiveDirectionString = vesselMap.get(header("Longitudinal positive direction"));
         if (longitudinalPositiveDirectionString == null) {
             longitudinalPositiveDirection = LongitudinalPositiveDirection.FORE;
@@ -51,6 +54,15 @@ public class VesselSheetParser extends SheetsParser {
                     .toUpperCase());
         }
         log.debug("longitudinalPositiveDirection=" + longitudinalPositiveDirection);
+
+        final String transversePositiveDirectionString = vesselMap.get(header("Transverse positive direction"));
+        if (transversePositiveDirectionString == null) {
+            transversePositiveDirection = TransversePositiveDirection.LEGACY;
+        } else {
+            transversePositiveDirection = TransversePositiveDirection.valueOf(transversePositiveDirectionString
+                    .toUpperCase());
+        }
+        log.debug("transversePositiveDirection=" + transversePositiveDirection);
     }
 
     /**
@@ -77,6 +89,56 @@ public class VesselSheetParser extends SheetsParser {
      */
     public LongitudinalPositiveDirection getLongitudinalPositiveDirection() {
         return longitudinalPositiveDirection;
+    }
+
+    /**
+     * Which direction is positive in the transverse direction. This is used only when reading the XLS file, when
+     * writing the JSON file we transform to the old inconsistent standard.
+     */
+    public static enum TransversePositiveDirection {
+
+        /**
+         * Positive to port, this what is used in Stowbase and Shop.
+         */
+        PORT,
+
+        /**
+         * Positive to starboard, this is what we use Ange Stow.
+         */
+        STARBOARD,
+
+        /**
+         * Positive to port most of the time, but starboard for tanks.
+         */
+        LEGACY;
+
+        /**
+         * @return the sign that Port has or +1 if legacy mode
+         */
+        public int signForPort() {
+            return signForPort(+1);
+        }
+
+        /**
+         * @return the sign that Starboard has or +1 if legacy mode
+         */
+        public int signForStarboard() {
+            return -signForPort(-1);
+        }
+
+        private int signForPort(final int legacySign) {
+            switch (this) {
+            case PORT:
+                return +1;
+            case STARBOARD:
+                return -1;
+            case LEGACY:
+                return legacySign;
+            default:
+                throw new RuntimeException("Should never happen, '" + this + "'");
+            }
+        }
+
     }
 
 }
