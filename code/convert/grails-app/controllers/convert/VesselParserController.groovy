@@ -1,6 +1,7 @@
 package convert
 
 import dk.ange.stowbase.parse.vessel.ParseVessel;
+import dk.ange.stowbase.parse.vessel.VesselFormatDocumentation;
 
 class VesselParserController {
 
@@ -21,6 +22,10 @@ class VesselParserController {
     def download = {
         new Attachment(response, "application/x-old-vessel", session.fileName).send(
             ParseVessel.compress(session.result.json.getBytes("UTF-8")))
+    }
+
+    def format = {
+        session.format = VesselFormatDocumentation.asHtml()
     }
 
 }

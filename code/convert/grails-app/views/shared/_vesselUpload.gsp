@@ -9,7 +9,8 @@
 	</g:form>
 
         <h2>Documentation</h2>
-        <p>
-          <a href="${resource(dir:'files',file:'vessel-template.xls')}">Vessel profile Excel example</a>
-        </p>
+        <ul>
+          <li><a href="format">Description of format</a>
+          <li><a href="${resource(dir:'files',file:'vessel-template.xls')}">Vessel profile Excel example</a>
+        </ul>
       </div>
