@@ -13,6 +13,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.stowbase.client.StowbaseObjectFactory;
 import org.stowbase.client.objects.VesselProfile;
+import org.stowbase.client.objects.VesselProfile.LongitudinalPositiveDirection;
 import org.stowbase.client.objects.VesselStack;
 import org.stowbase.client.objects.VesselStackSupport;
 
@@ -24,7 +25,6 @@ import dk.ange.stowbase.parse.utils.ParseException;
 import dk.ange.stowbase.parse.utils.SheetWrapperWarner;
 import dk.ange.stowbase.parse.vessel.BaysMapping;
 import dk.ange.stowbase.parse.vessel.BaysMapping.TwentyForeAftForty;
-import dk.ange.stowbase.parse.vessel.VesselSheetParser.LongitudinalPositiveDirection;
 
 /**
  * Parse stacks

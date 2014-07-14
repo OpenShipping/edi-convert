@@ -77,7 +77,7 @@ public class LidsParser extends SheetsParser {
                 }
                 // belowDeck is sometime empty, this is a hack for creating compartments for macro-stowage
                 lid.setVesselStacksBeneathLid(belowDeck);
-                lid.put("name", lidKey.toString());
+                lid.setName(lidKey.toString());
                 vesselLids.add(lid);
             }
             vesselProfile.setVesselLids(vesselLids);

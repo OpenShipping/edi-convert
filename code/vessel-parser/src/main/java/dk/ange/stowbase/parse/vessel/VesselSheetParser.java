@@ -9,6 +9,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.stowbase.client.StowbaseObjectFactory;
 import org.stowbase.client.objects.VesselProfile;
+import org.stowbase.client.objects.VesselProfile.LongitudinalPositiveDirection;
 
 import dk.ange.stowbase.parse.utils.Header;
 import dk.ange.stowbase.parse.utils.Messages;
@@ -64,10 +65,10 @@ public class VesselSheetParser extends SheetsParser {
         }
         final String name = vesselMap.get(header("Name"));
         if (name != null) {
-            vesselProfile.put("name", name);
+            vesselProfile.setName(name);
         }
         if (longitudinalPositiveDirection != null) {
-            vesselProfile.put("longitudinalPositiveDirection", longitudinalPositiveDirection.toString());
+            vesselProfile.setLongitudinalPositiveDirection(longitudinalPositiveDirection);
         }
     }
 
@@ -76,38 +77,6 @@ public class VesselSheetParser extends SheetsParser {
      */
     public LongitudinalPositiveDirection getLongitudinalPositiveDirection() {
         return longitudinalPositiveDirection;
-    }
-
-    /**
-     * Which direction is positive in the longitudinal direction
-     */
-    public static enum LongitudinalPositiveDirection {
-        /**
-         * Positive to the fore, this is normal.
-         */
-        FORE,
-        /**
-         * Positive to the aft, this is strange but seen on some vessel like the A4 class from UASC.
-         */
-        AFT;
-        @Override
-        public String toString() {
-            return name().toLowerCase();
-        }
-
-        /**
-         * @return the sign that fore has
-         */
-        public int signForFore() {
-            switch (this) {
-            case FORE:
-                return +1;
-            case AFT:
-                return -1;
-            default:
-                throw new RuntimeException("Huh? " + this);
-            }
-        }
     }
 
 }
