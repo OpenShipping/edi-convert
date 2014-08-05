@@ -101,7 +101,8 @@ public class VesselSheetParser extends SheetsParser {
 
     /**
      * Which direction is positive in the transverse direction. This is used only when reading the XLS file, when
-     * writing the JSON file we transform to the old inconsistent standard.
+     * writing the JSON file we transform to the old inconsistent standard, which is positive for port for all sheets,
+     * except negative for TANK sheets.
      */
     public static enum TransversePositiveDirection {
 
@@ -121,14 +122,14 @@ public class VesselSheetParser extends SheetsParser {
         LEGACY;
 
         /**
-         * @return the sign that Port has or +1 if legacy mode
+         * @return the sign that Port has or +1 if legacy mode, to be used on all Excel sheets EXCEPT TANK sheet
          */
         public int signForPort() {
             return signForPort(+1);
         }
 
         /**
-         * @return the sign that Starboard has or +1 if legacy mode
+         * @return the sign that Starboard has or +1 if legacy mode, ONLY to be used on TANK Excel sheet
          */
         public int signForStarboard() {
             return -signForPort(-1);
