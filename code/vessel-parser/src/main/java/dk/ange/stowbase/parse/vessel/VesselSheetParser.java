@@ -79,6 +79,14 @@ public class VesselSheetParser extends SheetsParser {
         if (name != null) {
             vesselProfile.setName(name);
         }
+        final String vesselCode = vesselMap.get(header("Vessel code"));
+        if (vesselCode != null) {
+            vesselProfile.setVesselCode(vesselCode);
+        }
+        final String callSign = vesselMap.get(header("Call sign"));
+        if (callSign != null) {
+            vesselProfile.setCallSign(callSign);
+        }
         if (longitudinalPositiveDirection != null) {
             vesselProfile.setLongitudinalPositiveDirection(longitudinalPositiveDirection);
         }
