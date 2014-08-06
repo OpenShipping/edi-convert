@@ -9,8 +9,14 @@ Sheet: Vessel
 ### Name
 The name of the vessel
 
-### IMO Number
+### IMO number
 The IMO number of the vessel
+
+### Vessel code
+The vessel code
+
+### Call sign
+The call sign of the vessel
 
 ### Longitudinal positive direction
 The positive direction of coordinates in the longitudinal direction, the value can be _FORE_ (this is default) or _AFT_.
