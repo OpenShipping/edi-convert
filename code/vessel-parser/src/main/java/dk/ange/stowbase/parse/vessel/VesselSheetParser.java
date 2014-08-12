@@ -5,7 +5,6 @@ import static dk.ange.stowbase.parse.utils.Header.header;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.stowbase.client.StowbaseObjectFactory;
 import org.stowbase.client.objects.VesselProfile;
@@ -13,12 +12,12 @@ import org.stowbase.client.objects.VesselProfile.LongitudinalPositiveDirection;
 
 import dk.ange.stowbase.parse.utils.Header;
 import dk.ange.stowbase.parse.utils.Messages;
-import dk.ange.stowbase.parse.utils.SheetsParser;
+import dk.ange.stowbase.parse.utils.SingleSheetParser;
 
 /**
  * Parse the sheet called "Vessel"
  */
-public class VesselSheetParser extends SheetsParser {
+public class VesselSheetParser extends SingleSheetParser {
 
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(VesselSheetParser.class);
 
@@ -41,12 +40,16 @@ public class VesselSheetParser extends SheetsParser {
         parse();
     }
 
+    @Override
+    public String getSheetName() {
+        return "Vessel";
+    }
+
     private void parse() {
-        final Sheet sheet = getSheetMandatory("Vessel");
         readKeyValueSheet(sheet, vesselMap);
         log.debug("vesselMap = {}", vesselMap);
 
-        final String longitudinalPositiveDirectionString = vesselMap.get(header("Longitudinal positive direction"));
+        final String longitudinalPositiveDirectionString = vesselMap.remove(header("Longitudinal positive direction"));
         if (longitudinalPositiveDirectionString == null) {
             longitudinalPositiveDirection = LongitudinalPositiveDirection.FORE;
         } else {
@@ -55,7 +58,7 @@ public class VesselSheetParser extends SheetsParser {
         }
         log.debug("longitudinalPositiveDirection=" + longitudinalPositiveDirection);
 
-        final String transversePositiveDirectionString = vesselMap.get(header("Transverse positive direction"));
+        final String transversePositiveDirectionString = vesselMap.remove(header("Transverse positive direction"));
         if (transversePositiveDirectionString == null) {
             transversePositiveDirection = TransversePositiveDirection.LEGACY;
         } else {
@@ -71,24 +74,27 @@ public class VesselSheetParser extends SheetsParser {
      * @param vesselProfile
      */
     public void addDataToVesselProfile(final VesselProfile vesselProfile) {
-        final String imoNumber = vesselMap.get(header("IMO number"));
+        final String imoNumber = vesselMap.remove(header("IMO number"));
         if (imoNumber != null) {
             vesselProfile.setImoCode(imoNumber);
         }
-        final String name = vesselMap.get(header("Name"));
+        final String name = vesselMap.remove(header("Name"));
         if (name != null) {
             vesselProfile.setName(name);
         }
-        final String vesselCode = vesselMap.get(header("Vessel code"));
+        final String vesselCode = vesselMap.remove(header("Vessel code"));
         if (vesselCode != null) {
             vesselProfile.setVesselCode(vesselCode);
         }
-        final String callSign = vesselMap.get(header("Call sign"));
+        final String callSign = vesselMap.remove(header("Call sign"));
         if (callSign != null) {
             vesselProfile.setCallSign(callSign);
         }
         if (longitudinalPositiveDirection != null) {
             vesselProfile.setLongitudinalPositiveDirection(longitudinalPositiveDirection);
+        }
+        for (Header header : vesselMap.keySet()) {
+            addSheetWarning("Unknown header: '" + header + "'");
         }
     }
 
