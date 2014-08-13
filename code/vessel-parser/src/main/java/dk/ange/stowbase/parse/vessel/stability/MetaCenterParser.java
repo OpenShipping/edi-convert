@@ -1,6 +1,7 @@
 package dk.ange.stowbase.parse.vessel.stability;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -27,9 +28,9 @@ public class MetaCenterParser extends SheetsParser {
 
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(MetaCenterParser.class);
 
-    private Map<Double, Map<Double, Double>> metaCenterMatrix;
+    private final Map<Double, Map<Double, Double>> metaCenterMatrix = new HashMap<>();
 
-    private Map<Integer, Double> keyMap;
+    private final Map<Integer, Double> keyMap = new HashMap<>();
 
     /**
      * Construct and parse
@@ -49,7 +50,6 @@ public class MetaCenterParser extends SheetsParser {
         if (sheet == null) {
             return;
         }
-        metaCenterMatrix = new HashMap<>();
         try {
             parseSheet(sheet);
         } catch (final ParseException e) {
@@ -60,8 +60,6 @@ public class MetaCenterParser extends SheetsParser {
     private void parseSheet(final Sheet sheet) {
         final Iterator<Row> rowIterator = sheet.rowIterator();
         final Row firstRow = rowIterator.next();
-        keyMap = new HashMap<>();
-        metaCenterMatrix = new HashMap<>();
         for (final Cell cell : firstRow) {
             try {
                 final String cell0String = cellString(cell);
@@ -120,7 +118,9 @@ public class MetaCenterParser extends SheetsParser {
         final List<Double> trims = new ArrayList<>();
         final List<Double> metacentres = new ArrayList<>();
         drafts.addAll(metaCenterMatrix.keySet());
+        Collections.sort(drafts);
         trims.addAll(metaCenterMatrix.get(drafts.get(0)).keySet());
+        Collections.sort(trims);
         for (final Double draft : drafts) {
             for (final Double trim : trims) {
                 metacentres.add(metaCenterMatrix.get(draft).get(trim));
