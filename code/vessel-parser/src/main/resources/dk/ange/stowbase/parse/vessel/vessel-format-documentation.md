@@ -163,6 +163,22 @@ Max FSM in m4
 Sheet: Stability
 ----------------
 
+### Hull weight in ton
+
+### Hull LCG in m
+
+### Hull VCG in m
+
+### Vessel LPP in m
+
+### Observer LCG in m
+
+### Observer VCG in m
+
+### Classification society
+
+Known values: _GL_, _LR_, _DNV_
+
 
 Sheet: ConstWgts
 ----------------
