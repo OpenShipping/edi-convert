@@ -168,6 +168,9 @@ public final class VarTanksParser extends SingleSheetParser {
             if (cell.getColumnIndex() == 0) {
                 continue; // Skip first column
             }
+            if (cell.getCellType() == Cell.CELL_TYPE_BLANK) {
+                break;
+            }
             numbers.add(readNumber(row, cell.getColumnIndex(), 1));
         }
         return numbers;
