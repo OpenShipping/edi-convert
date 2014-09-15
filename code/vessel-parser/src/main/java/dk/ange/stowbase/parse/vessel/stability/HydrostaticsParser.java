@@ -5,6 +5,8 @@ import static dk.ange.stowbase.parse.utils.Header.header;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -117,7 +119,15 @@ public class HydrostaticsParser extends SingleSheetParser {
         draftFunction.setOutput("draft");
         final List<Double> displacements = new ArrayList<>(tableRows.size());
         final List<Double> drafts = new ArrayList<>(tableRows.size());
-        for (final TableRow tableRow : tableRows) {
+        ArrayList<TableRow> sortedCopyTableRows = new ArrayList<> (tableRows);
+        Collections.sort(sortedCopyTableRows, new Comparator<TableRow>() {
+            @Override
+            public int compare(TableRow tr1, TableRow tr2)
+            {
+                return Double.compare(tr1.displacement, tr2.displacement);
+            }
+        });
+        for (final TableRow tableRow : sortedCopyTableRows) {
             displacements.add(tableRow.displacement);
             drafts.add(tableRow.draft);
         }
@@ -144,6 +154,7 @@ public class HydrostaticsParser extends SingleSheetParser {
             lcbMax = Math.max(lcbMax, tableRow.lcb);
             displacementLookup.put(tableRow.displacement, tableRow);
         }
+        Collections.sort(displacements);
         lcgs.add(lcbMin - 100);
         lcgs.add(lcbMin);
         lcgs.add(lcbMax);

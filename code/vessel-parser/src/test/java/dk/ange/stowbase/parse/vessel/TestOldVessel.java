@@ -75,7 +75,9 @@ public class TestOldVessel {
 
         validateHullWeight(vesselProfile.get("hullweightBlocks").getAsObjects());
 
-        validateHydrostatics(vesselProfile.get("draftFunction").getAsSingleObject());
+        validateHydrostaticsDraft(vesselProfile.get("draftFunction").getAsSingleObject());
+
+        validateHydrostaticsTrim(vesselProfile.get("trimFunction").getAsSingleObject());
 
         validateMetacenter(vesselProfile.get("metacentreCurve").getAsSingleObject());
     }
@@ -88,14 +90,16 @@ public class TestOldVessel {
         assertEquals("draftInM", metacenter.get("input2").getAsString());
         assertEquals("linear", metacenter.get("interpolation").getAsString());
         assertEquals("metaCentreInMAboveKeel", metacenter.get("output").getAsString());
-        /* TODO: correct sorting delayed to next commit #180
-        assertEquals("9.8;9.3;10.1;9.6;10.2;9.7;10.5;10.0;9.9;9.4;10.4;9.9;10.3;9.8;10.0;9.5", metacenter.get("sampleData").getAsString());
-        assertEquals("0.0;-1.0", metacenter.get("samplePoints1").getAsString());
-        assertEquals("3.0;6.0;7.0;10.0;4.0;9.0;8.0;5.0", metacenter.get("samplePoints2").getAsString());
-        */
+
+        assertEquals(70, metacenter.get("sampleData").getAsString().length());
+        assertEquals("9.3;9.8;9.4;9.9;9.5;10.0;9.6;10.1;9.7;10.2;9.8;10.3;9.9;10.4;10.0;10.5", metacenter.get("sampleData").getAsString());
+        assertEquals(8, metacenter.get("samplePoints1").getAsString().length());
+        assertEquals("-1.0;0.0", metacenter.get("samplePoints1").getAsString());
+        assertEquals(32, metacenter.get("samplePoints2").getAsString().length());
+        assertEquals("3.0;4.0;5.0;6.0;7.0;8.0;9.0;10.0", metacenter.get("samplePoints2").getAsString());
     }
 
-    private void validateHydrostatics(BundleStowbaseObject draftFunction) {
+    private void validateHydrostaticsDraft(BundleStowbaseObject draftFunction) {
         assertNotNull(draftFunction);
         assertEquals("nearest", draftFunction.get("extrapolation").getAsString());
         assertEquals("interpolation2d", draftFunction.get("functionType").getAsString());
@@ -103,11 +107,33 @@ public class TestOldVessel {
         assertEquals("lcg", draftFunction.get("input2").getAsString());
         assertEquals("linear", draftFunction.get("interpolation").getAsString());
         assertEquals("draft", draftFunction.get("output").getAsString());
-        /* TODO: correct sorting delayed to next commit #180
-        assertEquals("10.0;9.0;8.0;7.0;6.0;5.0;4.0;3.0;10.0;9.0;8.0;7.0;6.0;5.0;4.0;3.0", draftFunction.get("sampleData").getAsString());
-        assertEquals("1.62E7;1.458E7;1.296E7;1.134E7;9720000.0;8100000.0;6480000.0;4860000.0", draftFunction.get("samplePoints1").getAsString());
+
+        assertEquals(65, draftFunction.get("sampleData").getAsString().length());
+        assertEquals("3.0;4.0;5.0;6.0;7.0;8.0;9.0;10.0;3.0;4.0;5.0;6.0;7.0;8.0;9.0;10.0", draftFunction.get("sampleData").getAsString());
+        assertEquals(70, draftFunction.get("samplePoints1").getAsString().length());
+        assertEquals("4860000.0;6480000.0;8100000.0;9720000.0;1.134E7;1.296E7;1.458E7;1.62E7", draftFunction.get("samplePoints1").getAsString());
+        assertEquals(14, draftFunction.get("samplePoints2").getAsString().length());
         assertEquals("-1000.0;1000.0", draftFunction.get("samplePoints2").getAsString());
-        */
+    }
+
+    private void validateHydrostaticsTrim(BundleStowbaseObject trimFunction) {
+        assertNotNull(trimFunction);
+        assertEquals("nearest", trimFunction.get("extrapolation").getAsString());
+        assertEquals("interpolation2d", trimFunction.get("functionType").getAsString());
+        assertEquals("displacement", trimFunction.get("input1").getAsString());
+        assertEquals("lcg", trimFunction.get("input2").getAsString());
+        assertEquals("linear", trimFunction.get("interpolation").getAsString());
+        assertEquals("trim", trimFunction.get("output").getAsString());
+
+        assertEquals(319, trimFunction.get("sampleData").getAsString().length());
+        assertEquals("5.225806451612903;6.8936170212765955;8.526315789473685;10.125;11.690721649484535;13.224489795918368;"
+                + "14.727272727272727;16.2;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;0.0;"
+                + "-5.225806451612903;-6.8936170212765955;-8.526315789473685;-10.125;-11.690721649484535;-13.224489795918368;"
+                + "-14.727272727272727;-16.2", trimFunction.get("sampleData").getAsString());
+        assertEquals(70, trimFunction.get("samplePoints1").getAsString().length());
+        assertEquals("4860000.0;6480000.0;8100000.0;9720000.0;1.134E7;1.296E7;1.458E7;1.62E7", trimFunction.get("samplePoints1").getAsString());
+        assertEquals(21, trimFunction.get("samplePoints2").getAsString().length());
+        assertEquals("-45.0;55.0;55.0;155.0", trimFunction.get("samplePoints2").getAsString());
     }
 
     private void validateHullWeight(List<BundleStowbaseObject> hullWeightBlocks) {
@@ -121,10 +147,20 @@ public class TestOldVessel {
 
     private void validateBonjean(BundleStowbaseObject bonjean) {
         assertNotNull(bonjean);
-        /* TODO: correct sorting delayed to next commit #180
-        assertEquals("0.0;110.0;90.0;20.0", bonjean.get("samplePoints1").getAsString());
-        assertEquals("3.0;6.0;7.0;10.0;4.0;9.0;8.0;5.0", bonjean.get("samplePoints2").getAsString());
-        */
+        assertEquals("nearest", bonjean.get("extrapolation").getAsString());
+        assertEquals("interpolation2d", bonjean.get("functionType").getAsString());
+        assertEquals("lcg", bonjean.get("input1").getAsString());
+        assertEquals("draft", bonjean.get("input2").getAsString());
+        assertEquals("linear", bonjean.get("interpolation").getAsString());
+        assertEquals("bonjeanArea", bonjean.get("output").getAsString());
+
+        assertEquals(153, bonjean.get("sampleData").getAsString().length());
+        assertEquals("0.0;54.0;54.0;0.0;0.0;72.0;72.0;0.0;0.0;90.0;90.0;0.0;0.0;108.0;108.0;0.0;0.0;126.0;126.0;0.0;0.0;144.0;144.0;"
+                + "0.0;0.0;162.0;162.0;0.0;0.0;180.0;180.0;0.0", bonjean.get("sampleData").getAsString());
+        assertEquals(19, bonjean.get("samplePoints1").getAsString().length());
+        assertEquals("0.0;20.0;90.0;110.0", bonjean.get("samplePoints1").getAsString());
+        assertEquals(32, bonjean.get("samplePoints2").getAsString().length());
+        assertEquals("3.0;4.0;5.0;6.0;7.0;8.0;9.0;10.0", bonjean.get("samplePoints2").getAsString());
     }
 
     private void validateStacks(final List<BundleStowbaseObject> vesselStacks) {

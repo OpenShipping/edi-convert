@@ -1,6 +1,7 @@
 package dk.ange.stowbase.parse.vessel.stability;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -73,7 +74,6 @@ public class BonjeanParser extends SingleSheetParser {
                     continue;
                 }
                 double wetArea = readOptionalNumber(firstRow, cell.getColumnIndex(), 1);
-                // log.trace(pos(cell) + " " + cellString(cell) + " " + wetArea);
                 if (Double.isNaN(wetArea)) {
                     continue;
                 }
@@ -107,7 +107,6 @@ public class BonjeanParser extends SingleSheetParser {
         }
         if (bonjean_row.size() > 0) {
             final Double draft = readNumber(row, 0, 1);
-            // log.debug("row size: " + bonjean_row.size() + "Draft: " + draft);
             bonjean_matrix.put(draft, bonjean_row);
         }
     }
@@ -131,7 +130,9 @@ public class BonjeanParser extends SingleSheetParser {
         final List<Double> lcgs = new ArrayList<>();
         final List<Double> bonjeanAreas = new ArrayList<>();
         drafts.addAll(bonjean_matrix.keySet());
+        Collections.sort(drafts);
         lcgs.addAll(bonjean_matrix.get(drafts.get(0)).keySet());
+        Collections.sort(lcgs);
         for (final Double draft : drafts) {
             for (final Double lcg : lcgs) {
                 bonjeanAreas.add(bonjean_matrix.get(draft).get(lcg));
