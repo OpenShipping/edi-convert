@@ -69,9 +69,15 @@ public class BonjeanParser extends SingleSheetParser {
         for (final Cell cell : firstRow) {
             try {
                 final String cell0String = cellString(cell);
-                if (!cell0String.startsWith("#")) {
-                    keyMap.put(cell.getColumnIndex(), Double.parseDouble(cell0String));
+                if (cell0String.isEmpty() || cell0String.startsWith("#")) {
+                    continue;
                 }
+                double wetArea = readOptionalNumber(firstRow, cell.getColumnIndex(), 1);
+                // log.trace(pos(cell) + " " + cellString(cell) + " " + wetArea);
+                if (Double.isNaN(wetArea)) {
+                    continue;
+                }
+                keyMap.put(cell.getColumnIndex(), wetArea);
             } catch (final Exception e) {
                 log.debug("Error when parsing a bonjean bay header #" + cell.getColumnIndex(), e);
                 addSheetWarning("Error when parsing a bonjean bay header in cell " + pos(cell) + " Error: "

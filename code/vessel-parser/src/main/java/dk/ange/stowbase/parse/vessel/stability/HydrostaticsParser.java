@@ -89,7 +89,10 @@ public class HydrostaticsParser extends SingleSheetParser {
     private void parseRow(final Row row, final int draftColumn, final int displacementColumn, final int lcbColumn,
             final int mctColumn) {
         final TableRow tableRow = new TableRow();
-        tableRow.draft = readNumber(row, draftColumn, 1);
+        tableRow.draft = readOptionalNumber(row, draftColumn, 1);
+        if (Double.isNaN(tableRow.draft)) {
+            return;
+        }
         tableRow.displacement = readNumber(row, displacementColumn, 1000);
         tableRow.lcb = readNumber(row, lcbColumn, 1);
         tableRow.mct = readNumber(row, mctColumn, 100000);

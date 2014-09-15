@@ -85,16 +85,19 @@ public class MetaCenterParser extends SheetsParser {
     private void parseRow(final Row row) {
         final Map<Double, Double> metacenterRow = new HashMap<>();
         for (final Cell cell : row) {
-            final String cell0String = cellString(cell);
-            if (!cell0String.startsWith("#")) {
-                if (cell.getColumnIndex() != 0) {
-                    metacenterRow.put(keyMap.get(cell.getColumnIndex()), readNumber(row, cell.getColumnIndex(), 1));
-                }
+            //log.info("(" + row.getRowNum() + "," + cell.getColumnIndex() + ")->'" + cellString(cell) + "'");
+            if (cell.getColumnIndex() == 0) {
+                continue;
             }
+            final Double meta = readOptionalNumber(row, cell.getColumnIndex(), 1);
+            if (Double.isNaN(meta)){
+                continue;
+            }
+            metacenterRow.put(keyMap.get(cell.getColumnIndex()), meta);
         }
         if (metacenterRow.size() > 0) {
             final Double draft = readNumber(row, 0, 1);
-            // log.debug("row size: " + bonjean_row.size() + "Draft: " + draft);
+            //log.info("row: " + row.getRowNum() + " draft: " + draft + " size: " + metacenterRow.size());
             metaCenterMatrix.put(draft, metacenterRow);
         }
     }

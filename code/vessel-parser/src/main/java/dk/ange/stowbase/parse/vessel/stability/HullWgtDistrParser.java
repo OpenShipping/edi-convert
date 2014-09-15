@@ -85,29 +85,34 @@ public class HullWgtDistrParser extends SheetsParser {
         double forelcg = Double.NaN;
         double aftdensity = Double.NaN;
         double foredensity = Double.NaN;
+
         for (final Cell cell : row) {
             final String cell0String = cellString(cell);
-            if (!cell0String.startsWith("#")) {
-                if (cell.getColumnIndex() == 0) {
-                    aftlcg = readNumber(row, cell.getColumnIndex(), 1);
-                } else if (cell.getColumnIndex() == 1) {
-                    forelcg = readNumber(row, cell.getColumnIndex(), 1);
-                } else if (cell.getColumnIndex() == 2) {
-                    aftdensity = readNumber(row, cell.getColumnIndex(), 1000);
-                } else if (cell.getColumnIndex() == 3) {
-                    foredensity = readNumber(row, cell.getColumnIndex(), 1000);
-                }
+            if (cell0String.startsWith("#")) {
+                continue;
+            }
+            if (cell.getColumnIndex() == 0) {
+                aftlcg = readOptionalNumber(row, cell.getColumnIndex(), 1);
+            } else if (cell.getColumnIndex() == 1) {
+                forelcg = readOptionalNumber(row, cell.getColumnIndex(), 1);
+            } else if (cell.getColumnIndex() == 2) {
+                aftdensity = readOptionalNumber(row, cell.getColumnIndex(), 1000);
+            } else if (cell.getColumnIndex() == 3) {
+                foredensity = readOptionalNumber(row, cell.getColumnIndex(), 1000);
             }
         }
-        if (!Double.isNaN(aftlcg) && !Double.isNaN(forelcg) && !Double.isNaN(aftdensity) && !Double.isNaN(foredensity)) {
-            final BlockData blockData = new BlockData();
-            blockData.aftLcg = aftlcg;
-            blockData.foreLcg = forelcg;
-            blockData.aftDensity = aftdensity;
-            blockData.foreDensity = foredensity;
-            blockData.tcg = 0;
-            hullweight_blocks.add(blockData);
+
+        if (Double.isNaN(aftlcg) || Double.isNaN(forelcg) || Double.isNaN(aftdensity) || Double.isNaN(foredensity)) {
+            return;
         }
+
+        final BlockData blockData = new BlockData();
+        blockData.aftLcg = aftlcg;
+        blockData.foreLcg = forelcg;
+        blockData.aftDensity = aftdensity;
+        blockData.foreDensity = foredensity;
+        blockData.tcg = 0;
+        hullweight_blocks.add(blockData);
     }
 
     /**
