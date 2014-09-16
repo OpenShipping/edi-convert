@@ -119,7 +119,7 @@ public class HydrostaticsParser extends SingleSheetParser {
         draftFunction.setOutput("draft");
         final List<Double> displacements = new ArrayList<>(tableRows.size());
         final List<Double> drafts = new ArrayList<>(tableRows.size());
-        ArrayList<TableRow> sortedCopyTableRows = new ArrayList<> (tableRows);
+        final ArrayList<TableRow> sortedCopyTableRows = new ArrayList<> (tableRows);
         Collections.sort(sortedCopyTableRows, new Comparator<TableRow>() {
             @Override
             public int compare(TableRow tr1, TableRow tr2)
