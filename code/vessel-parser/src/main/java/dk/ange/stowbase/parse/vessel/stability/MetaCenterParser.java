@@ -85,7 +85,6 @@ public class MetaCenterParser extends SheetsParser {
     private void parseRow(final Row row) {
         final Map<Double, Double> metacenterRow = new HashMap<>();
         for (final Cell cell : row) {
-            //log.info("(" + row.getRowNum() + "," + cell.getColumnIndex() + ")->'" + cellString(cell) + "'");
             if (cell.getColumnIndex() == 0) {
                 continue;
             }
@@ -97,7 +96,6 @@ public class MetaCenterParser extends SheetsParser {
         }
         if (metacenterRow.size() > 0) {
             final Double draft = readNumber(row, 0, 1);
-            //log.info("row: " + row.getRowNum() + " draft: " + draft + " size: " + metacenterRow.size());
             metaCenterMatrix.put(draft, metacenterRow);
         }
     }
