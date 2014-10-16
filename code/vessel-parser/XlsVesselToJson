@@ -1,5 +1,13 @@
 #!/bin/bash
 #set -x
+
+cat >&2 <<_EOT
+
+WARNING! You are using the deprecated script vessel-parser/XlsVesselToJson
+         you should instead use xls-vessel-to-json/XlsVesselToJson
+
+_EOT
+
 pom="$(dirname $(readlink -f $0))/pom.xml"
 args=(${@// /\\ })
 exec mvn --batch-mode --quiet \

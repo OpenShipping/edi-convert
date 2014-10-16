@@ -1,0 +1,4 @@
+#!/bin/bash
+#set -x
+jar="$(dirname $(readlink -f "$0"))/target/xls-vessel-to-json-0-SNAPSHOT-jar-with-dependencies.jar"
+java -jar "$jar" "$@"
