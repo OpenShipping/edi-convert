@@ -6,7 +6,7 @@
 
   <groupId>dk.ange.convert</groupId>
   <artifactId>parent</artifactId>
-  <version>0.1.0-SNAPSHOT</version>
+  <version>0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Ange :: Convert</name>
