@@ -89,7 +89,7 @@ public class MetaCenterParser extends SheetsParser {
                 continue;
             }
             final Double meta = readOptionalNumber(row, cell.getColumnIndex(), 1);
-            if (Double.isNaN(meta)){
+            if (Double.isNaN(meta)) {
                 continue;
             }
             metacenterRow.put(keyMap.get(cell.getColumnIndex()), meta);
@@ -104,7 +104,7 @@ public class MetaCenterParser extends SheetsParser {
      * @param vesselProfile
      */
     public void addDataToVesselProfile(final VesselProfile vesselProfile) {
-        if (metaCenterMatrix == null) {
+        if (metaCenterMatrix.isEmpty()) {
             return;
         }
         vesselProfile.put("metacentreCurve", metacentreCurve());
