@@ -17,6 +17,7 @@ import org.stowbase.client.objects.VesselProfile;
 import dk.ange.stowbase.parse.utils.Messages;
 import dk.ange.stowbase.parse.utils.ParseException;
 import dk.ange.stowbase.parse.vessel.dg.DgParser;
+import dk.ange.stowbase.parse.vessel.lashing.AllLashingParser;
 import dk.ange.stowbase.parse.vessel.stability.BonjeanParser;
 import dk.ange.stowbase.parse.vessel.stability.ConstWgtsParser;
 import dk.ange.stowbase.parse.vessel.stability.HullWgtDistrParser;
@@ -129,6 +130,8 @@ public final class ParseVessel {
         new HullWgtDistrParser(stowbaseObjectFactory, messages, workbook).addDataToVesselProfile(vesselProfile);
         new BonjeanParser(stowbaseObjectFactory, messages, workbook).addDataToVesselProfile(vesselProfile);
         new StressLimitsParser(stowbaseObjectFactory, messages, workbook).addDataToVesselProfile(vesselProfile);
+
+        new AllLashingParser(stowbaseObjectFactory, messages, workbook).addDataToVesselProfile(vesselProfile);
 
         log.debug("Finished writing the vessel profile");
         writerExporter.flush("vessel.json");

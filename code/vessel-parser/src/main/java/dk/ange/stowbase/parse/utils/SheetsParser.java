@@ -2,7 +2,12 @@ package dk.ange.stowbase.parse.utils;
 
 import static dk.ange.stowbase.parse.utils.Header.header;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -159,6 +164,35 @@ public abstract class SheetsParser {
             }
             map.put(key, cellString(row.getCell(1)));
         }
+    }
+
+    /**
+     * @param sheet
+     * @return data for the sheet
+     */
+    public List<RowData> readColumnSheet(final Sheet sheet) {
+        final List<RowData> data = new ArrayList<>();
+        final Iterator<Row> rowIterator = sheet.rowIterator();
+        // Check the headers
+        final Row firstRow = rowIterator.next();
+        final Map<Header, Integer> keyMap = new LinkedHashMap<>();
+        for (final Cell cell : firstRow) {
+            keyMap.put(header(cellString(cell)), cell.getColumnIndex());
+        }
+        // Read all data lines
+        for (final Row row : new IterableIterator<>(rowIterator)) {
+            final Map<Header, CellValue> rowDataData = new LinkedHashMap<>();
+            for (final Entry<Header, Integer> e : keyMap.entrySet()) {
+                final Header header = e.getKey();
+                final int columnIndex = e.getValue();
+                final Cell cell = row.getCell(columnIndex);
+                final CellValue value = new CellValue(cellString(cell), header);
+                rowDataData.put(header, value);
+            }
+            final RowData rowData = new RowData(rowDataData);
+            data.add(rowData);
+        }
+        return data;
     }
 
     /**

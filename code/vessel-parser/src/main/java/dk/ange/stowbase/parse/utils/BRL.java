@@ -114,6 +114,7 @@ public class BRL implements Comparable<BRL> {
         }
 
         final int cRow = row.compareTo(o.row);
+        // TODO order row by number: final int cRow = intStringsCompare(row, o.row);
         if (cRow != 0) {
             return cRow;
         }
