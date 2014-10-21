@@ -70,7 +70,8 @@ public class PatternsParser extends SingleSheetParser {
             stackLashingPattern.setPosition(rowData.get("Position").asString());
             stackLashingPattern.setSide(rowData.get("Side").asString());
 
-            stackLashingPattern.setEModuleInNewtonPerSquareMeter(rowData.get("E-module / kN/cm^2").asDouble() * 10);
+            stackLashingPattern.setEModuleInNewtonPerSquareMeter( //
+                    rowData.get("E-module / kN/cm^2").asDouble() * 1e3 / 1e-4);
             stackLashingPattern.setDiameterInMeter(rowData.get("Diameter / cm").asDouble() / 100);
             stackLashingPattern.setMaxLashingForceInNewton(rowData.get("Max lashing force / kN").asDouble() * 1000);
             final CellValue lashingBridgeDeformationInMeter = rowData.get("Lashing bridge deformation / cm");
