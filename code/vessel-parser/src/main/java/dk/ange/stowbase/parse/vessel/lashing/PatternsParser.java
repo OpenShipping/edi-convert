@@ -52,7 +52,7 @@ public class PatternsParser extends SingleSheetParser {
             if (patternName.headerMissing()) {
                 throw new RuntimeException("'Pattern name' is missing");
             }
-            if (rowData.get("").equals("")) {
+            if (rowData.get("Pattern name").asString("").equals("")) {
                 continue; // Skip row for empty name
             }
             final StackLashingPattern stackLashingPattern = StackLashingPattern.create(stowbaseObjectFactory);
