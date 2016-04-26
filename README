@@ -8,11 +8,6 @@ we have deployed on:
  * https://stowage.ange.dk/convert/
     ssh stowbase@stowage.ange.dk
 
- * http://uasc.stowage.net/convert/
-    ssh stowage@uasc.stowage.net
-    (Used to be stowage.uasc.net but UASC could not handle that)
-
-
 Local install of convert Grails application
 -------------------------------------------
     cd code
@@ -33,9 +28,4 @@ Local use of command line converter
 Install to https://stowage.ange.dk/convert/
 -------------------------------------------
     ssh stowbase@stowage.ange.dk ./upgrade-grails-convert
-
-Continue install to http://uasc.stowage.net/convert/
------------------------------------------------------
-    ssh -A stowbase@stowage.ange.dk ./push-to-uasc.stowage.net  # (requires ssh key)
-    ssh stowage@uasc.stowage.net ./upgrade-grails-convert
 
